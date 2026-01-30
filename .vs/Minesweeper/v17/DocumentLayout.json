@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\Eric\\Desktop\\Code Gen\\GithubRepos\\Minesweeper\\Minesweeper\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1C413614-C365-4D57-9E2A-BAB81321F4FD}|Minesweeper.vcxproj|C:\\Users\\Eric\\Desktop\\Code Gen\\GithubRepos\\Minesweeper\\Minesweeper\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{1C413614-C365-4D57-9E2A-BAB81321F4FD}|Minesweeper.vcxproj|solutionrelative:Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{1C413614-C365-4D57-9E2A-BAB81321F4FD}|Minesweeper.vcxproj|C:\\Users\\Eric\\Desktop\\Code Gen\\GithubRepos\\Minesweeper\\Minesweeper\\playGrid.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{1C413614-C365-4D57-9E2A-BAB81321F4FD}|Minesweeper.vcxproj|solutionrelative:playGrid.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1C413614-C365-4D57-9E2A-BAB81321F4FD}|Minesweeper.vcxproj|C:\\Users\\Eric\\Desktop\\Code Gen\\GithubRepos\\Minesweeper\\Minesweeper\\playGrid.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{1C413614-C365-4D57-9E2A-BAB81321F4FD}|Minesweeper.vcxproj|solutionrelative:playGrid.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1C413614-C365-4D57-9E2A-BAB81321F4FD}|Minesweeper.vcxproj|C:\\Users\\Eric\\Desktop\\Code Gen\\GithubRepos\\Minesweeper\\Minesweeper\\Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{1C413614-C365-4D57-9E2A-BAB81321F4FD}|Minesweeper.vcxproj|solutionrelative:Main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,43 +22,45 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "playGrid.cpp",
-              "DocumentMoniker": "C:\\Users\\Eric\\Desktop\\Code Gen\\GithubRepos\\Minesweeper\\Minesweeper\\playGrid.cpp",
-              "RelativeDocumentMoniker": "playGrid.cpp",
-              "ToolTip": "C:\\Users\\Eric\\Desktop\\Code Gen\\GithubRepos\\Minesweeper\\Minesweeper\\playGrid.cpp",
-              "RelativeToolTip": "playGrid.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAIAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "PlayGrid.cpp",
+              "DocumentMoniker": "C:\\Users\\Eric\\Desktop\\Code Gen\\GithubRepos\\Minesweeper\\Minesweeper\\PlayGrid.cpp",
+              "RelativeDocumentMoniker": "PlayGrid.cpp",
+              "ToolTip": "C:\\Users\\Eric\\Desktop\\Code Gen\\GithubRepos\\Minesweeper\\Minesweeper\\PlayGrid.cpp",
+              "RelativeToolTip": "PlayGrid.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-01-27T02:31:34.064Z"
+              "WhenOpened": "2026-01-30T03:38:35.06Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PlayGrid.h",
+              "DocumentMoniker": "C:\\Users\\Eric\\Desktop\\Code Gen\\GithubRepos\\Minesweeper\\Minesweeper\\PlayGrid.h",
+              "RelativeDocumentMoniker": "PlayGrid.h",
+              "ToolTip": "C:\\Users\\Eric\\Desktop\\Code Gen\\GithubRepos\\Minesweeper\\Minesweeper\\PlayGrid.h",
+              "RelativeToolTip": "PlayGrid.h",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2026-01-30T03:38:31.466Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "playGrid.h",
-              "DocumentMoniker": "C:\\Users\\Eric\\Desktop\\Code Gen\\GithubRepos\\Minesweeper\\Minesweeper\\playGrid.h",
-              "RelativeDocumentMoniker": "playGrid.h",
-              "ToolTip": "C:\\Users\\Eric\\Desktop\\Code Gen\\GithubRepos\\Minesweeper\\Minesweeper\\playGrid.h",
-              "RelativeToolTip": "playGrid.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-01-27T02:31:13.449Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
               "Title": "Main.cpp",
               "DocumentMoniker": "C:\\Users\\Eric\\Desktop\\Code Gen\\GithubRepos\\Minesweeper\\Minesweeper\\Main.cpp",
               "RelativeDocumentMoniker": "Main.cpp",
               "ToolTip": "C:\\Users\\Eric\\Desktop\\Code Gen\\GithubRepos\\Minesweeper\\Minesweeper\\Main.cpp",
               "RelativeToolTip": "Main.cpp",
-              "ViewState": "AgIAACoAAAAAAAAAAAAAAEYAAAAYAAAAAAAAAA==",
+              "ViewState": "AgIAAHsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2026-01-21T02:14:33.325Z",
+              "WhenOpened": "2026-01-28T17:41:28.588Z",
               "EditorCaption": ""
             }
           ]

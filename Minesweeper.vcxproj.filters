@@ -18,12 +18,12 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="playGrid.cpp">
+    <ClCompile Include="PlayGrid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="playGrid.h">
+    <ClInclude Include="PlayGrid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
