@@ -2,10 +2,10 @@
 #include <iostream>
 #include <vector>
 
-#include <algorithm>	// Required for std::transform
-#include <cctype>		// Required for std::tolower.    These handle the user input when choosing menu options.
+#include <algorithm>	//<std::transform>
+#include <cctype>		//<std::tolower>		//These handle the user input when choosing menu options.
 
-//#include <iomanip> //Required for std::setw		Handles formatting text titles messages and field format.
+#include "PlayGrid.h"
 
 void clearConsole() {
 	std::cout << "\x1b[2J\x1b[1;1H";
@@ -20,97 +20,12 @@ enum class GameState {
 
 };
 
-std::vector<std::vector<int> > playField;
-void generateField(int difficulty) {
-	
-	int fieldSize = -1;
-
-	const int EASY = 9;
-	const int NORMAL = 12;
-	const int HARD = 24;
-	if (difficulty == 0) {				//Not convinced this is long enough to warrant a switch statment
-		fieldSize = EASY;
-		playField.resize(EASY);
-	}
-	else if (difficulty == 1) {
-		fieldSize = NORMAL;
-		playField.resize(NORMAL);
-	}
-	else if (difficulty == 2) {
-		fieldSize = HARD;
-		playField.resize(HARD);
-	}
-	for (int i = 0; i < fieldSize; ++i) { //Initalize sixteen vectors of size 16 and add each to each to playField.
-		std::vector<int> newVect(fieldSize);
-		playField[i] = newVect;
-	}
-	/*    
-	//DEBUG: DISPLAY VECTOR CONTENTS
-	for (int i = 0; i < playField.size(); ++i) {
-		for (int j = 0; j < playField.size(); ++j) {
-			std::cout << playField[i][j] << " ";
-		}
-		std::cout << std::endl;
-	}
-	*/
-}
-
-int seedField(int difficulty, std::string inVal) {
-	int bombs = -1;
-	const int BOMBS_EASY = 10;
-	const int BOMBS_NORMAL = 32;
-	const int BOMBS_HARD = 100;
-
-	//Need algorithm based on rand number to generate field
-
-	switch (difficulty) {
-		case 0:
-			bombs = BOMBS_EASY;
-			break;
-		case 1:
-			bombs = BOMBS_NORMAL;
-			break;
-		case 2:
-			bombs = BOMBS_HARD;
-			break;
-		default:
-			std::cout << "ERROR: INVALID DIFFICULTY IN	SWITCH seedField()." << std::endl;
-			break;
-	}
-
-	return bombs;
-}
-
-void displayField() {
-	std::cout << " | 0";
-	for (int i = 0; i < playField.size(); ++i) {
-		std::cout << " | " << i + 1;
-	} 
-	std::cout << " |" << std::endl;
-
-	char rowLetter = 'A';
-	for (int i = 0; i < playField.size(); ++i) {
-		std::cout << " | " << rowLetter << " | ";
-		for (int j = 0; j < playField.size(); ++j) {
-			if (j + 1 < 10) {
-				std::cout << (char)254u << " | ";
-			}
-			else if (j + 1 >= 10) {
-				std::cout << (char)254u << "  | ";
-			}
-			
-		}
-		++rowLetter;
-		std::cout << std::endl;
-	}
-}
-
-
 int main() {
 	GameState status = GameState::Menu;	
 	std::string userInput = "";
+	PlayGrid gridObject;
 
-	while (static_cast<int>(status) != 3) { //Program runs in console while quit flag not raised.
+	while (static_cast<int>(status) != 3) {		//Program runs in console while quit flag not raised.
 
 		//////MENU - PLAY OR QUIT//////
 		std::cout << "\t\t\t --- Minesweeper Clone --- \t\t\t" << std::endl;
@@ -129,7 +44,8 @@ int main() {
 
 			//For now, only a normal difficulty field of 16x16 grid and 40 mines. Later passes difficulty as parameter to choose size.
 			difficulty = 1;
-			generateField(1);
+			gridObject.setDifficulty(difficulty);
+			gridObject.generateGrid(1);
 			status = GameState::Active;
 			clearConsole();
 			std::cout << "\n\t\t\tGame Start.\n";
@@ -137,10 +53,10 @@ int main() {
 
 		//////ACTIVE GAME LOOP//////
 		while (static_cast<int>(status) == 2) { 
-			displayField();
+			gridObject.displayGrid();
 			std::cout << "\nInpute ROW Letter and COLUMN Number using values shown on grid: ";
 			std::cin >> userInput;
-			int bombs = seedField(difficulty, userInput); //The first square chosen is always free. The coordinate square is used as a random number to seed the rest of the field.
+			int bombs = gridObject.seedGrid(difficulty, userInput); //The first square chosen is always free. The coordinate square is used as a random number to seed the rest of the field.
 
 			
 			//int squaresLeft = 

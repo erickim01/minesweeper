@@ -1,2 +1,4 @@
-﻿  PlayGrid.cpp
-C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(4,6): error C2653: 'PlayGrid': is not a class or namespace name
+﻿  Main.cpp
+  PlayGrid.cpp
+  Generating Code...
+  Minesweeper.vcxproj -> C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\x64\Debug\Minesweeper.exe
