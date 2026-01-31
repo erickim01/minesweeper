@@ -7,10 +7,9 @@ class PlayGrid {
 public:
 
 	void setDifficulty(int difficulty);
-	void functionName();
 	void displayGrid();
-	void generateGrid(int difficulty);
-	int seedGrid(int difficulty, std::string inVal);
+	void generateGrid();
+	int seedGrid(std::string inVal);
 	
 
 private:

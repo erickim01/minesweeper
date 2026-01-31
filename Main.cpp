@@ -45,7 +45,7 @@ int main() {
 			//For now, only a normal difficulty field of 16x16 grid and 40 mines. Later passes difficulty as parameter to choose size.
 			difficulty = 1;
 			gridObject.setDifficulty(difficulty);
-			gridObject.generateGrid(1);
+			gridObject.generateGrid();
 			status = GameState::Active;
 			clearConsole();
 			std::cout << "\n\t\t\tGame Start.\n";
@@ -56,7 +56,7 @@ int main() {
 			gridObject.displayGrid();
 			std::cout << "\nInpute ROW Letter and COLUMN Number using values shown on grid: ";
 			std::cin >> userInput;
-			int bombs = gridObject.seedGrid(difficulty, userInput); //The first square chosen is always free. The coordinate square is used as a random number to seed the rest of the field.
+			int bombs = gridObject.seedGrid(userInput); //The first square chosen is always free. The coordinate square is used as a random number to seed the rest of the field.
 
 			
 			//int squaresLeft = 

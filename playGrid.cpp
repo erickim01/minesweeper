@@ -42,7 +42,7 @@ void PlayGrid::displayGrid() {
 
 
 
-int PlayGrid::seedGrid(int difficulty, std::string inVal) {
+int PlayGrid::seedGrid(std::string inVal) {
 	int bombs = -1;
 	const int BOMBS_EASY = 10;
 	const int BOMBS_NORMAL = 32;
@@ -68,7 +68,7 @@ int PlayGrid::seedGrid(int difficulty, std::string inVal) {
 	return bombs;
 }
 
-void PlayGrid::generateGrid(int difficulty) {
+void PlayGrid::generateGrid() {
 
 	int fieldSize = -1;
 
