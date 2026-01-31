@@ -7,6 +7,29 @@ void PlayGrid::setDifficulty(int difficulty) {
 
 }
 
+void PlayGrid::setBombs() {
+	const int BOMBS_EASY = 10;
+	const int BOMBS_NORMAL = 32;
+	const int BOMBS_HARD = 100;
+
+	//Need algorithm based on rand number to generate field
+
+	switch (difficulty) {
+	case 0:
+		this->bombs = BOMBS_EASY;
+		break;
+	case 1:
+		this->bombs = BOMBS_NORMAL;
+		break;
+	case 2:
+		this->bombs = BOMBS_HARD;
+		break;
+	default:
+		std::cout << "ERROR: INVALID DIFFICULTY IN	SWITCH setBombs()." << std::endl;
+		break;
+	}
+}
+
 void PlayGrid::displayGrid() {
 	std::cout << " | 0";
 	for (int i = 0; i < gameGrid.size(); ++i) {
@@ -36,36 +59,15 @@ void PlayGrid::displayGrid() {
 
 
 
-//TODO TODO TODO: Remove all mentions of local difficulty, set to use class difficulty data.
-
-
-
 
 
 int PlayGrid::seedGrid(std::string inVal) {
-	int bombs = -1;
-	const int BOMBS_EASY = 10;
-	const int BOMBS_NORMAL = 32;
-	const int BOMBS_HARD = 100;
+	
 
 	//Need algorithm based on rand number to generate field
 
-	switch (difficulty) {
-	case 0:
-		bombs = BOMBS_EASY;
-		break;
-	case 1:
-		bombs = BOMBS_NORMAL;
-		break;
-	case 2:
-		bombs = BOMBS_HARD;
-		break;
-	default:
-		std::cout << "ERROR: INVALID DIFFICULTY IN	SWITCH seedField()." << std::endl;
-		break;
-	}
-
-	return bombs;
+	
+	return bombs; //Necessary?
 }
 
 void PlayGrid::generateGrid() {

@@ -7,13 +7,15 @@ class PlayGrid {
 public:
 
 	void setDifficulty(int difficulty);
+	void setBombs();
 	void displayGrid();
 	void generateGrid();
 	int seedGrid(std::string inVal);
 	
 
 private:
-	int difficulty;
+	int difficulty = -1;
+	int bombs = -1;
 	std::vector<std::vector<int> > gameGrid;			//2D Matrix representation of every cell on the playing field.
 	std::vector<std::pair<int, int>> gridCoordList;		//Registry of every possible cell in play to simplify bomb seeding.
 

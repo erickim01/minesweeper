@@ -54,7 +54,7 @@ int main() {
 		//////ACTIVE GAME LOOP//////
 		while (static_cast<int>(status) == 2) { 
 			gridObject.displayGrid();
-			std::cout << "\nInpute ROW Letter and COLUMN Number using values shown on grid: ";
+			std::cout << "\nInput ROW Letter and COLUMN Number using values shown on grid: ";
 			std::cin >> userInput;
 			int bombs = gridObject.seedGrid(userInput); //The first square chosen is always free. The coordinate square is used as a random number to seed the rest of the field.
 
