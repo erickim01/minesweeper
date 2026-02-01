@@ -2,6 +2,8 @@
 #include "PlayGrid.h"
 
 
+
+//PlayGrid::PlayGrid() {}
 void PlayGrid::setDifficulty(int difficulty) {
 	this->difficulty = difficulty;
 
@@ -30,6 +32,26 @@ void PlayGrid::setBombs() {
 	}
 }
 
+void PlayGrid::setGridList() {
+	for (int i = 0; i < gameGrid.size(); ++i) {
+		for (int j = 0; j < gameGrid.size(); ++j) {
+			gridList.push_back({i, j});
+		}
+	}
+
+	/*
+	for (int i = 0; i < gridList.size(); ++i) {
+		std::cout << gridList[i].first << ", " << gridList[i].second << std::endl;
+	}
+	*/
+
+}
+int PlayGrid::getDifficulty() { return difficulty; }
+int PlayGrid::getBombs() { return bombs; }
+//void PlayGrid::getGridList() {
+
+//}
+
 void PlayGrid::displayGrid() {
 	std::cout << " | 0";
 	for (int i = 0; i < gameGrid.size(); ++i) {
@@ -53,13 +75,6 @@ void PlayGrid::displayGrid() {
 		std::cout << std::endl;
 	}
 }
-
-
-
-
-
-
-
 
 int PlayGrid::seedGrid(std::string inVal) {
 	
@@ -93,6 +108,7 @@ void PlayGrid::generateGrid() {
 		std::vector<int> newVect(fieldSize);
 		gameGrid[i] = newVect;
 	}
+	setGridList();
 	/*
 	//DEBUG: DISPLAY VECTOR CONTENTS
 	for (int i = 0; i < playField.size(); ++i) {
