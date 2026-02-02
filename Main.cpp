@@ -22,7 +22,7 @@ enum class GameState {
 
 int main() {
 	GameState status = GameState::Menu;	
-	std::string userInput = "";
+	std::string menuInput = "";
 	PlayGrid gridObject;
 
 	while (static_cast<int>(status) != 3) {		//Program runs in console while quit flag not raised.
@@ -30,13 +30,13 @@ int main() {
 		//////MENU - PLAY OR QUIT//////
 		std::cout << "\t\t\t --- Minesweeper Clone --- \t\t\t" << std::endl;
 		std::cout << "\n\n>Play ('p') \n>Quit ('q')\n";
-		std::cin >> userInput;
+		std::cin >> menuInput;
 		// Use std::transform with a lambda function or function pointer to handle type casting correctly
-		std::transform(userInput.begin(), userInput.end(), userInput.begin(),
+		std::transform(menuInput.begin(), menuInput.end(), menuInput.begin(),
 			[](unsigned char c) { return std::tolower(c); });
 
 		int difficulty;
-		if (userInput == "quit" || userInput == "q") { //quits the game
+		if (menuInput == "quit" || menuInput == "q") { //quits the game
 			status = GameState::Quit;
 			break;
 		}
@@ -52,11 +52,12 @@ int main() {
 		}
 
 		//////ACTIVE GAME LOOP//////
+		//int coordInput;							//TODO TODO TODO coordInput w/ Try-Catch to take only coordinates
 		while (static_cast<int>(status) == 2) { 
 			gridObject.displayGrid();
 			std::cout << "\nInput ROW Letter and COLUMN Number using values shown on grid: ";
-			std::cin >> userInput;
-			int bombs = gridObject.seedGrid(userInput); //The first square chosen is always free. The coordinate square is used as a random number to seed the rest of the field.
+			std::cin >> menuInput;
+			gridObject.seedGrid(menuInput); //The first square chosen is always free. The coordinate square is used as a random number to seed the rest of the field.
 
 			
 			//int squaresLeft = 

@@ -1,4 +1,7 @@
 #include <iostream>
+
+#include <algorithm> //<std::ranges::shuffle>
+#include <random> //<auto rng = std::default_random_engine {};>
 #include "PlayGrid.h"
 
 
@@ -9,22 +12,20 @@ void PlayGrid::setDifficulty(int difficulty) {
 
 }
 
+//Number of bombs is dependent on difficulty.
 void PlayGrid::setBombs() {
 	const int BOMBS_EASY = 10;
 	const int BOMBS_NORMAL = 32;
 	const int BOMBS_HARD = 100;
-
-	//Need algorithm based on rand number to generate field
-
 	switch (difficulty) {
 	case 0:
-		this->bombs = BOMBS_EASY;
+		this->numBombs = BOMBS_EASY;
 		break;
 	case 1:
-		this->bombs = BOMBS_NORMAL;
+		this->numBombs = BOMBS_NORMAL;
 		break;
 	case 2:
-		this->bombs = BOMBS_HARD;
+		this->numBombs = BOMBS_HARD;
 		break;
 	default:
 		std::cout << "ERROR: INVALID DIFFICULTY IN	SWITCH setBombs()." << std::endl;
@@ -38,24 +39,17 @@ void PlayGrid::setGridList() {
 			gridList.push_back({i, j});
 		}
 	}
-
-	/*
-	for (int i = 0; i < gridList.size(); ++i) {
-		std::cout << gridList[i].first << ", " << gridList[i].second << std::endl;
-	}
-	*/
-
 }
-int PlayGrid::getDifficulty() { return difficulty; }
-int PlayGrid::getBombs() { return bombs; }
-//void PlayGrid::getGridList() {
 
-//}
+int PlayGrid::getDifficulty() { return difficulty; }
+
+int PlayGrid::getBombs() { return numBombs; }
+
+//void PlayGrid::getGridList() {}
 
 void PlayGrid::displayGrid() {
-	std::cout << " | 0";
-	for (int i = 0; i < gameGrid.size(); ++i) {
-		std::cout << " | " << i + 1;
+	for (int i = 0; i < gameGrid.size() + 1; ++i) {
+		std::cout << " | " << i;
 	}
 	std::cout << " |" << std::endl;
 
@@ -76,13 +70,22 @@ void PlayGrid::displayGrid() {
 	}
 }
 
-int PlayGrid::seedGrid(std::string inVal) {
-	
+void PlayGrid::seedGrid(std::string inVal) {
+	//Create Registry and a shuffled copy of registry
+	setGridList();
+	std::vector<std::pair<int, int>> listCopy = gridList;
+	auto rng = std::default_random_engine{};
+	std::shuffle(std::begin(listCopy), std::end(listCopy), rng);
+	for (int i = 0; i < numBombs; ++i) {
+		gameGrid[gridList[i].first][gridList[i].second] = -1;
+	}
 
-	//Need algorithm based on rand number to generate field
-
+	/*
+	for (int i = 0; i < gridList.size(); ++i) {
+		std::cout << gridList[i].first << ", " << gridList[i].second << std::endl;
+	}
+	*/
 	
-	return bombs; //Necessary?
 }
 
 void PlayGrid::generateGrid() {
@@ -108,7 +111,7 @@ void PlayGrid::generateGrid() {
 		std::vector<int> newVect(fieldSize);
 		gameGrid[i] = newVect;
 	}
-	setGridList();
+	
 	/*
 	//DEBUG: DISPLAY VECTOR CONTENTS
 	for (int i = 0; i < playField.size(); ++i) {
