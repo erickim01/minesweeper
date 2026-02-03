@@ -92,7 +92,7 @@ void PlayGrid::generateGrid() {
 
 	int fieldSize = -1;
 
-	const int EASY = 9;
+	const int EASY = 8;
 	const int NORMAL = 12;
 	const int HARD = 24;
 	if (difficulty == 0) {				//Not convinced this is long enough to warrant a switch statment
@@ -111,7 +111,6 @@ void PlayGrid::generateGrid() {
 		std::vector<int> newVect(fieldSize);
 		gameGrid[i] = newVect;
 	}
-	
 	/*
 	//DEBUG: DISPLAY VECTOR CONTENTS
 	for (int i = 0; i < playField.size(); ++i) {

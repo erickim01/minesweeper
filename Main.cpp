@@ -43,7 +43,7 @@ int main() {
 		else { //Otherwise difficulty is selected.
 
 			//For now, only a normal difficulty field of 16x16 grid and 40 mines. Later passes difficulty as parameter to choose size.
-			difficulty = 1;
+			difficulty = 0;
 			gridObject.setDifficulty(difficulty);
 			gridObject.generateGrid();
 			status = GameState::Active;
@@ -69,7 +69,37 @@ int main() {
 			}
 		}
 	}
+	
+	
+	std::cout << std::endl << std::endl;
+	
+	bool needInput = true;
+	while (needInput) {
+		std::string myStr;
+		std::cout << "\nInput ROW Letter and COLUMN Number using values shown on grid: ";
+		std::cin.ignore();
+		std::getline(std::cin, myStr);
+
+		std::cout << std::endl << myStr.length();
+		if (myStr.length() > 3) {
+			std::cout << "\nToo long! Input a single valid letter followed by an integer to choose coordinates." << std::endl;
+			continue;
+		}
+		else {
+			//Get the first char and check if it's a valid character. On Difficulty = 1 "Normal" this is A - L.
+
+
+
+			//needInput = false;
+		}
+	}
 	clearConsole();
 	std::cout << "\nGoodbye.\n";
+
+
+
+
+
+
 	return 0;
 }
