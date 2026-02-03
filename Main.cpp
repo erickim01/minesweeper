@@ -4,6 +4,7 @@
 
 #include <algorithm>	//<std::transform> <std::remove_if>
 #include <cctype>		//<std::tolower> <std::toupper>		//These handle the user input when choosing menu options.
+#include <limits> //numeric_limits
 
 #include "PlayGrid.h"
 
@@ -31,6 +32,7 @@ int main() {
 		std::cout << "\t\t\t --- Minesweeper Clone --- \t\t\t" << std::endl;
 		std::cout << "\n\n>Play ('p') \n>Quit ('q')\n";
 		std::cin >> menuInput;
+		std::cin.ignore();
 		//<std::transform> with a lambda function or function pointer to handle type casting correctly
 		std::transform(menuInput.begin(), menuInput.end(), menuInput.begin(),
 			[](unsigned char c) { return std::tolower(c); });
@@ -57,6 +59,7 @@ int main() {
 			gridObject.displayGrid();
 			std::cout << "\nInput ROW Letter and COLUMN Number using values shown on grid: ";
 			std::cin >> menuInput;
+			std::cin.ignore();
 			gridObject.seedGrid(menuInput); //The first square chosen is always free. The coordinate square is used as a random number to seed the rest of the field.
 
 			
@@ -80,10 +83,11 @@ int main() {
 		std::string myStr;
 		std::cout << "\nInput ROW Letter and COLUMN Number using values shown on grid: ";
 		std::cin.ignore();
+		std::cin.ignore();
 		std::getline(std::cin, myStr);			
 		// DEBUG std::cout << std::endl << myStr.length();
-		myStr.erase(std::remove_if(myStr.begin(), myStr.end(), isspace), myStr.end());
-		//remove_if(myStr.begin(), myStr.end(), '.');  TODOTODOTODO Remove anything that is not a char or integer?
+		myStr.erase(std::remove_if(myStr.begin(), myStr.end(), [](unsigned char c) { return std::isspace(c);  }), myStr.end());
+		std::cout << "Raw after getline: [" << myStr << "], len=" << myStr.length() << "\n";
 		if (myStr.length() > 3) {
 			std::cout << "\nToo long! Input a single valid letter followed by an integer to choose coordinates." << std::endl;
 			continue;
@@ -92,7 +96,6 @@ int main() {
 			std::cout << "\nToo short! Input a single valid letter followed by an integer to choose coordinates." << std::endl;
 			continue;
 		}
-		
 		else {
 			//Get the first char and check if it's a valid character. On Difficulty = 1 "Normal", this is A - L.		
 			//TODO TODO TODO "A - L" is incorrect. Range must be autospecified based on length via difficulty.
@@ -113,7 +116,6 @@ int main() {
 			}
 			else {
 				std::cout << "\nInvalid number! Please use a valid integer ranging from " << "1" << " to " << "12" << ".\n";
-				std::cout << coordChar << std::endl;
 			}
 			
 			
