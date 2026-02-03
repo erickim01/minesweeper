@@ -85,12 +85,27 @@ int main() {
 			std::cout << "\nToo long! Input a single valid letter followed by an integer to choose coordinates." << std::endl;
 			continue;
 		}
+		else if (myStr.length() < 2) {
+			std::cout << "\nToo short! Input a single valid letter followed by an integer to choose coordinates." << std::endl;
+			continue;
+		}
+		
 		else {
-			//Get the first char and check if it's a valid character. On Difficulty = 1 "Normal" this is A - L.
+			//Get the first char and check if it's a valid character. On Difficulty = 1 "Normal", this is A - L.		On "Normal", this is 1 - 12.
+			//TODO TODO TODO "A - L" is incorrect. Range must be autospecified based on length via difficulty.
+			char coordChar;
+			if ((myStr.at(0) >= 'A' && myStr.at(0) <= 'L') || (myStr.at(0) >= 'a' && myStr.at(0) <= 'l')) {
+				std::cout << myStr.at(0) << " is valid.\n";
+				coordChar = toupper(myStr.at(0));
+				std::cout << coordChar;
+				needInput = false;
+			}
+			else {
+				std::cout << "\nInvalid character! Please use a valid character ranging from " << "a" << " to " << "l" << ".\n";
 
+			}
 
-
-			//needInput = false;
+			
 		}
 	}
 	clearConsole();
