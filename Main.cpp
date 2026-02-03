@@ -74,13 +74,16 @@ int main() {
 	std::cout << std::endl << std::endl;
 	
 	bool needInput = true;
+	char coordChar;
+	int coordInt;
 	while (needInput) {
 		std::string myStr;
 		std::cout << "\nInput ROW Letter and COLUMN Number using values shown on grid: ";
 		std::cin.ignore();
-		std::getline(std::cin, myStr);
-
-		std::cout << std::endl << myStr.length();
+		std::getline(std::cin, myStr);			
+		// DEBUG std::cout << std::endl << myStr.length();
+		myStr.erase(remove_if(myStr.begin(), myStr.end(), isspace), myStr.end());
+		//remove_if(myStr.begin(), myStr.end(), '.');  TODOTODOTODO Remove anything that is not a char or integer?
 		if (myStr.length() > 3) {
 			std::cout << "\nToo long! Input a single valid letter followed by an integer to choose coordinates." << std::endl;
 			continue;
@@ -93,17 +96,19 @@ int main() {
 		else {
 			//Get the first char and check if it's a valid character. On Difficulty = 1 "Normal", this is A - L.		On "Normal", this is 1 - 12.
 			//TODO TODO TODO "A - L" is incorrect. Range must be autospecified based on length via difficulty.
-			char coordChar;
+
+			myStr.at(0) = toupper(myStr.at(0));
+			std::cout << std::endl << myStr;
 			if ((myStr.at(0) >= 'A' && myStr.at(0) <= 'L') || (myStr.at(0) >= 'a' && myStr.at(0) <= 'l')) {
-				std::cout << myStr.at(0) << " is valid.\n";
+				// DEBUG std::cout << myStr.at(0) << " is valid.\n";
 				coordChar = toupper(myStr.at(0));
-				std::cout << coordChar;
 				needInput = false;
 			}
 			else {
 				std::cout << "\nInvalid character! Please use a valid character ranging from " << "a" << " to " << "l" << ".\n";
-
 			}
+			
+			
 
 			
 		}
