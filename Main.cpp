@@ -2,8 +2,8 @@
 #include <iostream>
 #include <vector>
 
-#include <algorithm>	//<std::transform>
-#include <cctype>		//<std::tolower>		//These handle the user input when choosing menu options.
+#include <algorithm>	//<std::transform> <std::remove_if>
+#include <cctype>		//<std::tolower> <std::toupper>		//These handle the user input when choosing menu options.
 
 #include "PlayGrid.h"
 
@@ -31,7 +31,7 @@ int main() {
 		std::cout << "\t\t\t --- Minesweeper Clone --- \t\t\t" << std::endl;
 		std::cout << "\n\n>Play ('p') \n>Quit ('q')\n";
 		std::cin >> menuInput;
-		// Use std::transform with a lambda function or function pointer to handle type casting correctly
+		//<std::transform> with a lambda function or function pointer to handle type casting correctly
 		std::transform(menuInput.begin(), menuInput.end(), menuInput.begin(),
 			[](unsigned char c) { return std::tolower(c); });
 
@@ -82,7 +82,7 @@ int main() {
 		std::cin.ignore();
 		std::getline(std::cin, myStr);			
 		// DEBUG std::cout << std::endl << myStr.length();
-		myStr.erase(remove_if(myStr.begin(), myStr.end(), isspace), myStr.end());
+		myStr.erase(std::remove_if(myStr.begin(), myStr.end(), isspace), myStr.end());
 		//remove_if(myStr.begin(), myStr.end(), '.');  TODOTODOTODO Remove anything that is not a char or integer?
 		if (myStr.length() > 3) {
 			std::cout << "\nToo long! Input a single valid letter followed by an integer to choose coordinates." << std::endl;
@@ -96,11 +96,12 @@ int main() {
 		else {
 			//Get the first char and check if it's a valid character. On Difficulty = 1 "Normal", this is A - L.		
 			//TODO TODO TODO "A - L" is incorrect. Range must be autospecified based on length via difficulty.
-			myStr.at(0) = toupper(myStr.at(0));
+
+			char candidateChar = std::toupper(static_cast<unsigned char>(myStr.at(0)));
 			std::cout << std::endl << myStr;
-			if (myStr.at(0) >= 'A' && myStr.at(0) <= 'L') {
+			if (candidateChar >= 'A' && candidateChar <= 'L') {
 				// DEBUG std::cout << myStr.at(0) << " is valid.\n";
-				coordChar = myStr.at(0);
+				coordChar = candidateChar;
 				//needInput = false;
 			}
 			else {
