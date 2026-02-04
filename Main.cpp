@@ -94,18 +94,25 @@ int main() {
 		}
 		
 		else {
-			//Get the first char and check if it's a valid character. On Difficulty = 1 "Normal", this is A - L.		On "Normal", this is 1 - 12.
+			//Get the first char and check if it's a valid character. On Difficulty = 1 "Normal", this is A - L.		
 			//TODO TODO TODO "A - L" is incorrect. Range must be autospecified based on length via difficulty.
-
 			myStr.at(0) = toupper(myStr.at(0));
 			std::cout << std::endl << myStr;
-			if ((myStr.at(0) >= 'A' && myStr.at(0) <= 'L') || (myStr.at(0) >= 'a' && myStr.at(0) <= 'l')) {
+			if (myStr.at(0) >= 'A' && myStr.at(0) <= 'L') {
 				// DEBUG std::cout << myStr.at(0) << " is valid.\n";
-				coordChar = toupper(myStr.at(0));
-				needInput = false;
+				coordChar = myStr.at(0);
+				//needInput = false;
 			}
 			else {
-				std::cout << "\nInvalid character! Please use a valid character ranging from " << "a" << " to " << "l" << ".\n";
+				std::cout << "\nInvalid character! Please use a valid character ranging from " << "A" << " to " << "L" << ".\n";
+			}
+			//Get the second char and check if it's a valid integer, and convert to an int. On "Normal", this is 1 - 12.
+			if(isdigit(myStr.at(1))) {
+				
+			}
+			else {
+				std::cout << "\nInvalid number! Please use a valid integer ranging from " << "1" << " to " << "12" << ".\n";
+				std::cout << coordChar << std::endl;
 			}
 			
 			
