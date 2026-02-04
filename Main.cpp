@@ -82,12 +82,9 @@ int main() {
 	while (needInput) {
 		std::string myStr;
 		std::cout << "\nInput ROW Letter and COLUMN Number using values shown on grid: ";
-		std::cin.ignore();
-		std::cin.ignore();
-		std::getline(std::cin, myStr);			
-		// DEBUG std::cout << std::endl << myStr.length();
+		std::getline(std::cin, myStr);		
 		myStr.erase(std::remove_if(myStr.begin(), myStr.end(), [](unsigned char c) { return std::isspace(c);  }), myStr.end());
-		std::cout << "Raw after getline: [" << myStr << "], len=" << myStr.length() << "\n";
+		// DEBUG std::cout << "Raw after getline: [" << myStr << "], len=" << myStr.length() << "\n";
 		if (myStr.length() > 3) {
 			std::cout << "\nToo long! Input a single valid letter followed by an integer to choose coordinates." << std::endl;
 			continue;
@@ -112,7 +109,7 @@ int main() {
 			}
 			//Get the second char and check if it's a valid integer, and convert to an int. On "Normal", this is 1 - 12.
 			if(isdigit(myStr.at(1))) {
-				
+				std::cout << "\nisdigit conditional triggered\n";
 			}
 			else {
 				std::cout << "\nInvalid number! Please use a valid integer ranging from " << "1" << " to " << "12" << ".\n";
