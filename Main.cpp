@@ -21,6 +21,61 @@ enum class GameState {
 
 };
 
+
+//Implementation of a while loop that waits to recieve proper text input in order to choose coordinates.
+void getInput(int difficultySize) {
+	bool needInput = true;
+	char coordChar;
+	int coordInt;
+	while (needInput) {
+		std::string coordInput;
+		std::cout << "\nInput ROW Letter and COLUMN Number using values shown on grid: ";
+		std::getline(std::cin, coordInput);
+		coordInput.erase(std::remove_if(coordInput.begin(), coordInput.end(), [](unsigned char c) { return std::isspace(c);  }), coordInput.end());
+		// DEBUG std::cout << "Raw after getline: [" << myStr << "], len=" << myStr.length() << "\n";
+		
+		if (coordInput.length() < 2 || coordInput.length() > 3) {
+			std::cout << "\nInvalid length! Use a single letter followed by 1 - 2 digits (e.g. A1, B2, etc.)\n";
+			continue;
+		}
+
+		//Get the first char and check if it's a valid character. On Difficulty = 1 "Normal", this is A - L.		
+		char candidateChar = std::toupper(static_cast<unsigned char>(coordInput.at(0)));
+		if (candidateChar < 'A' || candidateChar > 'L') {
+			//TODO TODO TODO "A - L" is incorrect. Range must be autospecified based on length via difficulty.
+			std::cout << "\nInvalid character! Please use a valid character ranging from " << "A" << " to " << "L" << ".\n";
+			continue;
+		}
+
+		//Get the second char and check if it's a valid integer, and convert to an int. On "Normal", this is 1 - 12.
+		std::string numStr = coordInput.substr(1);
+		bool isValidNum = !numStr.empty();
+		for (char c : numStr) {
+			if (!std::isdigit(static_cast<unsigned char>(c))) {
+				isValidNum = false;
+				break;
+			}
+		}
+		
+		if (!isValidNum) {
+			std::cout << "\nInvalid number! Use digits 1-" << difficultySize << ".\n";
+			continue;
+		}
+		int candidateInt = std::stoi(numStr);
+		if (candidateInt < 1 || candidateInt > difficultySize) {
+			std::cout << "Number " << candidateInt << " is out of range (1-" << difficultySize << ").\n";
+			continue;
+		}
+
+		// Success
+		coordChar = candidateChar;
+		coordInt = candidateInt;
+		std::cout << "Your input: " << coordChar << coordInt << std::endl;
+		needInput = false;
+	}
+}
+
+
 int main() {
 	GameState status = GameState::Menu;	
 	std::string menuInput = "";
@@ -57,6 +112,7 @@ int main() {
 		//int coordInput;							//TODO TODO TODO coordInput w/ Try-Catch to take only coordinates
 		while (static_cast<int>(status) == 2) { 
 			gridObject.displayGrid();
+			getInput(gridObject.getGridSize());
 			std::cout << "\nInput ROW Letter and COLUMN Number using values shown on grid: ";
 			std::cin >> menuInput;
 			std::cin.ignore();
@@ -71,56 +127,6 @@ int main() {
 				status = GameState::Menu;
 			}
 		}
-	}
-	
-	
-	std::cout << std::endl << std::endl;
-	
-	bool needInput = true;
-	char coordChar;
-	int coordInt;
-	while (needInput) {
-		std::string coordInput;
-		std::cout << "\nInput ROW Letter and COLUMN Number using values shown on grid: ";
-		std::getline(std::cin, coordInput);		
-		coordInput.erase(std::remove_if(coordInput.begin(), coordInput.end(), [](unsigned char c) { return std::isspace(c);  }), coordInput.end());
-		// DEBUG std::cout << "Raw after getline: [" << myStr << "], len=" << myStr.length() << "\n";
-		if (coordInput.length() < 2 || coordInput.length() > 3) {
-			std::cout << "\nInvalid length! Use a single letter followed by 1 - 2 digits (e.g. A1, B2, etc.)\n";
-			continue; 
-		}
-		//Get the first char and check if it's a valid character. On Difficulty = 1 "Normal", this is A - L.		
-		char candidateChar = std::toupper(static_cast<unsigned char>(coordInput.at(0)));
-		if (candidateChar < 'A' || candidateChar > 'L') {
-			//TODO TODO TODO "A - L" is incorrect. Range must be autospecified based on length via difficulty.
-			std::cout << "\nInvalid character! Please use a valid character ranging from " << "A" << " to " << "L" << ".\n";
-			continue;
-		}
-		//Get the second char and check if it's a valid integer, and convert to an int. On "Normal", this is 1 - 12.
-		std::string numStr = coordInput.substr(1);
-		bool isValidNum = !numStr.empty();
-		for (char c : numStr) {
-			if (!std::isdigit(static_cast<unsigned char>(c))) {
-				isValidNum = false;
-				break;
-			}
-		}
-		int diffSize = 12;
-		if (!isValidNum) {
-			std::cout << "\nInvalid number! Use digits 1-" << diffSize <<".\n";
-			continue;
-		}
-		int candidateInt = std::stoi(numStr);
-		if (candidateInt < 1 || candidateInt > diffSize) {
-			std::cout << "Number " << candidateInt << " is out of range (1-" << diffSize << ").\n";
-			continue;
-		}
-
-		// Success
-		coordChar = candidateChar;
-		coordInt = candidateInt;
-		std::cout << "Your input: " << coordChar << coordInt << std::endl;
-		needInput = false;
 	}
 	clearConsole();
 	std::cout << "\nGoodbye.\n";

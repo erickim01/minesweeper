@@ -33,6 +33,11 @@ void PlayGrid::setBombs() {
 	}
 }
 
+void PlayGrid::setGridSize(int gridSize) {
+	this->gridSize = gridSize;
+}
+
+
 void PlayGrid::setGridList() {
 	for (int i = 0; i < gameGrid.size(); ++i) {
 		for (int j = 0; j < gameGrid.size(); ++j) {
@@ -44,6 +49,8 @@ void PlayGrid::setGridList() {
 int PlayGrid::getDifficulty() { return difficulty; }
 
 int PlayGrid::getBombs() { return numBombs; }
+
+int PlayGrid::getGridSize() { return gridSize; }
 
 //void PlayGrid::getGridList() {}
 
@@ -107,6 +114,8 @@ void PlayGrid::generateGrid() {
 		fieldSize = HARD;
 		gameGrid.resize(HARD);
 	}
+	setGridSize(fieldSize);
+	
 	for (int i = 0; i < fieldSize; ++i) { //Initalize sixteen vectors of size 16 and add each to each to playField.
 		std::vector<int> newVect(fieldSize);
 		gameGrid[i] = newVect;
