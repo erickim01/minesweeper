@@ -54,6 +54,8 @@ int PlayGrid::getGridSize() { return gridSize; }
 
 //void PlayGrid::getGridList() {}
 
+
+//TODO TODO TODO - Modify displayGrid with a "clicked" flag so clicked cells display their int value.
 void PlayGrid::displayGrid() {
 	for (int i = 0; i < gameGrid.size() + 1; ++i) {
 		std::cout << " | " << i;

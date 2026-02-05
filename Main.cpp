@@ -18,7 +18,7 @@ enum class GameState {
 };
 
 //Implementation of a while loop to get valid coordinates via text input.
-std::pair<int, int> getInput(int difficultySize) {
+std::pair<int, int> getInput(int gridSize) {
 	bool needInput = true;
 	while (needInput) {
 		std::string coordInput;
@@ -34,9 +34,8 @@ std::pair<int, int> getInput(int difficultySize) {
 
 		//Get the first char and check if it's a valid character. On Difficulty = 1 "Normal", this is A - L.		
 		char candidateChar = std::toupper(static_cast<unsigned char>(coordInput.at(0)));
-		if (candidateChar < 'A' || candidateChar > 'L') {
-			//TODO TODO TODO "A - L" is incorrect. Range must be autospecified based on length via difficulty. ASCII Num + difficultySize
-			std::cout << "\nInvalid character! Please use a valid character ranging from " << "A" << " to " << "L" << ".\n";
+		if (candidateChar < 'A' || candidateChar > static_cast<char>(64 + gridSize)) {
+			std::cout << "\nInvalid character! Please use a valid character ranging from " << "A" << " to " << static_cast<char>(64 + gridSize) << ".\n";
 			continue;
 		}
 
@@ -51,26 +50,21 @@ std::pair<int, int> getInput(int difficultySize) {
 		}
 		
 		if (!isValidNum) {
-			std::cout << "\nInvalid number! Use digits 1-" << difficultySize << ".\n";
+			std::cout << "\nInvalid number! Use digits 1-" << gridSize << ".\n";
 			continue;
 		}
 		int candidateInt = std::stoi(numStr);
-		if (candidateInt < 1 || candidateInt > difficultySize) {
-			std::cout << "Number " << candidateInt << " is out of range (1-" << difficultySize << ").\n";
+		if (candidateInt < 1 || candidateInt > gridSize) {
+			std::cout << "Your column number, " << candidateInt << " is out of range (1-" << gridSize << ")!\n";
 			continue;
 		}
 
 		// These lines of code executing means the input was valid.
 		char coordChar = candidateChar;		//Note: This returns as the ASCII int value starting from A = 65, B = 66, etc. Subtracting from 65 to get index.
 		int coordInt = candidateInt;
-		std::cout << "Your input: " << coordChar << coordInt << std::endl;
 		needInput = false;
-		std::pair<int, int> coordsFinal = { (coordChar - 65), coordInt };		
-
+		std::pair<int, int> coordsFinal = { (coordChar - 65), coordInt };
 		return coordsFinal;
-
-		//	TODO TODO TODO - Need to now return coordChar AS A NUM INDEX for columns and coordInt as index for row - 1
-
 	}
 }
 
@@ -115,8 +109,9 @@ int main() {
 
 		while (static_cast<int>(status) == 2) { 
 			gridObject.displayGrid();
-			std::pair<int, int> userCoordinates = getInput(gridObject.getGridSize());
+			std::pair<int, int> userCoords = getInput(gridObject.getGridSize());
 			gridObject.seedGrid(menuInput); //The first square chosen is always free. The coordinate square is used as a random number to seed the rest of the field.
+			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << userCoords.second << std::endl << std::endl;
 
 			
 			//int squaresLeft = 
