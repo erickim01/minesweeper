@@ -1,17 +1,13 @@
 #include <string>
 #include <iostream>
 #include <vector>
-
 #include <algorithm>	//<std::transform> <std::remove_if>
 #include <cctype>		//<std::tolower> <std::toupper>		//These handle the user input when choosing menu options.
-#include <limits> //numeric_limits
-
 #include "PlayGrid.h"
 
 void clearConsole() {
-	std::cout << "\x1b[2J\x1b[1;1H";
-	//ANSI Clear Screen			-	\x1b[2J 
-	//ANSI Cursor to Top Left	-	\x1b[1;1H
+	std::cout << "\x1b[2J\x1b[1;1H";		//ANSI Clear Screen		-	\x1b[2J 
+											//ANSI Cursor to Top Left	-	\x1b[1;1H
 }
 
 enum class GameState {
@@ -21,12 +17,9 @@ enum class GameState {
 
 };
 
-
-//Implementation of a while loop that waits to recieve proper text input in order to choose coordinates.
-void getInput(int difficultySize) {
+//Implementation of a while loop to get valid coordinates via text input.
+std::pair<int, int> getInput(int difficultySize) {
 	bool needInput = true;
-	char coordChar;
-	int coordInt;
 	while (needInput) {
 		std::string coordInput;
 		std::cout << "\nInput ROW Letter and COLUMN Number using values shown on grid: ";
@@ -42,7 +35,7 @@ void getInput(int difficultySize) {
 		//Get the first char and check if it's a valid character. On Difficulty = 1 "Normal", this is A - L.		
 		char candidateChar = std::toupper(static_cast<unsigned char>(coordInput.at(0)));
 		if (candidateChar < 'A' || candidateChar > 'L') {
-			//TODO TODO TODO "A - L" is incorrect. Range must be autospecified based on length via difficulty.
+			//TODO TODO TODO "A - L" is incorrect. Range must be autospecified based on length via difficulty. ASCII Num + difficultySize
 			std::cout << "\nInvalid character! Please use a valid character ranging from " << "A" << " to " << "L" << ".\n";
 			continue;
 		}
@@ -67,14 +60,19 @@ void getInput(int difficultySize) {
 			continue;
 		}
 
-		// Success
-		coordChar = candidateChar;
-		coordInt = candidateInt;
+		// These lines of code executing means the input was valid.
+		char coordChar = candidateChar;		//Note: This returns as the ASCII int value starting from A = 65, B = 66, etc. Subtracting from 65 to get index.
+		int coordInt = candidateInt;
 		std::cout << "Your input: " << coordChar << coordInt << std::endl;
 		needInput = false;
+		std::pair<int, int> coordsFinal = { (coordChar - 65), coordInt };		
+
+		return coordsFinal;
+
+		//	TODO TODO TODO - Need to now return coordChar AS A NUM INDEX for columns and coordInt as index for row - 1
+
 	}
 }
-
 
 int main() {
 	GameState status = GameState::Menu;	
@@ -92,7 +90,6 @@ int main() {
 		std::transform(menuInput.begin(), menuInput.end(), menuInput.begin(),
 			[](unsigned char c) { return std::tolower(c); });
 
-		int difficulty;
 		if (menuInput == "quit" || menuInput == "q") { //quits the game
 			status = GameState::Quit;
 			break;
@@ -100,7 +97,9 @@ int main() {
 		else { //Otherwise difficulty is selected.
 
 			//For now, only a normal difficulty field of 16x16 grid and 40 mines. Later passes difficulty as parameter to choose size.
-			difficulty = 0;
+			//TODO TODO TODO - Choose Difficulty function
+	
+			int difficulty = 1;
 			gridObject.setDifficulty(difficulty);
 			gridObject.generateGrid();
 			status = GameState::Active;
@@ -108,14 +107,15 @@ int main() {
 			std::cout << "\n\t\t\tGame Start.\n";
 		}
 
-		//////ACTIVE GAME LOOP//////
-		//int coordInput;							//TODO TODO TODO coordInput w/ Try-Catch to take only coordinates
+		////////////////////////////
+		////				    ////
+		////  ACTIVE GAME LOOP  ////
+		////				    ////
+		////////////////////////////
+
 		while (static_cast<int>(status) == 2) { 
 			gridObject.displayGrid();
-			getInput(gridObject.getGridSize());
-			std::cout << "\nInput ROW Letter and COLUMN Number using values shown on grid: ";
-			std::cin >> menuInput;
-			std::cin.ignore();
+			std::pair<int, int> userCoordinates = getInput(gridObject.getGridSize());
 			gridObject.seedGrid(menuInput); //The first square chosen is always free. The coordinate square is used as a random number to seed the rest of the field.
 
 			
