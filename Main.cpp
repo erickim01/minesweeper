@@ -90,7 +90,7 @@ int main() {
 			continue;
 		}
 		else if (myStr.length() < 2) {
-			std::cout << "\nToo short! Input a single valid letter followed by an integer to choose coordinates." << std::endl;
+			std::cout << "\nInput is too short, add an integer to choose coordinates!" << std::endl;
 			continue;
 		}
 		else {
@@ -98,26 +98,45 @@ int main() {
 			//TODO TODO TODO "A - L" is incorrect. Range must be autospecified based on length via difficulty.
 
 			char candidateChar = std::toupper(static_cast<unsigned char>(myStr.at(0)));
-			std::cout << std::endl << myStr;
 			if (candidateChar >= 'A' && candidateChar <= 'L') {
-				// DEBUG std::cout << myStr.at(0) << " is valid.\n";
 				coordChar = candidateChar;
-				//needInput = false;
 			}
 			else {
 				std::cout << "\nInvalid character! Please use a valid character ranging from " << "A" << " to " << "L" << ".\n";
+				continue;
 			}
 			//Get the second char and check if it's a valid integer, and convert to an int. On "Normal", this is 1 - 12.
 			if(isdigit(myStr.at(1))) {
-				std::cout << "\nisdigit conditional triggered\n";
+				std::string candidateInt;
+				char myInt1 = myStr.at(1);
+				candidateInt.push_back(myInt1);
+				if (myStr.length() > 2) {							//		After appending the first number into a temporary string, checks if there is another character in the input,
+					if (isdigit(myStr.at(2))) {				//and if it's a number, appends that as well before casting the string to an integer.
+						char myInt2 = myStr.at(2);
+						candidateInt.push_back(myInt2);
+					}
+					else {
+						std::cout << "\nInvalid ones place number! Please check that your numeric choice is valid.\n";
+						continue;
+					}
+				}
+				//coordInt = static_cast<int>(candidateInt);
+				int diffSize = 12;
+				if ((stoi(candidateInt) <= diffSize) && (stoi(candidateInt) >= 1)) {
+					coordInt = stoi(candidateInt);
+				}
+				else {
+					std::cout << "Input number " << candidateInt << " is outside the board's range, please enter a number from 1 - " << diffSize << ".\n";
+					continue;
+				}
+				
 			}
 			else {
 				std::cout << "\nInvalid number! Please use a valid integer ranging from " << "1" << " to " << "12" << ".\n";
+				continue;
 			}
-			
-			
-
-			
+			std::cout << "Your input: " << coordChar << coordInt << std::endl;
+			needInput = false;
 		}
 	}
 	clearConsole();
