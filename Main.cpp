@@ -2,8 +2,9 @@
 #include <iostream>
 #include <vector>
 
-#include <algorithm>	//<std::transform>
-#include <cctype>		//<std::tolower>		//These handle the user input when choosing menu options.
+#include <algorithm>	//<std::transform> <std::remove_if>
+#include <cctype>		//<std::tolower> <std::toupper>		//These handle the user input when choosing menu options.
+#include <limits> //numeric_limits
 
 #include "PlayGrid.h"
 
@@ -31,7 +32,8 @@ int main() {
 		std::cout << "\t\t\t --- Minesweeper Clone --- \t\t\t" << std::endl;
 		std::cout << "\n\n>Play ('p') \n>Quit ('q')\n";
 		std::cin >> menuInput;
-		// Use std::transform with a lambda function or function pointer to handle type casting correctly
+		std::cin.ignore();
+		//<std::transform> with a lambda function or function pointer to handle type casting correctly
 		std::transform(menuInput.begin(), menuInput.end(), menuInput.begin(),
 			[](unsigned char c) { return std::tolower(c); });
 
@@ -43,7 +45,7 @@ int main() {
 		else { //Otherwise difficulty is selected.
 
 			//For now, only a normal difficulty field of 16x16 grid and 40 mines. Later passes difficulty as parameter to choose size.
-			difficulty = 1;
+			difficulty = 0;
 			gridObject.setDifficulty(difficulty);
 			gridObject.generateGrid();
 			status = GameState::Active;
@@ -57,6 +59,7 @@ int main() {
 			gridObject.displayGrid();
 			std::cout << "\nInput ROW Letter and COLUMN Number using values shown on grid: ";
 			std::cin >> menuInput;
+			std::cin.ignore();
 			gridObject.seedGrid(menuInput); //The first square chosen is always free. The coordinate square is used as a random number to seed the rest of the field.
 
 			
@@ -68,6 +71,56 @@ int main() {
 				status = GameState::Menu;
 			}
 		}
+	}
+	
+	
+	std::cout << std::endl << std::endl;
+	
+	bool needInput = true;
+	char coordChar;
+	int coordInt;
+	while (needInput) {
+		std::string coordInput;
+		std::cout << "\nInput ROW Letter and COLUMN Number using values shown on grid: ";
+		std::getline(std::cin, coordInput);		
+		coordInput.erase(std::remove_if(coordInput.begin(), coordInput.end(), [](unsigned char c) { return std::isspace(c);  }), coordInput.end());
+		// DEBUG std::cout << "Raw after getline: [" << myStr << "], len=" << myStr.length() << "\n";
+		if (coordInput.length() < 2 || coordInput.length() > 3) {
+			std::cout << "\nInvalid length! Use a single letter followed by 1 - 2 digits (e.g. A1, B2, etc.)\n";
+			continue; 
+		}
+		//Get the first char and check if it's a valid character. On Difficulty = 1 "Normal", this is A - L.		
+		char candidateChar = std::toupper(static_cast<unsigned char>(coordInput.at(0)));
+		if (candidateChar < 'A' || candidateChar > 'L') {
+			//TODO TODO TODO "A - L" is incorrect. Range must be autospecified based on length via difficulty.
+			std::cout << "\nInvalid character! Please use a valid character ranging from " << "A" << " to " << "L" << ".\n";
+			continue;
+		}
+		//Get the second char and check if it's a valid integer, and convert to an int. On "Normal", this is 1 - 12.
+		std::string numStr = coordInput.substr(1);
+		bool isValidNum = !numStr.empty();
+		for (char c : numStr) {
+			if (!std::isdigit(static_cast<unsigned char>(c))) {
+				isValidNum = false;
+				break;
+			}
+		}
+		int diffSize = 12;
+		if (!isValidNum) {
+			std::cout << "\nInvalid number! Use digits 1-" << diffSize <<".\n";
+			continue;
+		}
+		int candidateInt = std::stoi(numStr);
+		if (candidateInt < 1 || candidateInt > diffSize) {
+			std::cout << "Number " << candidateInt << " is out of range (1-" << diffSize << ").\n";
+			continue;
+		}
+
+		// Success
+		coordChar = candidateChar;
+		coordInt = candidateInt;
+		std::cout << "Your input: " << coordChar << coordInt << std::endl;
+		needInput = false;
 	}
 	clearConsole();
 	std::cout << "\nGoodbye.\n";
