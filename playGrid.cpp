@@ -72,11 +72,36 @@ void PlayGrid::displayGrid() {
 			else if (j + 1 >= 10) {
 				std::cout << (char)254u << "  | ";
 			}
-
 		}
 		++rowLetter;
 		std::cout << std::endl;
 	}
+}
+
+//DEBUG - Display entire Grid contents without occlusion
+void PlayGrid::debugDisplayGrid() {
+	for (int i = 0; i < gameGrid.size() + 1; ++i) {
+		std::cout << " | " << i;
+	}
+	std::cout << " |" << std::endl;
+
+	char rowLetter = 'A';
+	for (int i = 0; i < gameGrid.size(); ++i) {
+		std::cout << " | " << rowLetter << " | ";
+		for (int j = 0; j < gameGrid.size(); ++j) {
+			if (j + 1 < 10) {
+				if (gameGrid[i][j] == -1) { std::cout << (char)254u << " | "; }
+				else { std::cout << gameGrid[i][j] << " | "; }
+			}
+			else if (j + 1 >= 10) {
+				if (gameGrid[i][j] == -1) { std::cout << (char)254u << "  | "; }
+				else { std::cout << gameGrid[i][j] << "  | "; }
+			}
+		}
+		++rowLetter;
+		std::cout << std::endl;
+	}
+	std::cout << "  _______________________________________________________\n\t\n";
 }
 
 void PlayGrid::seedGrid(std::pair<int, int> userCoord) {
@@ -102,6 +127,8 @@ void PlayGrid::seedGrid(std::pair<int, int> userCoord) {
 	}
 	
 	std::cout << "Test";
+	//DEBUG: DISPLAY VECTOR CONTENTS
+	
 }
 
 void PlayGrid::generateGrid() {
@@ -131,9 +158,9 @@ void PlayGrid::generateGrid() {
 	}
 	/*
 	//DEBUG: DISPLAY VECTOR CONTENTS
-	for (int i = 0; i < playField.size(); ++i) {
-		for (int j = 0; j < playField.size(); ++j) {
-			std::cout << playField[i][j] << " ";
+	for (int i = 0; i < gameGrid.size(); ++i) {
+		for (int j = 0; j < gameGrid.size(); ++j) {
+			std::cout << gameGrid[i][j] << " ";
 		}
 		std::cout << std::endl;
 	}

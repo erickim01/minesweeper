@@ -138,7 +138,13 @@ int main() {
 			gridObject.displayGrid();
 			std::pair<int, int> userCoords = getInput(gridObject.getGridSize());
 			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << userCoords.second << std::endl << std::endl;
-			gridObject.seedGrid(userCoords); //The first square chosen is always free, 
+			gridObject.seedGrid(userCoords); //The first square chosen is always free,
+
+			clearConsole();
+
+			gridObject.debugDisplayGrid();
+			std::cout << std::endl;
+			clearConsole();
 			
 
 			
