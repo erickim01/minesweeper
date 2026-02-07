@@ -110,8 +110,9 @@ int main() {
 		while (static_cast<int>(status) == 2) { 
 			gridObject.displayGrid();
 			std::pair<int, int> userCoords = getInput(gridObject.getGridSize());
-			gridObject.seedGrid(menuInput); //The first square chosen is always free. The coordinate square is used as a random number to seed the rest of the field.
 			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << userCoords.second << std::endl << std::endl;
+			gridObject.seedGrid(menuInput); //The first square chosen is always free. The coordinate square is used as a random number to seed the rest of the field.
+			
 
 			
 			//int squaresLeft = 
