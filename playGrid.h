@@ -18,7 +18,7 @@ public:
 	//void getGridList();
 
 	void displayGrid();
-	void debugDisplayGrid();
+	void displayGridGameOver();
 	void generateGrid();
 	void seedGrid(std::pair<int, int> userCoord);
 	

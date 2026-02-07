@@ -142,7 +142,7 @@ int main() {
 
 			clearConsole();
 
-			gridObject.debugDisplayGrid();
+			gridObject.displayGridGameOver();
 			std::cout << std::endl;
 			clearConsole();
 			

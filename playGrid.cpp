@@ -79,7 +79,7 @@ void PlayGrid::displayGrid() {
 }
 
 //DEBUG - Display entire Grid contents without occlusion
-void PlayGrid::debugDisplayGrid() {
+void PlayGrid::displayGridGameOver() {
 	for (int i = 0; i < gameGrid.size() + 1; ++i) {
 		std::cout << " | " << i;
 	}
@@ -110,25 +110,12 @@ void PlayGrid::seedGrid(std::pair<int, int> userCoord) {
 	std::vector<std::pair<int, int>> listCopy = gridList;
 	auto rng = std::default_random_engine{};
 	std::shuffle(std::begin(listCopy), std::end(listCopy), rng);
-
-	//DEBUG
-	userCoord.first = listCopy[2].first;
-	userCoord.second = listCopy[2].second;
-	std::cout << "numBombs = " << getBombs() << std::endl;
 	for (int i = 0; i < numBombs; ++i) {
 		if ((userCoord.first != listCopy[i].first) && (userCoord.second != listCopy[i].second)) {
 			gameGrid[listCopy[i].first][listCopy[i].second] = -1;
 		}
-	}
-
-		//DEBUG - Show Registry Contents
-	for (int i = 0; i < listCopy.size(); ++i) {
-		std::cout << listCopy[i].first << ", " << listCopy[i].second << std::endl;
-	}
-	
-	std::cout << "Test";
-	//DEBUG: DISPLAY VECTOR CONTENTS
-	
+	}	
+	//DEBUG - Show Registry Contents		for (int i = 0; i < listCopy.size(); ++i) { std::cout << listCopy[i].first << ", " << listCopy[i].second << std::endl; }
 }
 
 void PlayGrid::generateGrid() {
