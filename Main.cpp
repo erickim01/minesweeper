@@ -18,10 +18,10 @@ enum class GameState {
 };
 
 int selectDifficulty() {
-	std::cout << "\n> Easy \n> Normal \n> Hard ";
+	std::cout << "\nSelect Difficulty: \n> Easy \n> Normal \n> Hard \n\n> ";
 	bool needInput = true;
 	while (needInput) {
-		std::cout << "\nSelect Difficulty: ";
+		
 		std::string diffInput;
 		std::getline(std::cin, diffInput);
 		diffInput.erase(std::remove_if(diffInput.begin(), diffInput.end(), [](unsigned char c) { return std::isspace(c);  }), diffInput.end());
@@ -31,20 +31,20 @@ int selectDifficulty() {
 			capDiffInput.push_back(std::toupper(static_cast<unsigned char>(diffInput.at(i))));
 			//std::cout << "Raw after getline: [" << diffInput << "], len=" << diffInput.length() << "\n";
 		}
-		if (capDiffInput == "HARD") {
+		if ((capDiffInput == "HARD") || (capDiffInput == "H")) {
 			needInput = false;
 			return 2;
 		}
-		else if (capDiffInput == "NORMAL") {
+		else if ((capDiffInput == "NORMAL") || (capDiffInput == "NM")) {
 			needInput = false;
 			return 1;
 		}
-		else if (capDiffInput == "EASY") {
+		else if ((capDiffInput == "EASY") || (capDiffInput == "EZ")) {
 			needInput = false;
 			return 0;
 		}
 		else {
-			std::cout << "\nDifficulty not recognized. Please choose easy, normal, or hard difficulty by typing.";
+			std::cout << "\nDifficulty not recognized. Please choose easy, normal, or hard difficulty by typing. \nSelect Difficulty > ";
 		}
 	}
 	std::cout << std::endl;
@@ -55,7 +55,7 @@ std::pair<int, int> getInput(int gridSize) {
 	bool needInput = true;
 	while (needInput) {
 		std::string coordInput;
-		std::cout << "\nInput ROW Letter and COLUMN Number using values shown on grid: ";
+		std::cout << "\nInput ROW Letter and COLUMN Number using values shown on grid > ";
 		std::getline(std::cin, coordInput);
 		coordInput.erase(std::remove_if(coordInput.begin(), coordInput.end(), [](unsigned char c) { return std::isspace(c);  }), coordInput.end());
 		// DEBUG std::cout << "Raw after getline: [" << myStr << "], len=" << myStr.length() << "\n";
@@ -123,11 +123,7 @@ int main() {
 		}
 		else { //Otherwise difficulty is selected.
 
-			//For now, only a normal difficulty field of 16x16 grid and 40 mines. Later passes difficulty as parameter to choose size.
-			//TODO TODO TODO - Choose Difficulty function
-			
-			int difficulty = selectDifficulty();
-			gridObject.setDifficulty(difficulty);
+			gridObject.setDifficulty(selectDifficulty());
 			gridObject.generateGrid();
 			status = GameState::Active;
 			clearConsole();
