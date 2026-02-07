@@ -19,7 +19,7 @@ public:
 
 	void displayGrid();
 	void generateGrid();
-	void seedGrid(std::string inVal);
+	void seedGrid(std::pair<int, int> userCoord);
 	
 
 private:

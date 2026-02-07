@@ -9,7 +9,7 @@
 //PlayGrid::PlayGrid() {}
 void PlayGrid::setDifficulty(int difficulty) {
 	this->difficulty = difficulty;
-
+	setBombs();
 }
 
 //Number of bombs is dependent on difficulty.
@@ -37,7 +37,7 @@ void PlayGrid::setGridSize(int gridSize) {
 	this->gridSize = gridSize;
 }
 
-
+//Enters every possible coordinate pair from the 2D vector into a vector of pairs
 void PlayGrid::setGridList() {
 	for (int i = 0; i < gameGrid.size(); ++i) {
 		for (int j = 0; j < gameGrid.size(); ++j) {
@@ -79,22 +79,29 @@ void PlayGrid::displayGrid() {
 	}
 }
 
-void PlayGrid::seedGrid(std::string inVal) {
+void PlayGrid::seedGrid(std::pair<int, int> userCoord) {
 	//Create Registry and a shuffled copy of registry
 	setGridList();
 	std::vector<std::pair<int, int>> listCopy = gridList;
 	auto rng = std::default_random_engine{};
 	std::shuffle(std::begin(listCopy), std::end(listCopy), rng);
+
+	//DEBUG
+	userCoord.first = listCopy[2].first;
+	userCoord.second = listCopy[2].second;
+	std::cout << "numBombs = " << getBombs() << std::endl;
 	for (int i = 0; i < numBombs; ++i) {
-		gameGrid[gridList[i].first][gridList[i].second] = -1;
+		if ((userCoord.first != listCopy[i].first) && (userCoord.second != listCopy[i].second)) {
+			gameGrid[listCopy[i].first][listCopy[i].second] = -1;
+		}
 	}
 
-	/*
-	for (int i = 0; i < gridList.size(); ++i) {
-		std::cout << gridList[i].first << ", " << gridList[i].second << std::endl;
+		//DEBUG - Show Registry Contents
+	for (int i = 0; i < listCopy.size(); ++i) {
+		std::cout << listCopy[i].first << ", " << listCopy[i].second << std::endl;
 	}
-	*/
 	
+	std::cout << "Test";
 }
 
 void PlayGrid::generateGrid() {
