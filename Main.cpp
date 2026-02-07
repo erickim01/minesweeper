@@ -17,6 +17,39 @@ enum class GameState {
 
 };
 
+int selectDifficulty() {
+	std::cout << "\n> Easy \n> Normal \n> Hard ";
+	bool needInput = true;
+	while (needInput) {
+		std::cout << "\nSelect Difficulty: ";
+		std::string diffInput;
+		std::getline(std::cin, diffInput);
+		diffInput.erase(std::remove_if(diffInput.begin(), diffInput.end(), [](unsigned char c) { return std::isspace(c);  }), diffInput.end());
+		//DEBUG std::cout << "Raw after getline: [" << diffInput << "], len=" << diffInput.length() << "\n";
+		std::string capDiffInput;
+		for (int i = 0; i < diffInput.length(); ++i) {				//	Lambda Opportunity?
+			capDiffInput.push_back(std::toupper(static_cast<unsigned char>(diffInput.at(i))));
+			//std::cout << "Raw after getline: [" << diffInput << "], len=" << diffInput.length() << "\n";
+		}
+		if (capDiffInput == "HARD") {
+			needInput = false;
+			return 2;
+		}
+		else if (capDiffInput == "NORMAL") {
+			needInput = false;
+			return 1;
+		}
+		else if (capDiffInput == "EASY") {
+			needInput = false;
+			return 0;
+		}
+		else {
+			std::cout << "\nDifficulty not recognized. Please choose easy, normal, or hard difficulty by typing.";
+		}
+	}
+	std::cout << std::endl;
+}
+
 //Implementation of a while loop to get valid coordinates via text input.
 std::pair<int, int> getInput(int gridSize) {
 	bool needInput = true;
@@ -92,21 +125,19 @@ int main() {
 
 			//For now, only a normal difficulty field of 16x16 grid and 40 mines. Later passes difficulty as parameter to choose size.
 			//TODO TODO TODO - Choose Difficulty function
-	
-			int difficulty = 1;
+			
+			int difficulty = selectDifficulty();
 			gridObject.setDifficulty(difficulty);
 			gridObject.generateGrid();
 			status = GameState::Active;
 			clearConsole();
 			std::cout << "\n\t\t\tGame Start.\n";
 		}
-
 		////////////////////////////
 		////				    ////
 		////  ACTIVE GAME LOOP  ////
 		////				    ////
 		////////////////////////////
-
 		while (static_cast<int>(status) == 2) { 
 			gridObject.displayGrid();
 			std::pair<int, int> userCoords = getInput(gridObject.getGridSize());
