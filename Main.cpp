@@ -140,11 +140,13 @@ int main() {
 			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << userCoords.second << std::endl << std::endl;
 			gridObject.seedGrid(userCoords); //The first square chosen is always free,
 
-			clearConsole();
+			//gridObject.clickCell(userCoords);
+
+			
 
 			gridObject.displayGridGameOver();
 			std::cout << std::endl;
-			clearConsole();
+			
 			
 
 			
@@ -153,6 +155,9 @@ int main() {
 
 			bool gameOver = false; //Will need value to track how many clear squares are uncleared. When all safe squares are clicked OR a bomb is clicked, gameOver = true.
 			if (gameOver) {
+				clearConsole();
+				std::cout << "\n\t\t\tGame Over.\n";
+				gridObject.displayGridGameOver();
 				status = GameState::Menu;
 			}
 		}
