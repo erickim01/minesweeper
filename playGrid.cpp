@@ -102,20 +102,6 @@ void PlayGrid::displayGridGameOver() {
 	std::cout << "  _______________________________________________________\n\t\n";
 }
 
-void PlayGrid::seedGrid(std::pair<int, int> userCoord) {
-	//Create Registry and a shuffled copy of registry
-	setGridList();
-	std::vector<std::pair<int, int>> listCopy = gridList;
-	auto rng = std::default_random_engine{};
-	std::shuffle(std::begin(listCopy), std::end(listCopy), rng);
-	for (int i = 0; i < numBombs; ++i) {
-		if ((userCoord.first != listCopy[i].first) && (userCoord.second != listCopy[i].second)) {
-			gameGrid[listCopy[i].first][listCopy[i].second] = -1;
-		}
-	}	
-	//DEBUG - Show Registry Contents		for (int i = 0; i < listCopy.size(); ++i) { std::cout << listCopy[i].first << ", " << listCopy[i].second << std::endl; }
-}
-
 void PlayGrid::createEmptyGrid() {
 	const int EASY = 8;
 	const int NORMAL = 12;
@@ -137,16 +123,17 @@ void PlayGrid::createEmptyGrid() {
 			std::cout << "DEBUG PlayGrid::generateGrid() - Failed to recognize difficulty level.\n";
 			break;
 	}
-
-	std::cout << "After resize - outer size: " << gameGrid.size() << "\n";
-	if (!gameGrid.empty()) {
-		std::cout << "Inner size of row 0: " << gameGrid[0].size() << "\n";
-	}
 }
 
-
-	/*	//DEBUG: DISPLAY VECTOR CONTENTS
-	for (int i = 0; i < gameGrid.size(); ++i) {
-		for (int j = 0; j < gameGrid.size(); ++j) { std::cout << gameGrid[i][j] << " "; }
-		std::cout << std::endl;
-	}	*/
+void PlayGrid::seedGrid(std::pair<int, int> userCoord) {
+	setGridList();		//Create Registry and a shuffled copy of registry
+	std::vector<std::pair<int, int>> listCopy = gridList;
+	auto rng = std::default_random_engine{};
+	std::shuffle(std::begin(listCopy), std::end(listCopy), rng);
+	for (int i = 0; i < numBombs; ++i) {
+		if ((userCoord.first != listCopy[i].first) && (userCoord.second != listCopy[i].second)) {
+			gameGrid[listCopy[i].first][listCopy[i].second] = -1;
+		}
+	}
+	//DEBUG - Show Registry Contents		for (int i = 0; i < listCopy.size(); ++i) { std::cout << listCopy[i].first << ", " << listCopy[i].second << std::endl; }
+}
