@@ -15,7 +15,7 @@ void PlayGrid::setDifficulty(int difficulty) {
 //Number of bombs is dependent on difficulty.
 void PlayGrid::setBombs() {
 	const int BOMBS_EASY = 10;
-	const int BOMBS_NORMAL = 90;
+	const int BOMBS_NORMAL = 90;		//DEBUG DEBUG DEBUG CHANGE BACK TO 64 IN LIVE
 	const int BOMBS_HARD = 100;
 	switch (difficulty) {
 	case 0:
@@ -156,9 +156,8 @@ void PlayGrid::countNeighbors(std::vector<std::vector<int>> &numVects2D) {
 				-- - Imm.Next row and cell ? [i + 1][j + 1]				SOUTH EAST
 				(bottom right)
 				*/
-			if (j != gridSize - 1) {
-				if (numVects2D[i][j + 1] == -1) { ++count; }
-			}
+			if ((j != gridSize - 1) && (numVects2D[i][j + 1] == -1)) { ++count; }			//If the immediate next cell exists and is occupied
+			if ((i != gridSize - 1) && (numVects2D[i + 1][j] == -1)){ ++count; }		//If the immediate next row at the same element position exists and is occupied
 
 
 
