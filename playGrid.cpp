@@ -15,7 +15,7 @@ void PlayGrid::setDifficulty(int difficulty) {
 //Number of bombs is dependent on difficulty.
 void PlayGrid::setBombs() {
 	const int BOMBS_EASY = 10;
-	const int BOMBS_NORMAL = 90;		//DEBUG DEBUG DEBUG CHANGE BACK TO 64 IN LIVE
+	const int BOMBS_NORMAL = 9;		//DEBUG DEBUG DEBUG CHANGE BACK TO 64 IN LIVE
 	const int BOMBS_HARD = 100;
 	switch (difficulty) {
 	case 0:
@@ -136,7 +136,8 @@ void PlayGrid::seedGrid(std::pair<int, int> userCoord) {
 			gameGrid[listCopy[i].first][listCopy[i].second] = -1;
 		}
 	}
-	//DEBUG - Show Registry Contents		for (int i = 0; i < listCopy.size(); ++i) { std::cout << listCopy[i].first << ", " << listCopy[i].second << std::endl; }
+	//DEBUG - Show Registry Contents
+	for (int i = 0; i < listCopy.size(); ++i) { std::cout << listCopy[i].first << ", " << listCopy[i].second << std::endl; }
 	countNeighbors(gameGrid);
 }
 
@@ -151,13 +152,20 @@ void PlayGrid::countNeighbors(std::vector<std::vector<int>> &numVects2D) {
 			//Check neighbors of cell
 
 			/*
-			--- Is the immediate next cell occupied ? [i][j + 1]		EAST
-				-- - Immediate next row ? [i + 1][j]					SOUTH
-				-- - Imm.Next row and cell ? [i + 1][j + 1]				SOUTH EAST
-				(bottom right)
+			+++ If the row is greater or equal to one:
+---- Is the row before occupied? [i - 1][j]				NORTH
+----Is the cell top right? [i - 1][j+1]					NORTH EAST
+++++ If cell is greater equal to one:
+----- Is the cell imm. before occ? [i][j - 1]			WEST
+----- Is the cell top left? [i - 1][j - 1]				NORTH WEST
 				*/
-			if ((j != gridSize - 1) && (numVects2D[i][j + 1] == -1)) { ++count; }			//If the immediate next cell exists and is occupied
-			if ((i != gridSize - 1) && (numVects2D[i + 1][j] == -1)){ ++count; }		//If the immediate next row at the same element position exists and is occupied
+			if ((j != gridSize - 1) && (numVects2D[i][j + 1] == -1)) { ++count; }								//If the immediate next element exists and equals -1	(EAST)
+			if ((i != gridSize - 1) && (numVects2D[i + 1][j] == -1)){ ++count; }								//If the immediate next row at the same element position exists and equals -1	(SOUTH)
+			if ((i != gridSize - 1) && (j != gridSize - 1) && (numVects2D[i + 1][j + 1] == -1)) { ++count; }		//If the immediate next element on the immediate next row exists and equals -1	(SOUTH-EAST)
+
+			if ((i >= 1) && (numVects2D[i - 1][j] == -1)) { ++count; }												//If the element in the row immediately above exists and equals -1	(NORTH)
+			if ((i >= 1) && (j != gridSize - 1) && (numVects2D[i - 1][j + 1] == -1)) { ++count; }						//If the element one space forwards in the row immediately above exists and equals -1 (NORTH-EAST)
+
 
 
 
