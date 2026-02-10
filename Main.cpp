@@ -5,10 +5,9 @@
 #include <cctype>		//<std::tolower> <std::toupper>		//These handle the user input when choosing menu options.
 #include "PlayGrid.h"
 
-void clearConsole() {
-	std::cout << "\x1b[2J\x1b[1;1H";		//ANSI Clear Screen		-	\x1b[2J 
-											//ANSI Cursor to Top Left	-	\x1b[1;1H
-}
+//ANSI Clear Screen		-	\x1b[2J 
+//ANSI Cursor to Top Left	-	\x1b[1;1H
+void clearConsole() { std::cout << "\x1b[2J\x1b[1;1H"; }
 
 enum class GameState {
 	Menu = 1,
@@ -25,8 +24,6 @@ int selectDifficulty() {
 		std::getline(std::cin, diffInput);
 		diffInput.erase(std::remove_if(diffInput.begin(), diffInput.end(), [](unsigned char c) { return std::isspace(c);  }), diffInput.end());
 		//DEBUG std::cout << "Raw after getline: [" << diffInput << "], len=" << diffInput.length() << "\n";
-		//std::string capDiffInput;
-		//capDiffInput.reserve(diffInput.size());
 		std::transform(diffInput.begin(), diffInput.end(), diffInput.begin(), [](unsigned char c) {return std::toupper(c); });
 		if ((diffInput == "HARD") || (diffInput == "H")) {
 			needInput = false;
@@ -89,12 +86,9 @@ std::pair<int, int> getInput(int gridSize) {
 	}
 }
 
-
 std::string clickInput(bool &rightClick) { //returns "Right/Left-Click in output, modifies a boolean in main to describe behavior to PlayGrid class.
 	std::string userInput;
 	while (std::cout << "\nRight or Left click? ('R' / 'L'): ", std::getline(std::cin, userInput)) {
-		//std::string capUserInput;
-		//capUserInput.reserve(userInput.size());
 		std::transform(userInput.begin(), userInput.end(), userInput.begin(), [](unsigned char c) {return std::toupper(c); });
 		if (userInput == "RIGHT" || userInput == "R") { rightClick = true; return "Right-Click.\n"; }
 		else if (userInput == "LEFT" || userInput == "L") { rightClick = true;return "Left-CLick.\n"; }
@@ -106,17 +100,15 @@ int main() {
 	GameState status = GameState::Menu;	
 	std::string menuInput = "";
 	PlayGrid gridObject;
-
 	while (static_cast<int>(status) != 3) {		//Program runs in console while quit flag not raised.
-
 		//////MENU - PLAY OR QUIT//////
 		std::cout << "\t\t\t --- Minesweeper Clone --- \t\t\t" << std::endl;
 		std::cout << "\n\n>Play ('p') \n>Quit ('q')\n";
 		std::cin >> menuInput;
 		std::cin.ignore();
-		std::transform(menuInput.begin(), menuInput.end(), menuInput.begin(), [](unsigned char c) { return std::tolower(c); });
+		std::transform(menuInput.begin(), menuInput.end(), menuInput.begin(), [](unsigned char c) { return std::toupper(c); });
 
-		if (menuInput == "quit" || menuInput == "q") { //quits the game
+		if (menuInput == "QUIT" || menuInput == "Q") { //Sets state to "Quit" and breaks the while loop.
 			status = GameState::Quit;
 			break;
 		}
@@ -138,12 +130,10 @@ int main() {
 			std::pair<int, int> userCoords = getInput(gridObject.getGridSize());
 			bool rightClick = false;
 			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << userCoords.second << ", " << clickInput(rightClick) << std::endl << std::endl;
-			
 
-										//Update cout to read R or L conditionally depending on input
 			gridObject.seedGrid(userCoords); //The first square chosen is always free,
 
-			//gridObject.clickCell(userCoords);
+			//gridObject.clickCell(rightClick);
 
 			//NEED
 			// Click a square
