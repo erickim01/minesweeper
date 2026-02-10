@@ -125,20 +125,6 @@ void PlayGrid::generateGrid() {
 	const int EASY = 8;
 	const int NORMAL = 12;
 	const int HARD = 24;
-	/*
-	if (difficulty == 0) {				//Not convinced this is long enough to warrant a switch statment
-		fieldSize = EASY;
-		gameGrid.resize(EASY);
-	}
-	else if (difficulty == 1) {
-		fieldSize = NORMAL;
-		gameGrid.resize(NORMAL);
-	}
-	else if (difficulty == 2) {
-		fieldSize = HARD;
-		gameGrid.resize(HARD);
-	}
-	*/
 	switch (difficulty) {
 		case 0:
 			fieldSize = EASY;

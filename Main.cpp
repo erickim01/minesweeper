@@ -64,16 +64,19 @@ std::pair<int, int> getInput(int gridSize) {
 			std::cout << "\nInvalid length! Use a single letter followed by 1 - 2 digits (e.g. A1, B2, etc.)\n";
 			continue;
 		}
-
 		//Get the first char and check if it's a valid character. On Difficulty = 1 "Normal", this is A - L.		
 		char candidateChar = std::toupper(static_cast<unsigned char>(coordInput.at(0)));
 		if (candidateChar < 'A' || candidateChar > static_cast<char>(64 + gridSize)) {
 			std::cout << "\nInvalid character! Please use a valid character ranging from " << "A" << " to " << static_cast<char>(64 + gridSize) << ".\n";
 			continue;
 		}
-
 		//Get the second char and check if it's a valid integer, and convert to an int. On "Normal", this is 1 - 12.
 		std::string numStr = coordInput.substr(1);
+		if (numStr.empty() || !std::all_of(numStr.begin(), numStr.end(), ::isdigit)) {
+			std::cout << "\nInvalid number! Use digits 1-" << gridSize << ".\n";
+			continue;
+		}
+		/*
 		bool isValidNum = !numStr.empty();
 		for (char c : numStr) {
 			if (!std::isdigit(static_cast<unsigned char>(c))) {
@@ -81,11 +84,12 @@ std::pair<int, int> getInput(int gridSize) {
 				break;
 			}
 		}
-		
+		//Checking that there is in fact a number that was added into the numStr
 		if (!isValidNum) {
 			std::cout << "\nInvalid number! Use digits 1-" << gridSize << ".\n";
 			continue;
 		}
+		*/
 		int candidateInt = std::stoi(numStr);
 		if (candidateInt < 1 || candidateInt > gridSize) {
 			std::cout << "Your column number, " << candidateInt << " is out of range (1-" << gridSize << ")!\n";
