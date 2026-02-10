@@ -1,5 +1,4 @@
 ﻿  Main.cpp
-C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\Main.cpp(45,1): warning C4715: 'selectDifficulty': not all control paths return a value
-C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\Main.cpp(87,1): warning C4715: 'getInput': not all control paths return a value
-C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\Main.cpp(97,1): warning C4715: 'clickInput': not all control paths return a value
+C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\Main.cpp(93,1): warning C4715: 'clickInput': not all control paths return a value
+C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\Main.cpp(83,1): warning C4715: 'getInput': not all control paths return a value
   Minesweeper.vcxproj -> C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\x64\Debug\Minesweeper.exe

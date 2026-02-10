@@ -16,32 +16,27 @@ enum class GameState {
 
 };
 
+//Removes whitespaces from input and capitalizes all alphabetic characters.
+std::string normalizeInput(std::string &str) { 
+	str.erase(std::remove_if(str.begin(), str.end(), [](unsigned char c) { return std::isspace(c);  }), str.end());
+	std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) {return std::toupper(c); });
+	return str;
+}
+
 int selectDifficulty() {
 	std::cout << "\nSelect Difficulty: \n> Easy \n> Normal \n> Hard \n\n> ";
-	bool needInput = true;
-	while (needInput) {
+	while (true) {
 		std::string diffInput;
 		std::getline(std::cin, diffInput);
-		diffInput.erase(std::remove_if(diffInput.begin(), diffInput.end(), [](unsigned char c) { return std::isspace(c);  }), diffInput.end());
+		//diffInput.erase(std::remove_if(diffInput.begin(), diffInput.end(), [](unsigned char c) { return std::isspace(c);  }), diffInput.end());
 		//DEBUG std::cout << "Raw after getline: [" << diffInput << "], len=" << diffInput.length() << "\n";
-		std::transform(diffInput.begin(), diffInput.end(), diffInput.begin(), [](unsigned char c) {return std::toupper(c); });
-		if ((diffInput == "HARD") || (diffInput == "H")) {
-			needInput = false;
-			return 2;
-		}
-		else if ((diffInput == "NORMAL") || (diffInput == "NM")) {
-			needInput = false;
-			return 1;
-		}
-		else if ((diffInput == "EASY") || (diffInput == "EZ")) {
-			needInput = false;
-			return 0;
-		}
-		else {
-			std::cout << "\nDifficulty not recognized. Please choose easy, normal, or hard difficulty by typing. \nSelect Difficulty > ";
-		}
+		//std::transform(diffInput.begin(), diffInput.end(), diffInput.begin(), [](unsigned char c) {return std::toupper(c); });
+		normalizeInput(diffInput);
+		if ((diffInput == "HARD") || (diffInput == "H")) { return 2; }
+		else if ((diffInput == "NORMAL") || (diffInput == "NM")) { return 1; }
+		else if ((diffInput == "EASY") || (diffInput == "EZ")) { return 0; }
+		else { std::cout << "\nDifficulty not recognized. Please choose easy, normal, or hard difficulty by typing. \nSelect Difficulty > "; }
 	}
-	std::cout << std::endl;
 }
 
 //Implementation of a while loop to get valid coordinates via text input.
@@ -51,7 +46,8 @@ std::pair<int, int> getInput(int gridSize) {
 		std::string coordInput;
 		std::cout << "\nInput ROW Letter and COLUMN Number using values shown on grid > ";
 		std::getline(std::cin, coordInput);
-		coordInput.erase(std::remove_if(coordInput.begin(), coordInput.end(), [](unsigned char c) { return std::isspace(c);  }), coordInput.end());
+		normalizeInput(coordInput);
+		//coordInput.erase(std::remove_if(coordInput.begin(), coordInput.end(), [](unsigned char c) { return std::isspace(c);  }), coordInput.end());
 		// DEBUG std::cout << "Raw after getline: [" << myStr << "], len=" << myStr.length() << "\n";
 		
 		if (coordInput.length() < 2 || coordInput.length() > 3) {
@@ -59,8 +55,8 @@ std::pair<int, int> getInput(int gridSize) {
 			continue;
 		}
 		//Get the first char and check if it's a valid character. On Difficulty = 1 "Normal", this is A - L.		
-		char candidateChar = std::toupper(static_cast<unsigned char>(coordInput.at(0)));
-		if (candidateChar < 'A' || candidateChar > static_cast<char>(64 + gridSize)) {
+		//char candidateChar = std::toupper(static_cast<unsigned char>(coordInput.at(0)));
+		if (coordInput.at(0) < 'A' || coordInput.at(0) > static_cast<char>(64 + gridSize)) {
 			std::cout << "\nInvalid character! Please use a valid character ranging from " << "A" << " to " << static_cast<char>(64 + gridSize) << ".\n";
 			continue;
 		}
@@ -78,7 +74,7 @@ std::pair<int, int> getInput(int gridSize) {
 		}
 
 		// These lines of code executing means the input was valid.
-		char coordChar = candidateChar;		//Note: This returns as the ASCII int value starting from A = 65, B = 66, etc. Subtracting from 65 to get index.
+		char coordChar = coordInput.at(0);		//Note: This returns as the ASCII int value starting from A = 65, B = 66, etc. Subtracting from 65 to get index.
 		int coordInt = candidateInt;
 		needInput = false;
 		std::pair<int, int> coordsFinal = { (coordChar - 65), coordInt };
@@ -86,12 +82,12 @@ std::pair<int, int> getInput(int gridSize) {
 	}
 }
 
-std::string clickInput(bool &rightClick) { //returns "Right/Left-Click in output, modifies a boolean in main to describe behavior to PlayGrid class.
+std::string clickInput(bool &rightClick) { //returns "Right/Left-Click in text output, modifies a boolean in main to describe behavior to PlayGrid class.
 	std::string userInput;
 	while (std::cout << "\nRight or Left click? ('R' / 'L'): ", std::getline(std::cin, userInput)) {
-		std::transform(userInput.begin(), userInput.end(), userInput.begin(), [](unsigned char c) {return std::toupper(c); });
-		if (userInput == "RIGHT" || userInput == "R") { clearConsole(); rightClick = true; return "Right-Click.\n"; }
-		else if (userInput == "LEFT" || userInput == "L") { clearConsole(); rightClick = true;return "Left-CLick.\n"; }
+		normalizeInput(userInput);
+		if (userInput == "RIGHT" || userInput == "R") { clearConsole(); rightClick = true; return "Right-Click."; }
+		else if (userInput == "LEFT" || userInput == "L") { clearConsole(); rightClick = true; return "Left-CLick."; }
 		else { std::cout << "Input not recognized. Please enter a click operation (Right / R, or Left / L.\n"; }
 	}
 }
@@ -113,7 +109,6 @@ int main() {
 			break;
 		}
 		else { //Otherwise difficulty is selected.
-
 			gridObject.setDifficulty(selectDifficulty());
 			gridObject.generateGrid();
 			status = GameState::Active;
@@ -126,7 +121,8 @@ int main() {
 		////				    ////
 		////////////////////////////
 		while (static_cast<int>(status) == 2) { 
-			gridObject.displayGrid();
+			//gridObject.displayGrid();
+			gridObject.displayGridGameOver(); //DEBUG Displays game over right now.
 			std::pair<int, int> userCoords = getInput(gridObject.getGridSize());
 			bool rightClick = false;
 			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << userCoords.second << ", " << clickInput(rightClick) << std::endl << std::endl;
