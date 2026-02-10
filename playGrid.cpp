@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm> //<std::ranges::shuffle>
 #include <random> //<auto rng = std::default_random_engine {};>
+#include <ranges>
 #include "PlayGrid.h"
 
 
@@ -14,7 +15,7 @@ void PlayGrid::setDifficulty(int difficulty) {
 //Number of bombs is dependent on difficulty.
 void PlayGrid::setBombs() {
 	const int BOMBS_EASY = 10;
-	const int BOMBS_NORMAL = 32;
+	const int BOMBS_NORMAL = 90;
 	const int BOMBS_HARD = 100;
 	switch (difficulty) {
 	case 0:
@@ -136,13 +137,51 @@ void PlayGrid::seedGrid(std::pair<int, int> userCoord) {
 		}
 	}
 	//DEBUG - Show Registry Contents		for (int i = 0; i < listCopy.size(); ++i) { std::cout << listCopy[i].first << ", " << listCopy[i].second << std::endl; }
+	countNeighbors(gameGrid);
 }
 
 //Helper function to seedGrid(). Checks if a neighboring cell on a 2D grid has a -1 and then increases the current Cell's own count by one if -1 is seen.
 void PlayGrid::countNeighbors(std::vector<std::vector<int>> &numVects2D) {
-	for (int i = 0; i < getGridSize(); ++i) {
-		for (int j = 0; j < getGridSize(); ++j) {
+	for (int i = 0; i < gridSize; ++i) {
+		for (int j = 0; j < gridSize; ++j) {
+			auto& currCell = numVects2D[i][j];
+			if (currCell == -1) { continue; }
+			int count = 0;
 
+			//Check neighbors of cell
+
+			/*
+			--- Is the immediate next cell occupied ? [i][j + 1]		EAST
+				-- - Immediate next row ? [i + 1][j]					SOUTH
+				-- - Imm.Next row and cell ? [i + 1][j + 1]				SOUTH EAST
+				(bottom right)
+				*/
+			if (j != gridSize - 1) {
+				if (numVects2D[i][j + 1] == -1) { ++count; }
+			}
+
+
+
+
+
+
+			currCell = count;
 		}
 	}
 }
+
+
+
+/*		Alternate better code for countNeighbors that I don't understand
+* for (int i = 0; i < numVects2D.size(); ++i) {
+		auto& row = numVects2D[i];
+		for(int j = 0; j < row.size(); ++j) {
+			auto& cell = row[j];
+			if (cell == -1) { continue; }
+			int count = 0;
+			//Check neighbors of cell
+			cell = count + 3;
+		}
+		std::cout << std::endl;
+	}
+*/
