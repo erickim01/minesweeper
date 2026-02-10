@@ -90,8 +90,8 @@ std::string clickInput(bool &rightClick) { //returns "Right/Left-Click in output
 	std::string userInput;
 	while (std::cout << "\nRight or Left click? ('R' / 'L'): ", std::getline(std::cin, userInput)) {
 		std::transform(userInput.begin(), userInput.end(), userInput.begin(), [](unsigned char c) {return std::toupper(c); });
-		if (userInput == "RIGHT" || userInput == "R") { rightClick = true; return "Right-Click.\n"; }
-		else if (userInput == "LEFT" || userInput == "L") { rightClick = true;return "Left-CLick.\n"; }
+		if (userInput == "RIGHT" || userInput == "R") { clearConsole(); rightClick = true; return "Right-Click.\n"; }
+		else if (userInput == "LEFT" || userInput == "L") { clearConsole(); rightClick = true;return "Left-CLick.\n"; }
 		else { std::cout << "Input not recognized. Please enter a click operation (Right / R, or Left / L.\n"; }
 	}
 }
