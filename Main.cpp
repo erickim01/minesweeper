@@ -25,18 +25,18 @@ int selectDifficulty() {
 		std::getline(std::cin, diffInput);
 		diffInput.erase(std::remove_if(diffInput.begin(), diffInput.end(), [](unsigned char c) { return std::isspace(c);  }), diffInput.end());
 		//DEBUG std::cout << "Raw after getline: [" << diffInput << "], len=" << diffInput.length() << "\n";
-		std::string capDiffInput;
-		capDiffInput.reserve(diffInput.size());
-		std::transform(diffInput.begin(), diffInput.end(), std::back_inserter(capDiffInput), [](unsigned char c) {return std::toupper(c); });
-		if ((capDiffInput == "HARD") || (capDiffInput == "H")) {
+		//std::string capDiffInput;
+		//capDiffInput.reserve(diffInput.size());
+		std::transform(diffInput.begin(), diffInput.end(), diffInput.begin(), [](unsigned char c) {return std::toupper(c); });
+		if ((diffInput == "HARD") || (diffInput == "H")) {
 			needInput = false;
 			return 2;
 		}
-		else if ((capDiffInput == "NORMAL") || (capDiffInput == "NM")) {
+		else if ((diffInput == "NORMAL") || (diffInput == "NM")) {
 			needInput = false;
 			return 1;
 		}
-		else if ((capDiffInput == "EASY") || (capDiffInput == "EZ")) {
+		else if ((diffInput == "EASY") || (diffInput == "EZ")) {
 			needInput = false;
 			return 0;
 		}
@@ -93,11 +93,11 @@ std::pair<int, int> getInput(int gridSize) {
 std::string clickInput(bool &rightClick) { //returns "Right/Left-Click in output, modifies a boolean in main to describe behavior to PlayGrid class.
 	std::string userInput;
 	while (std::cout << "\nRight or Left click? ('R' / 'L'): ", std::getline(std::cin, userInput)) {
-		std::string capUserInput;
-		capUserInput.reserve(userInput.size());
-		std::transform(userInput.begin(), userInput.end(), std::back_inserter(capUserInput), [](unsigned char c) {return std::toupper(c); });
-		if (capUserInput == "RIGHT" || capUserInput == "R") { rightClick = true; return "Right-Click.\n"; }
-		else if (capUserInput == "LEFT" || capUserInput == "L") { rightClick = true;return "Left-CLick.\n"; }
+		//std::string capUserInput;
+		//capUserInput.reserve(userInput.size());
+		std::transform(userInput.begin(), userInput.end(), userInput.begin(), [](unsigned char c) {return std::toupper(c); });
+		if (userInput == "RIGHT" || userInput == "R") { rightClick = true; return "Right-Click.\n"; }
+		else if (userInput == "LEFT" || userInput == "L") { rightClick = true;return "Left-CLick.\n"; }
 		else { std::cout << "Input not recognized. Please enter a click operation (Right / R, or Left / L.\n"; }
 	}
 }
