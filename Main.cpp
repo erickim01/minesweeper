@@ -28,11 +28,6 @@ int selectDifficulty() {
 		std::string capDiffInput;
 		capDiffInput.reserve(diffInput.size());
 		std::transform(diffInput.begin(), diffInput.end(), std::back_inserter(capDiffInput), [](unsigned char c) {return std::toupper(c); });
-		/*
-		for (int i = 0; i < diffInput.length(); ++i) {				//	Lambda Opportunity?
-			capDiffInput.push_back(std::toupper(static_cast<unsigned char>(diffInput.at(i))));
-		}
-		*/
 		if ((capDiffInput == "HARD") || (capDiffInput == "H")) {
 			needInput = false;
 			return 2;
@@ -94,6 +89,19 @@ std::pair<int, int> getInput(int gridSize) {
 	}
 }
 
+
+std::string clickInput(bool &rightClick) { //returns "Right/Left-Click in output, modifies a boolean in main to describe behavior to PlayGrid class.
+	std::string userInput;
+	while (std::cout << "\nRight or Left click? ('R' / 'L'): ", std::getline(std::cin, userInput)) {
+		std::string capUserInput;
+		capUserInput.reserve(userInput.size());
+		std::transform(userInput.begin(), userInput.end(), std::back_inserter(capUserInput), [](unsigned char c) {return std::toupper(c); });
+		if (capUserInput == "RIGHT" || capUserInput == "R") { rightClick = true; return "Right-Click.\n"; }
+		else if (capUserInput == "LEFT" || capUserInput == "L") { rightClick = true;return "Left-CLick.\n"; }
+		else { std::cout << "Input not recognized. Please enter a click operation (Right / R, or Left / L.\n"; }
+	}
+}
+
 int main() {
 	GameState status = GameState::Menu;	
 	std::string menuInput = "";
@@ -106,9 +114,7 @@ int main() {
 		std::cout << "\n\n>Play ('p') \n>Quit ('q')\n";
 		std::cin >> menuInput;
 		std::cin.ignore();
-		//<std::transform> with a lambda function or function pointer to handle type casting correctly
-		std::transform(menuInput.begin(), menuInput.end(), menuInput.begin(),
-			[](unsigned char c) { return std::tolower(c); });
+		std::transform(menuInput.begin(), menuInput.end(), menuInput.begin(), [](unsigned char c) { return std::tolower(c); });
 
 		if (menuInput == "quit" || menuInput == "q") { //quits the game
 			status = GameState::Quit;
@@ -130,13 +136,11 @@ int main() {
 		while (static_cast<int>(status) == 2) { 
 			gridObject.displayGrid();
 			std::pair<int, int> userCoords = getInput(gridObject.getGridSize());
-
-			std::cout << "\nRight or Left click? ('R' / 'L')";
-			std::getline(std::cin, menuInput);
-			//toupper this input and add conditionals to accept as left of right.
+			bool rightClick = false;
+			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << userCoords.second << ", " << clickInput(rightClick) << std::endl << std::endl;
+			
 
 										//Update cout to read R or L conditionally depending on input
-			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << userCoords.second << ", R / L - 'Click'." << std::endl << std::endl;
 			gridObject.seedGrid(userCoords); //The first square chosen is always free,
 
 			//gridObject.clickCell(userCoords);
