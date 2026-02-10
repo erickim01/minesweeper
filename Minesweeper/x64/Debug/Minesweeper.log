@@ -1,4 +1,3 @@
-﻿  Main.cpp
-C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\Main.cpp(87,1): warning C4715: 'clickInput': not all control paths return a value
-C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\Main.cpp(77,1): warning C4715: 'getInput': not all control paths return a value
+﻿  PlayGrid.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\ranges(11): warning STL4038: The contents of <ranges> are available only with C++20 or later.
   Minesweeper.vcxproj -> C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\x64\Debug\Minesweeper.exe

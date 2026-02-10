@@ -15,7 +15,7 @@ void PlayGrid::setDifficulty(int difficulty) {
 //Number of bombs is dependent on difficulty.
 void PlayGrid::setBombs() {
 	const int BOMBS_EASY = 10;
-	const int BOMBS_NORMAL = 143;		//DEBUG DEBUG DEBUG CHANGE BACK TO 64 IN LIVE
+	const int BOMBS_NORMAL = 90;		//DEBUG DEBUG DEBUG CHANGE BACK TO 64 IN LIVE
 	const int BOMBS_HARD = 100;
 	switch (difficulty) {
 	case 0:
@@ -149,32 +149,19 @@ void PlayGrid::countNeighbors(std::vector<std::vector<int>> &numVects2D) {
 	for (int i = 0; i < gridSize; ++i) {
 		for (int j = 0; j < gridSize; ++j) {
 			auto& currCell = numVects2D[i][j];
-			if (currCell == -1) { continue; }
+			if (currCell == -1) { continue; }	//If the current cell is already a bomb, it is skipped so as to not be overwritten.
 			int count = 0;
+			//Check neighbors of the current cell
+			if ((j != gridSize - 1) && (numVects2D[i][j + 1] == -1)) { ++count; }									//EAST - directly to the right
+			if ((i != gridSize - 1) && (numVects2D[i + 1][j] == -1)){ ++count; }									//SOUTH - directly below the current cell
+			if ((i != gridSize - 1) && (j != gridSize - 1) && (numVects2D[i + 1][j + 1] == -1)) { ++count; }		//SOUTH-EAST - down and right
 
-			//Check neighbors of cell
-
-			/*
-			+++ If the row is greater or equal to one:
----- Is the row before occupied? [i - 1][j]				NORTH
-----Is the cell top right? [i - 1][j+1]					NORTH EAST
-++++ If cell is greater equal to one:
------ Is the cell imm. before occ? [i][j - 1]			WEST
------ Is the cell top left? [i - 1][j - 1]				NORTH WEST
-				*/
-			if ((j != gridSize - 1) && (numVects2D[i][j + 1] == -1)) { ++count; }								//If the immediate next element exists and equals -1	(EAST)
-			if ((i != gridSize - 1) && (numVects2D[i + 1][j] == -1)){ ++count; }								//If the immediate next row at the same element position exists and equals -1	(SOUTH)
-			if ((i != gridSize - 1) && (j != gridSize - 1) && (numVects2D[i + 1][j + 1] == -1)) { ++count; }		//If the immediate next element on the immediate next row exists and equals -1	(SOUTH-EAST)
-
-			if ((i >= 1) && (numVects2D[i - 1][j] == -1)) { ++count; }												//If the element in the row immediately above exists and equals -1	(NORTH)
-			if ((i >= 1) && (j != gridSize - 1) && (numVects2D[i - 1][j + 1] == -1)) { ++count; }						//If the element one space forwards in the row immediately above exists and equals -1 (NORTH-EAST)
-
-
-
-
-
-
-
+			if ((i >= 1) && (numVects2D[i - 1][j] == -1)) { ++count; }												//NORTH - directly above	
+			if ((i >= 1) && (j != gridSize - 1) && (numVects2D[i - 1][j + 1] == -1)) { ++count; }					//NORTH-EAST - up and right
+			
+			if ((j >= 1) && (numVects2D[i][j - 1] == -1)) { ++count; }												// WEST - left neighbor 
+			if ((i >= 1) && (j >= 1) && (numVects2D[i - 1][j - 1] == -1)) { ++count; }								// NORTH-WEST - up and left
+			if ((i != gridSize - 1) && (j >= 1) && (numVects2D[i + 1][j - 1] == -1)) { ++count; }					// SOUTH-WEST - down and left
 			currCell = count;
 		}
 	}
