@@ -137,18 +137,23 @@ int main() {
 		while (static_cast<int>(status) == 2) { 
 			gridObject.displayGrid();
 			std::pair<int, int> userCoords = getInput(gridObject.getGridSize());
-			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << userCoords.second << std::endl << std::endl;
+
+			std::cout << "\nRight or Left click? ('R' / 'L')";
+			std::getline(std::cin, menuInput);
+			//toupper this input and add conditionals to accept as left of right.
+
+										//Update cout to read R or L conditionally depending on input
+			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << userCoords.second << ", R / L - 'Click'." << std::endl << std::endl;
 			gridObject.seedGrid(userCoords); //The first square chosen is always free,
 
 			//gridObject.clickCell(userCoords);
 
+			//NEED
+			// Click a square
+			//Capability to flag a square as a bomb
+			//
 			
-
-			gridObject.displayGridGameOver();
-			std::cout << std::endl;
 			
-			
-
 			
 			//int squaresLeft = 
 

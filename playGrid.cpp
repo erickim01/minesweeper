@@ -125,6 +125,7 @@ void PlayGrid::generateGrid() {
 	const int EASY = 8;
 	const int NORMAL = 12;
 	const int HARD = 24;
+	/*
 	if (difficulty == 0) {				//Not convinced this is long enough to warrant a switch statment
 		fieldSize = EASY;
 		gameGrid.resize(EASY);
@@ -137,6 +138,26 @@ void PlayGrid::generateGrid() {
 		fieldSize = HARD;
 		gameGrid.resize(HARD);
 	}
+	*/
+	switch (difficulty) {
+		case 0:
+			fieldSize = EASY;
+			gameGrid.resize(EASY);
+			break;
+		case 1:
+			fieldSize = NORMAL;
+			gameGrid.resize(NORMAL);
+			break;
+		case 2:
+			fieldSize = HARD;
+			gameGrid.resize(HARD);
+			break;
+		default:
+			std::cout << "DEBUG PlayGrid::generateGrid() - Failed to recognize difficulty level.\n";
+			break;
+	}
+
+
 	setGridSize(fieldSize);
 	
 	for (int i = 0; i < fieldSize; ++i) { //Initalize sixteen vectors of size 16 and add each to each to playField.
