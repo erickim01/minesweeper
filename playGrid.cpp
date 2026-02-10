@@ -15,7 +15,7 @@ void PlayGrid::setDifficulty(int difficulty) {
 //Number of bombs is dependent on difficulty.
 void PlayGrid::setBombs() {
 	const int BOMBS_EASY = 10;
-	const int BOMBS_NORMAL = 9;		//DEBUG DEBUG DEBUG CHANGE BACK TO 64 IN LIVE
+	const int BOMBS_NORMAL = 143;		//DEBUG DEBUG DEBUG CHANGE BACK TO 64 IN LIVE
 	const int BOMBS_HARD = 100;
 	switch (difficulty) {
 	case 0:
@@ -129,15 +129,18 @@ void PlayGrid::createEmptyGrid() {
 void PlayGrid::seedGrid(std::pair<int, int> userCoord) {
 	setGridList();		//Create Registry and a shuffled copy of registry
 	std::vector<std::pair<int, int>> listCopy = gridList;
-	auto rng = std::default_random_engine{};
+	std::random_device rd;
+	std::mt19937 rng(rd());
 	std::shuffle(std::begin(listCopy), std::end(listCopy), rng);
-	for (int i = 0; i < numBombs; ++i) {
-		if ((userCoord.first != listCopy[i].first) && (userCoord.second != listCopy[i].second)) {
-			gameGrid[listCopy[i].first][listCopy[i].second] = -1;
+
+	int placed = 0;
+	for (auto& coordinate : listCopy) {
+		if (coordinate != userCoord) {
+			gameGrid[coordinate.first][coordinate.second] = -1;
+			if (++placed == numBombs) { break; }
 		}
 	}
-	//DEBUG - Show Registry Contents
-	for (int i = 0; i < listCopy.size(); ++i) { std::cout << listCopy[i].first << ", " << listCopy[i].second << std::endl; }
+	//DEBUG - Show Registry Contents for (int i = 0; i < listCopy.size(); ++i) { std::cout << listCopy[i].first << ", " << listCopy[i].second << std::endl; }
 	countNeighbors(gameGrid);
 }
 
