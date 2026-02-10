@@ -128,12 +128,56 @@ void PlayGrid::createEmptyGrid() {
 void PlayGrid::seedGrid(std::pair<int, int> userCoord) {
 	setGridList();		//Create Registry and a shuffled copy of registry
 	std::vector<std::pair<int, int>> listCopy = gridList;
-	auto rng = std::default_random_engine{};
+	std::random_device rd;
+	std::mt19937 rng(rd());
 	std::shuffle(std::begin(listCopy), std::end(listCopy), rng);
-	for (int i = 0; i < numBombs; ++i) {
-		if ((userCoord.first != listCopy[i].first) && (userCoord.second != listCopy[i].second)) {
-			gameGrid[listCopy[i].first][listCopy[i].second] = -1;
+
+	int placed = 0;
+	for (auto& coordinate : listCopy) {
+		if (coordinate != userCoord) {
+			gameGrid[coordinate.first][coordinate.second] = -1;
+			if (++placed == numBombs) { break; }
 		}
 	}
-	//DEBUG - Show Registry Contents		for (int i = 0; i < listCopy.size(); ++i) { std::cout << listCopy[i].first << ", " << listCopy[i].second << std::endl; }
+	//DEBUG - Show Registry Contents for (int i = 0; i < listCopy.size(); ++i) { std::cout << listCopy[i].first << ", " << listCopy[i].second << std::endl; }
+	countNeighbors(gameGrid);
 }
+
+//Helper function to seedGrid(). Checks if a neighboring cell on a 2D grid has a -1 and then increases the current Cell's own count by one if -1 is seen.
+void PlayGrid::countNeighbors(std::vector<std::vector<int>> &numVects2D) {
+	for (int i = 0; i < gridSize; ++i) {
+		for (int j = 0; j < gridSize; ++j) {
+			auto& currCell = numVects2D[i][j];
+			if (currCell == -1) { continue; }	//If the current cell is already a bomb, it is skipped so as to not be overwritten.
+			int count = 0;
+			//Check neighbors of the current cell
+			if ((j != gridSize - 1) && (numVects2D[i][j + 1] == -1)) { ++count; }									//EAST - directly to the right
+			if ((i != gridSize - 1) && (numVects2D[i + 1][j] == -1)){ ++count; }									//SOUTH - directly below the current cell
+			if ((i != gridSize - 1) && (j != gridSize - 1) && (numVects2D[i + 1][j + 1] == -1)) { ++count; }		//SOUTH-EAST - down and right
+
+			if ((i >= 1) && (numVects2D[i - 1][j] == -1)) { ++count; }												//NORTH - directly above	
+			if ((i >= 1) && (j != gridSize - 1) && (numVects2D[i - 1][j + 1] == -1)) { ++count; }					//NORTH-EAST - up and right
+			
+			if ((j >= 1) && (numVects2D[i][j - 1] == -1)) { ++count; }												// WEST - left neighbor 
+			if ((i >= 1) && (j >= 1) && (numVects2D[i - 1][j - 1] == -1)) { ++count; }								// NORTH-WEST - up and left
+			if ((i != gridSize - 1) && (j >= 1) && (numVects2D[i + 1][j - 1] == -1)) { ++count; }					// SOUTH-WEST - down and left
+			currCell = count;
+		}
+	}
+}
+
+
+
+/*		Alternate better code for countNeighbors that I don't understand
+* for (int i = 0; i < numVects2D.size(); ++i) {
+		auto& row = numVects2D[i];
+		for(int j = 0; j < row.size(); ++j) {
+			auto& cell = row[j];
+			if (cell == -1) { continue; }
+			int count = 0;
+			//Check neighbors of cell
+			cell = count + 3;
+		}
+		std::cout << std::endl;
+	}
+*/

@@ -71,7 +71,7 @@ std::pair<int, int> getInput(int gridSize) {
 		char coordChar = coordInput.at(0);		//Note: This returns as the ASCII int value starting from A = 65, B = 66, etc. Subtracting from 65 to get index.
 		int coordInt = candidateInt;
 		needInput = false;
-		std::pair<int, int> coordsFinal = { (coordChar - 65), coordInt };
+		std::pair<int, int> coordsFinal = { (coordChar - 65), coordInt - 1};
 		return coordsFinal;
 	}
 }
