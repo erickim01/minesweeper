@@ -19,7 +19,7 @@ public:
 
 	void displayGrid();
 	void displayGridGameOver();
-	void generateGrid();
+	void createEmptyGrid();
 	void seedGrid(std::pair<int, int> userCoord);
 	
 

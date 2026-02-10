@@ -27,10 +27,7 @@ int selectDifficulty() {
 	std::cout << "\nSelect Difficulty: \n> Easy \n> Normal \n> Hard \n\n> ";
 	while (true) {
 		std::string diffInput;
-		std::getline(std::cin, diffInput);
-		//diffInput.erase(std::remove_if(diffInput.begin(), diffInput.end(), [](unsigned char c) { return std::isspace(c);  }), diffInput.end());
-		//DEBUG std::cout << "Raw after getline: [" << diffInput << "], len=" << diffInput.length() << "\n";
-		//std::transform(diffInput.begin(), diffInput.end(), diffInput.begin(), [](unsigned char c) {return std::toupper(c); });
+		std::getline(std::cin, diffInput);					//DEBUG std::cout << "Raw after getline: [" << diffInput << "], len=" << diffInput.length() << "\n";
 		normalizeInput(diffInput);
 		if ((diffInput == "HARD") || (diffInput == "H")) { return 2; }
 		else if ((diffInput == "NORMAL") || (diffInput == "NM")) { return 1; }
@@ -43,19 +40,16 @@ int selectDifficulty() {
 std::pair<int, int> getInput(int gridSize) {
 	bool needInput = true;
 	while (needInput) {
-		std::string coordInput;
 		std::cout << "\nInput ROW Letter and COLUMN Number using values shown on grid > ";
-		std::getline(std::cin, coordInput);
+		std::string coordInput;
+		std::getline(std::cin, coordInput);				// DEBUG std::cout << "Raw after getline: [" << myStr << "], len=" << myStr.length() << "\n";
 		normalizeInput(coordInput);
-		//coordInput.erase(std::remove_if(coordInput.begin(), coordInput.end(), [](unsigned char c) { return std::isspace(c);  }), coordInput.end());
-		// DEBUG std::cout << "Raw after getline: [" << myStr << "], len=" << myStr.length() << "\n";
 		
 		if (coordInput.length() < 2 || coordInput.length() > 3) {
 			std::cout << "\nInvalid length! Use a single letter followed by 1 - 2 digits (e.g. A1, B2, etc.)\n";
 			continue;
 		}
 		//Get the first char and check if it's a valid character. On Difficulty = 1 "Normal", this is A - L.		
-		//char candidateChar = std::toupper(static_cast<unsigned char>(coordInput.at(0)));
 		if (coordInput.at(0) < 'A' || coordInput.at(0) > static_cast<char>(64 + gridSize)) {
 			std::cout << "\nInvalid character! Please use a valid character ranging from " << "A" << " to " << static_cast<char>(64 + gridSize) << ".\n";
 			continue;
@@ -110,7 +104,7 @@ int main() {
 		}
 		else { //Otherwise difficulty is selected.
 			gridObject.setDifficulty(selectDifficulty());
-			gridObject.generateGrid();
+			gridObject.createEmptyGrid();
 			status = GameState::Active;
 			clearConsole();
 			std::cout << "\n\t\t\tGame Start.\n";

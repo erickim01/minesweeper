@@ -1,5 +1,4 @@
 #include <iostream>
-
 #include <algorithm> //<std::ranges::shuffle>
 #include <random> //<auto rng = std::default_random_engine {};>
 #include "PlayGrid.h"
@@ -53,7 +52,6 @@ int PlayGrid::getBombs() { return numBombs; }
 int PlayGrid::getGridSize() { return gridSize; }
 
 //void PlayGrid::getGridList() {}
-
 
 //TODO TODO TODO - Modify displayGrid with a "clicked" flag so clicked cells display their int value.
 void PlayGrid::displayGrid() {
@@ -118,45 +116,37 @@ void PlayGrid::seedGrid(std::pair<int, int> userCoord) {
 	//DEBUG - Show Registry Contents		for (int i = 0; i < listCopy.size(); ++i) { std::cout << listCopy[i].first << ", " << listCopy[i].second << std::endl; }
 }
 
-void PlayGrid::generateGrid() {
-
-	int fieldSize = -1;
-
+void PlayGrid::createEmptyGrid() {
 	const int EASY = 8;
 	const int NORMAL = 12;
 	const int HARD = 24;
 	switch (difficulty) {
 		case 0:
-			fieldSize = EASY;
-			gameGrid.resize(EASY);
+			setGridSize(EASY);
+			gameGrid.resize(EASY, std::vector<int>(EASY, 0));
 			break;
 		case 1:
-			fieldSize = NORMAL;
-			gameGrid.resize(NORMAL);
+			setGridSize(NORMAL);
+			gameGrid.resize(NORMAL, std::vector<int>(NORMAL, 0));
 			break;
 		case 2:
-			fieldSize = HARD;
-			gameGrid.resize(HARD);
+			setGridSize(HARD);
+			gameGrid.resize(HARD, std::vector<int>(HARD, 0));
 			break;
 		default:
 			std::cout << "DEBUG PlayGrid::generateGrid() - Failed to recognize difficulty level.\n";
 			break;
 	}
 
-
-	setGridSize(fieldSize);
-	
-	for (int i = 0; i < fieldSize; ++i) { //Initalize sixteen vectors of size 16 and add each to each to playField.
-		std::vector<int> newVect(fieldSize);
-		gameGrid[i] = newVect;
+	std::cout << "After resize - outer size: " << gameGrid.size() << "\n";
+	if (!gameGrid.empty()) {
+		std::cout << "Inner size of row 0: " << gameGrid[0].size() << "\n";
 	}
-	/*
-	//DEBUG: DISPLAY VECTOR CONTENTS
-	for (int i = 0; i < gameGrid.size(); ++i) {
-		for (int j = 0; j < gameGrid.size(); ++j) {
-			std::cout << gameGrid[i][j] << " ";
-		}
-		std::cout << std::endl;
-	}
-	*/
 }
+
+
+	/*	//DEBUG: DISPLAY VECTOR CONTENTS
+	for (int i = 0; i < gameGrid.size(); ++i) {
+		for (int j = 0; j < gameGrid.size(); ++j) { std::cout << gameGrid[i][j] << " "; }
+		std::cout << std::endl;
+	}	*/
