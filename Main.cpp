@@ -21,16 +21,18 @@ int selectDifficulty() {
 	std::cout << "\nSelect Difficulty: \n> Easy \n> Normal \n> Hard \n\n> ";
 	bool needInput = true;
 	while (needInput) {
-		
 		std::string diffInput;
 		std::getline(std::cin, diffInput);
 		diffInput.erase(std::remove_if(diffInput.begin(), diffInput.end(), [](unsigned char c) { return std::isspace(c);  }), diffInput.end());
 		//DEBUG std::cout << "Raw after getline: [" << diffInput << "], len=" << diffInput.length() << "\n";
 		std::string capDiffInput;
+		capDiffInput.reserve(diffInput.size());
+		std::transform(diffInput.begin(), diffInput.end(), std::back_inserter(capDiffInput), [](unsigned char c) {return std::toupper(c); });
+		/*
 		for (int i = 0; i < diffInput.length(); ++i) {				//	Lambda Opportunity?
 			capDiffInput.push_back(std::toupper(static_cast<unsigned char>(diffInput.at(i))));
-			//std::cout << "Raw after getline: [" << diffInput << "], len=" << diffInput.length() << "\n";
 		}
+		*/
 		if ((capDiffInput == "HARD") || (capDiffInput == "H")) {
 			needInput = false;
 			return 2;
@@ -76,20 +78,7 @@ std::pair<int, int> getInput(int gridSize) {
 			std::cout << "\nInvalid number! Use digits 1-" << gridSize << ".\n";
 			continue;
 		}
-		/*
-		bool isValidNum = !numStr.empty();
-		for (char c : numStr) {
-			if (!std::isdigit(static_cast<unsigned char>(c))) {
-				isValidNum = false;
-				break;
-			}
-		}
-		//Checking that there is in fact a number that was added into the numStr
-		if (!isValidNum) {
-			std::cout << "\nInvalid number! Use digits 1-" << gridSize << ".\n";
-			continue;
-		}
-		*/
+		
 		int candidateInt = std::stoi(numStr);
 		if (candidateInt < 1 || candidateInt > gridSize) {
 			std::cout << "Your column number, " << candidateInt << " is out of range (1-" << gridSize << ")!\n";
