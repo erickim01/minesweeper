@@ -17,12 +17,6 @@ enum class GameState {
 
 };
 
-struct GameStats {
-	//int flagsLeft = 0;			//later set to gridObject.getBombs()
-	//std::chrono::steady_clock::time_point timeElapsed;
-	int  tilesDone = 0;	//Number of tiles currently revealed, divided by the total tiles minus number of bombs and multiplied by 100 for a percentage.
-};
-
 //Removes whitespaces from input and capitalizes all alphabetic characters.
 std::string normalizeInput(std::string &str) { 
 	str.erase(std::remove_if(str.begin(), str.end(), [](unsigned char c) { return std::isspace(c);  }), str.end());
@@ -97,7 +91,6 @@ int main() {
 	GameState status = GameState::Menu;	
 	std::string menuInput = "";
 	PlayGrid gridObject;
-	GameStats currGameStats;
 	while (static_cast<int>(status) != 3) {		//Program runs in console while quit flag not raised.
 		///////////////////////////////
 		//////MENU - PLAY OR QUIT//////
@@ -130,13 +123,12 @@ int main() {
 		////////////////////////////
 		while (static_cast<int>(status) == 2) { 
 			static int nonBombTiles = (gridObject.getGridSize() * gridObject.getGridSize()) - gridObject.getBombs();
-			currGameStats.tilesDone = gridObject.getTilesRevealed();
 			gridObject.displayGrid();
 			
-			//Stopwatch Statements
+			//////Game stats UI outputs//////
 			std::cout << "\nTime Elapsed: 00:00\n";
-			std::cout << "Tiles Revealed: " << currGameStats.tilesDone << " of " << nonBombTiles;
-			std::cout << " (" << std::fixed << std::setprecision(2) << (static_cast <float>(currGameStats.tilesDone) / static_cast <float>(nonBombTiles)) * 100 << "%)";
+			std::cout << "Tiles Revealed: " << gridObject.getTilesRevealed() << " of " << nonBombTiles;
+			std::cout << " (" << std::fixed << std::setprecision(2) << (static_cast <float>(gridObject.getTilesRevealed()) / static_cast <float>(nonBombTiles)) * 100 << "%)";
 			std::cout << "\nFlags Left : " << gridObject.getFlags() << std::endl;
 
 			/*

@@ -20,6 +20,7 @@ public:
 	void setBombs();
 	void setFlags(int bombs);
 	void setGridSize(int gridSize);
+	void setTilesRevealed(int tilesRevealed);
 	void setGridList();
 	
 	bool getFirstMove();

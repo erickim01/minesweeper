@@ -44,6 +44,10 @@ void PlayGrid::setGridSize(int gridSize) {
 	this->gridSize = gridSize;
 }
 
+void PlayGrid::setTilesRevealed(int tilesRevealed) {
+	this->tilesRevealed = tilesRevealed;
+}
+
 //Enters every possible coordinate pair from the 2D vector into a vector of pairs
 void PlayGrid::setGridList() {
 	for (int i = 0; i < gameGrid.size(); ++i) {
