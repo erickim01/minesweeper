@@ -56,6 +56,8 @@ int PlayGrid::getBombs() { return numBombs; }
 
 int PlayGrid::getGridSize() { return gridSize; }
 
+int PlayGrid::getTilesRevealed() { return tilesRevealed; }
+
 //void PlayGrid::getGridList() {}
 
 //
@@ -231,8 +233,14 @@ void PlayGrid::clickCell(bool isRightClicked, std::pair<int, int> userCoord) {	/
 			std::cout << "\nBOMB LEFT CLICKED.\n";
 		}
 		else if (!isRevealed) { 
+			//count neighbors call to execute these same three lines down here on all tiles that equal zero
 			isRevealed = true; 
 			isFlagged = false;
+			++tilesRevealed;
 		}
 	}
 }
+
+//A "zero" tile reveals EVERY one of its neighbors
+//A nonzero tile only reveals itself
+//The initial click is not only free, but is always a zero surrounded by other zeroes.

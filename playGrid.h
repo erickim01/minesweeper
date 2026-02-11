@@ -25,6 +25,7 @@ public:
 	int getDifficulty();
 	int getBombs();
 	int getGridSize();
+	int getTilesRevealed();
 	//void getGridList();
 
 	void displayGrid();
@@ -40,9 +41,9 @@ private:
 	int difficulty = -1;
 	int numBombs = -1;
 	int gridSize = -1;
-	
-	std::vector<std::vector<Cell>> gameGrid;			//2D Matrix representation of every cell on the playing field.
-	std::vector<std::pair<int, int>> gridList;		//Registry of every possible cell in play to simplify bomb seeding.
+	int tilesRevealed = 0;													//Keeps a count of how many non-bomb tiles have been revealed.
+	std::vector<std::vector<Cell>> gameGrid;								//2D Matrix representation of every cell on the playing field.
+	std::vector<std::pair<int, int>> gridList;								//A registry of every possible cell in play to simplify bomb seeding.
 	void countNeighbors(std::vector<std::vector<Cell>>& numVects2D);
 
 };

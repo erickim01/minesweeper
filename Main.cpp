@@ -1,9 +1,9 @@
 #include <string>
 #include <iostream>
+#include <iomanip>
 #include <vector>
 #include <algorithm>	//<std::transform> <std::remove_if>
 #include <cctype>		//<std::tolower> <std::toupper>		//These handle the user input when choosing menu options.
-#include <chrono>
 #include "PlayGrid.h"
 
 //ANSI Clear Screen		-	\x1b[2J 
@@ -19,8 +19,8 @@ enum class GameState {
 
 struct GameStats {
 	int flagsLeft = 0;			//later set to gridObject.getBombs()
-	std::chrono::steady_clock::time_point timeElapsed;
-	double tilesOpen = 0.00;	//Number of tiles currently revealed, divided by the total tiles minus number of bombs and multiplied by 100 for a percentage.
+	//std::chrono::steady_clock::time_point timeElapsed;
+	int  tilesDone = 0;	//Number of tiles currently revealed, divided by the total tiles minus number of bombs and multiplied by 100 for a percentage.
 };
 
 //Removes whitespaces from input and capitalizes all alphabetic characters.
@@ -119,6 +119,7 @@ int main() {
 			status = GameState::Active;
 			currGameStats.flagsLeft = gridObject.getBombs();
 			
+			
 			clearConsole();
 			std::cout << "\n\t\t\tGame Start.\n";
 		}
@@ -127,16 +128,24 @@ int main() {
 		////  ACTIVE GAME LOOP  ////
 		////				    ////
 		////////////////////////////
-		auto gameStartTime = std::chrono::steady_clock::now();
 		while (static_cast<int>(status) == 2) { 
-			currGameStats.tilesOpen = 0 / (gridObject.getGridSize() - gridObject.getBombs()); //TODOTODOTODO Replace 0 with reveal counter to properly update
+			static int nonBombTiles = (gridObject.getGridSize() * gridObject.getGridSize()) - gridObject.getBombs();
+			currGameStats.tilesDone = gridObject.getTilesRevealed();
 			gridObject.displayGrid();
-			if (!gridObject.getFirstMove()) {
-				//auto now = std::chrono::steady_clock::now();
-				currGameStats.timeElapsed = std::chrono::steady_clock::now(); //TODOTODOTODO write output function to format the current time elapse mm:ss.
-			}
-			else { std::cout << "\nTime Elapsed: 00:00\n"; }
-			std::cout << "Flags Left: " << currGameStats.flagsLeft << std::endl;
+			
+			//Stopwatch Statements
+			std::cout << "\nTime Elapsed: 00:00\n";
+			std::cout << "Tiles Revealed: " << currGameStats.tilesDone << " of " << nonBombTiles;
+			std::cout << " (" << std::fixed << std::setprecision(2) << (static_cast <float>(currGameStats.tilesDone) / static_cast <float>(nonBombTiles)) * 100 << "%)";
+			std::cout << "\nFlags Left : " << currGameStats.flagsLeft << std::endl;
+
+			/*
+			double tilesPercentHard = static_cast < float>(2) / static_cast <float>(112);
+			double tilesPercent = static_cast<float>(currGameStats.tilesDone / nonBombTiles);
+			std::cout << "\n\nDEBUG: numBombTiles = [" << nonBombTiles << "], tilesDone = [" << currGameStats.tilesDone << "]";
+			std::cout << "\n tilesPercentHard = " << tilesPercentHard;
+			std::cout << "\n tilesPercent = " << tilesPercent << "\n";
+			*/
 			
 			std::pair<int, int> userCoords = getInput(gridObject.getGridSize());
 			bool rightClick = false;
