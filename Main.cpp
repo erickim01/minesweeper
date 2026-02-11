@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>	//<std::transform> <std::remove_if>
 #include <cctype>		//<std::tolower> <std::toupper>		//These handle the user input when choosing menu options.
+#include <chrono>
 #include "PlayGrid.h"
 
 //ANSI Clear Screen		-	\x1b[2J 
@@ -14,6 +15,12 @@ enum class GameState {
 	Active = 2,
 	Quit = 3
 
+};
+
+struct GameStats {
+	int flagsLeft = 0;			//later set to gridObject.getBombs()
+	std::chrono::steady_clock::time_point timeElapsed;
+	double tilesOpen = 0.00;	//Number of tiles currently revealed, divided by the total tiles minus number of bombs and multiplied by 100 for a percentage.
 };
 
 //Removes whitespaces from input and capitalizes all alphabetic characters.
@@ -90,8 +97,11 @@ int main() {
 	GameState status = GameState::Menu;	
 	std::string menuInput = "";
 	PlayGrid gridObject;
+	GameStats currGameStats;
 	while (static_cast<int>(status) != 3) {		//Program runs in console while quit flag not raised.
+		///////////////////////////////
 		//////MENU - PLAY OR QUIT//////
+		///////////////////////////////
 		std::cout << "\t\t\t --- Minesweeper Clone --- \t\t\t" << std::endl;
 		std::cout << "\n\n>Play ('p') \n>Quit ('q')\n";
 		std::cin >> menuInput;
@@ -107,6 +117,8 @@ int main() {
 			gridObject.createEmptyGrid();
 			gridObject.setFirstMove(true);
 			status = GameState::Active;
+			currGameStats.flagsLeft = gridObject.getBombs();
+			
 			clearConsole();
 			std::cout << "\n\t\t\tGame Start.\n";
 		}
@@ -115,26 +127,32 @@ int main() {
 		////  ACTIVE GAME LOOP  ////
 		////				    ////
 		////////////////////////////
+		auto gameStartTime = std::chrono::steady_clock::now();
 		while (static_cast<int>(status) == 2) { 
-			//gridObject.displayGrid();
-			gridObject.displayGrid(); 
+			currGameStats.tilesOpen = 0 / (gridObject.getGridSize() - gridObject.getBombs()); //TODOTODOTODO Replace 0 with reveal counter to properly update
+			gridObject.displayGrid();
+			if (!gridObject.getFirstMove()) {
+				//auto now = std::chrono::steady_clock::now();
+				currGameStats.timeElapsed = std::chrono::steady_clock::now(); //TODOTODOTODO write output function to format the current time elapse mm:ss.
+			}
+			else { std::cout << "\nTime Elapsed: 00:00\n"; }
+			std::cout << "Flags Left: " << currGameStats.flagsLeft << std::endl;
+			
 			std::pair<int, int> userCoords = getInput(gridObject.getGridSize());
 			bool rightClick = false;
 			gridObject.displayGridGameOver(); //DEBUG Displays game over right now.
 			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << (userCoords.second + 1) << ", " << clickInput(rightClick) << std::endl << std::endl;
 
-		
 			if (gridObject.getFirstMove()) {
 				gridObject.seedGrid(userCoords);
 				gridObject.setFirstMove(false);
 			}
-
 			gridObject.clickCell(rightClick, userCoords);
 
-			//NEED
-			// Click a square
-			//Capability to flag a square as a bomb
 			//
+			//
+			//This needs to be encapsulated in a conditional that uses getFirstMove and displays zero if true, then displays noramlly every other loop.
+
 			
 			
 			
@@ -154,3 +172,26 @@ int main() {
 	std::cout << "\nGoodbye.\n";
 	return 0;
 }
+
+
+/*
+
+struct GameStats {
+    std::chrono::steady_clock::time_point startTime{std::chrono::steady_clock::now()};
+
+    // Call this whenever you want the current elapsed time
+    long long elapsedSeconds() const {
+        auto now = std::chrono::steady_clock::now();
+        return std::chrono::duration_cast<std::chrono::seconds>(now - startTime).count();
+    }
+
+    // Optional: formatted mm:ss string for easy printing
+    std::string elapsedMMSS() const {
+        auto sec = elapsedSeconds();
+        auto min = sec / 60;
+        auto s   = sec % 60;
+        return std::to_string(min) + ":" + (s < 10 ? "0" : "") + std::to_string(s);
+    }
+};
+
+*/

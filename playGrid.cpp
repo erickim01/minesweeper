@@ -33,7 +33,6 @@ void PlayGrid::setBombs() {
 		std::cout << "ERROR: INVALID DIFFICULTY IN	SWITCH setBombs()." << std::endl;
 		break;
 	}
-	flagsLeft = this->numBombs;
 }
 
 void PlayGrid::setGridSize(int gridSize) {
