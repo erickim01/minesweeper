@@ -116,7 +116,7 @@ int main() {
 		////////////////////////////
 		while (static_cast<int>(status) == 2) { 
 			//gridObject.displayGrid();
-			gridObject.displayGridGameOver(); //DEBUG Displays game over right now.
+			gridObject.displayGrid(); //DEBUG Displays game over right now.
 			std::pair<int, int> userCoords = getInput(gridObject.getGridSize());
 			bool rightClick = false;
 			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << userCoords.second << ", " << clickInput(rightClick) << std::endl << std::endl;

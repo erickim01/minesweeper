@@ -1,3 +1,118 @@
-﻿  PlayGrid.cpp
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\ranges(11): warning STL4038: The contents of <ranges> are available only with C++20 or later.
-  Minesweeper.vcxproj -> C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\x64\Debug\Minesweeper.exe
+﻿  Main.cpp
+  PlayGrid.cpp
+C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.h(34,26): error C2065: 'Cell': undeclared identifier
+  (compiling source file 'Main.cpp')
+  
+C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.h(34,19): error C2923: 'std::vector': 'Cell' is not a valid template type argument for parameter '_Ty'
+  (compiling source file 'Main.cpp')
+      C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.h(34,26):
+      see declaration of 'Cell'
+  
+C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.h(34,19): error C2976: 'std::vector': too few template arguments
+  (compiling source file 'Main.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vector(442,7):
+      see declaration of 'std::vector'
+  
+C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.h(34,19): error C3203: 'vector': unspecialized class template can't be used as a template argument for template parameter '_Ty', expected a real type
+  (compiling source file 'Main.cpp')
+  
+C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.h(34,26): error C2065: 'Cell': undeclared identifier
+  (compiling source file 'PlayGrid.cpp')
+  
+C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.h(34,19): error C2923: 'std::vector': 'Cell' is not a valid template type argument for parameter '_Ty'
+  (compiling source file 'PlayGrid.cpp')
+      C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.h(34,26):
+      see declaration of 'Cell'
+  
+C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.h(34,19): error C2976: 'std::vector': too few template arguments
+  (compiling source file 'PlayGrid.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vector(442,7):
+      see declaration of 'std::vector'
+  
+C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.h(34,19): error C3203: 'vector': unspecialized class template can't be used as a template argument for template parameter '_Ty', expected a real type
+  (compiling source file 'PlayGrid.cpp')
+  
+C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(95,22): error C2109: subscript requires array or pointer type
+C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(96,38): error C2109: subscript requires array or pointer type
+C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(99,22): error C2109: subscript requires array or pointer type
+C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(100,38): error C2109: subscript requires array or pointer type
+C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(116,13): error C2665: 'std::vector<<error type>,std::allocator<<error type>>>::resize': no overloaded function could convert all the argument types
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vector(1633,23):
+      could be 'void std::vector<<error type>,std::allocator<<error type>>>::resize(const unsigned __int64,const _Ty &)'
+          with
+          [
+              _Ty=<error type>
+          ]
+          C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(116,13):
+          'void std::vector<<error type>,std::allocator<<error type>>>::resize(const unsigned __int64,const _Ty &)': cannot convert argument 2 from 'std::vector<<error type>,std::allocator<<error type>>>' to 'const _Ty &'
+          with
+          [
+              _Ty=<error type>
+          ]
+              C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(116,42):
+              Reason: cannot convert from 'std::vector<<error type>,std::allocator<<error type>>>' to 'const _Ty'
+          with
+          [
+              _Ty=<error type>
+          ]
+              C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(116,42):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(116,13):
+      while trying to match the argument list '(const int, std::vector<<error type>,std::allocator<<error type>>>)'
+  
+C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(120,13): error C2665: 'std::vector<<error type>,std::allocator<<error type>>>::resize': no overloaded function could convert all the argument types
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vector(1633,23):
+      could be 'void std::vector<<error type>,std::allocator<<error type>>>::resize(const unsigned __int64,const _Ty &)'
+          with
+          [
+              _Ty=<error type>
+          ]
+          C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(120,13):
+          'void std::vector<<error type>,std::allocator<<error type>>>::resize(const unsigned __int64,const _Ty &)': cannot convert argument 2 from 'std::vector<<error type>,std::allocator<<error type>>>' to 'const _Ty &'
+          with
+          [
+              _Ty=<error type>
+          ]
+              C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(120,44):
+              Reason: cannot convert from 'std::vector<<error type>,std::allocator<<error type>>>' to 'const _Ty'
+          with
+          [
+              _Ty=<error type>
+          ]
+              C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(120,44):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(120,13):
+      while trying to match the argument list '(const int, std::vector<<error type>,std::allocator<<error type>>>)'
+  
+C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(124,13): error C2665: 'std::vector<<error type>,std::allocator<<error type>>>::resize': no overloaded function could convert all the argument types
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\vector(1633,23):
+      could be 'void std::vector<<error type>,std::allocator<<error type>>>::resize(const unsigned __int64,const _Ty &)'
+          with
+          [
+              _Ty=<error type>
+          ]
+          C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(124,13):
+          'void std::vector<<error type>,std::allocator<<error type>>>::resize(const unsigned __int64,const _Ty &)': cannot convert argument 2 from 'std::vector<<error type>,std::allocator<<error type>>>' to 'const _Ty &'
+          with
+          [
+              _Ty=<error type>
+          ]
+              C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(124,42):
+              Reason: cannot convert from 'std::vector<<error type>,std::allocator<<error type>>>' to 'const _Ty'
+          with
+          [
+              _Ty=<error type>
+          ]
+              C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(124,42):
+              No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+      C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(124,13):
+      while trying to match the argument list '(const int, std::vector<<error type>,std::allocator<<error type>>>)'
+  
+C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(142,48): error C2109: subscript requires array or pointer type
+C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(147,2): error C2664: 'void PlayGrid::countNeighbors(std::vector<std::vector<<error type>,std::allocator<<error type>>>,std::allocator<std::vector<<error type>,std::allocator<<error type>>>>> &)': cannot convert argument 1 from 'std::vector<<error type>,std::allocator<<error type>>>' to 'std::vector<std::vector<<error type>,std::allocator<<error type>>>,std::allocator<std::vector<<error type>,std::allocator<<error type>>>>> &'
+      C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.h(36,7):
+      see declaration of 'PlayGrid::countNeighbors'
+      C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(147,2):
+      while trying to match the argument list '(std::vector<<error type>,std::allocator<<error type>>>)'
+  
+  Generating Code...

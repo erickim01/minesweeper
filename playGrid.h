@@ -28,9 +28,25 @@ private:
 	int difficulty = -1;
 	int numBombs = -1;
 	int gridSize = -1;
-	std::vector<std::vector<int>> gameGrid;			//2D Matrix representation of every cell on the playing field.
+	int flagsLeft = -1;		//Set to numBombs
+	int timeElapsed = 0;
+	double tilesOpen = 0.00;
+	std::vector<std::vector<Cell>> gameGrid;			//2D Matrix representation of every cell on the playing field.
 	std::vector<std::pair<int, int>> gridList;		//Registry of every possible cell in play to simplify bomb seeding.
 	void countNeighbors(std::vector<std::vector<int>>& numVects2D);
 
 };
+
+//TODO TODO TODO
+/*
+*	- Right clicking replaces square with flag
+*	- Right clicking open/revealed tile does nothing
+*	- Left clicking reveals tile, and if it's a bomb immediately triggers game over.
+*	- Revealing all non-bomb tiles triggers victory, saves to high score.
+	- Right Clicking decrements flagsLeft by one.
+	- time counter that updates timeElapsed with each click.
+	- tilesClicked function that divides number of revealed tiles *that are not bombs* by gridSize squared, and then multipled by 100%.
+	- Save/Load game exports/imports.
+	- High score log.
+*/
 

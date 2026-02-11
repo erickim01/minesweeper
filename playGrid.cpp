@@ -3,7 +3,9 @@
 #include <random> //<auto rng = std::default_random_engine {};>
 #include "PlayGrid.h"
 
-
+struct Cell {
+	int value = 0;		//if -1, cell contains a bomb; else has range 0 - 8
+};
 
 //PlayGrid::PlayGrid() {}
 void PlayGrid::setDifficulty(int difficulty) {
@@ -30,6 +32,7 @@ void PlayGrid::setBombs() {
 		std::cout << "ERROR: INVALID DIFFICULTY IN	SWITCH setBombs()." << std::endl;
 		break;
 	}
+	flagsLeft = this->numBombs;
 }
 
 void PlayGrid::setGridSize(int gridSize) {
@@ -73,6 +76,7 @@ void PlayGrid::displayGrid() {
 		}
 		++rowLetter;
 		std::cout << std::endl;
+		//std::cout << "Flags Remaining: " << "flags" << "\nTiles Revealed: " << "tilesOpen / (gridSize * gridSize)" << "%\nTime Elapsed: " << "timeElapsed" << std::endl;
 	}
 }
 
@@ -169,6 +173,29 @@ void PlayGrid::countNeighbors(std::vector<std::vector<int>> &numVects2D) {
 
 
 /*		Alternate better code for countNeighbors that I don't understand
+* 
+* //Direction Array / offsets
+* int countNeighbors(int i, int j) {
+    int count = 0;
+    
+    constexpr int di[] = {-1, -1, -1,  0,  0,  1,  1,  1};
+    constexpr int dj[] = {-1,  0,  1, -1,  1, -1,  0,  1};
+    
+    for (int d = 0; d < 8; ++d) {
+        int ni = i + di[d];
+        int nj = j + dj[d];
+        
+        if (ni >= 0 && ni < gridSize &&
+            nj >= 0 && nj < gridSize &&
+            numVects2D[ni][nj] == -1) {
+            ++count;
+        }
+    }
+    
+    return count;
+}
+
+	//"Better" for loops setup
 * for (int i = 0; i < numVects2D.size(); ++i) {
 		auto& row = numVects2D[i];
 		for(int j = 0; j < row.size(); ++j) {
