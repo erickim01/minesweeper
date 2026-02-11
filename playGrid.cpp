@@ -231,7 +231,7 @@ void PlayGrid::clickCell(bool isRightClicked, std::pair<int, int> userCoord) {	/
 			//Function to set every tile to reveal and set main state to gameover.
 			std::cout << "\nBOMB LEFT CLICKED.\n";
 		}
-		else { 
+		else if (!isRevealed) { 
 			isRevealed = true; 
 			isFlagged = false;
 		}
