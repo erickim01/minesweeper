@@ -33,6 +33,11 @@ void PlayGrid::setBombs() {
 		std::cout << "ERROR: INVALID DIFFICULTY IN	SWITCH setBombs()." << std::endl;
 		break;
 	}
+	setFlags(numBombs);
+}
+
+void PlayGrid::setFlags(int bombs) {
+	this->flagsLeft = bombs;
 }
 
 void PlayGrid::setGridSize(int gridSize) {
@@ -53,6 +58,8 @@ bool PlayGrid::getFirstMove() { return firstMove; }
 int PlayGrid::getDifficulty() { return difficulty; }
 
 int PlayGrid::getBombs() { return numBombs; }
+
+int PlayGrid::getFlags() { return flagsLeft; }
 
 int PlayGrid::getGridSize() { return gridSize; }
 
@@ -222,8 +229,8 @@ void PlayGrid::clickCell(bool isRightClicked, std::pair<int, int> userCoord) {	/
 	auto& isFlagged = gameGrid[userCoord.first][userCoord.second].flagged; 
 	if (isRightClicked) {
 		if(!isRevealed) {							//Flag status is changed only while the tile is unrevealed.
-			if (isFlagged) { isFlagged = false; }		//If the cell is currently flagged, removes the flag.
-			else { isFlagged = true; }					//Otherwise a flag is placed on the tile.
+			if (isFlagged) { isFlagged = false; ++flagsLeft; }		//If the cell is currently flagged, removes the flag.
+			else { isFlagged = true; --flagsLeft; }					//Otherwise a flag is placed on the tile.
 		}
 	}
 	else {

@@ -18,7 +18,7 @@ enum class GameState {
 };
 
 struct GameStats {
-	int flagsLeft = 0;			//later set to gridObject.getBombs()
+	//int flagsLeft = 0;			//later set to gridObject.getBombs()
 	//std::chrono::steady_clock::time_point timeElapsed;
 	int  tilesDone = 0;	//Number of tiles currently revealed, divided by the total tiles minus number of bombs and multiplied by 100 for a percentage.
 };
@@ -117,7 +117,7 @@ int main() {
 			gridObject.createEmptyGrid();
 			gridObject.setFirstMove(true);
 			status = GameState::Active;
-			currGameStats.flagsLeft = gridObject.getBombs();
+			//currGameStats.flagsLeft = gridObject.getBombs();
 			
 			
 			clearConsole();
@@ -137,7 +137,7 @@ int main() {
 			std::cout << "\nTime Elapsed: 00:00\n";
 			std::cout << "Tiles Revealed: " << currGameStats.tilesDone << " of " << nonBombTiles;
 			std::cout << " (" << std::fixed << std::setprecision(2) << (static_cast <float>(currGameStats.tilesDone) / static_cast <float>(nonBombTiles)) * 100 << "%)";
-			std::cout << "\nFlags Left : " << currGameStats.flagsLeft << std::endl;
+			std::cout << "\nFlags Left : " << gridObject.getFlags() << std::endl;
 
 			/*
 			double tilesPercentHard = static_cast < float>(2) / static_cast <float>(112);
@@ -149,9 +149,8 @@ int main() {
 			
 			std::pair<int, int> userCoords = getInput(gridObject.getGridSize());
 			bool rightClick = false;
-			gridObject.displayGridGameOver(); //DEBUG Displays game over right now.
+			//gridObject.displayGridGameOver(); //DEBUG Displays game over right now.
 			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << (userCoords.second + 1) << ", " << clickInput(rightClick) << std::endl << std::endl;
-
 			if (gridObject.getFirstMove()) {
 				gridObject.seedGrid(userCoords);
 				gridObject.setFirstMove(false);
