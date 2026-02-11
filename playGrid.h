@@ -2,8 +2,12 @@
 #include <vector> //<std::vector>
 #include <utility> //<std::pair> for list of grid coordinates
 
+
+
 struct Cell {
-	int value = 0;		//if -1, cell contains a bomb; else has range 0 - 8
+	int		  value	= 0;					//if -1, cell contains a bomb; else has range 0 - 8
+	bool revealed = false;					//Every Cell is initially hidden until left-clicked.
+	bool flagged = false;					//Every Cell is initially unmarked until right clicked.
 };
 
 class PlayGrid {
