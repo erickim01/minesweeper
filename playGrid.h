@@ -2,6 +2,10 @@
 #include <vector> //<std::vector>
 #include <utility> //<std::pair> for list of grid coordinates
 
+struct Cell {
+	int value = 0;		//if -1, cell contains a bomb; else has range 0 - 8
+};
+
 class PlayGrid {
 
 public:
@@ -33,7 +37,7 @@ private:
 	double tilesOpen = 0.00;
 	std::vector<std::vector<Cell>> gameGrid;			//2D Matrix representation of every cell on the playing field.
 	std::vector<std::pair<int, int>> gridList;		//Registry of every possible cell in play to simplify bomb seeding.
-	void countNeighbors(std::vector<std::vector<int>>& numVects2D);
+	void countNeighbors(std::vector<std::vector<Cell>>& numVects2D);
 
 };
 

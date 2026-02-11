@@ -3,9 +3,7 @@
 #include <random> //<auto rng = std::default_random_engine {};>
 #include "PlayGrid.h"
 
-struct Cell {
-	int value = 0;		//if -1, cell contains a bomb; else has range 0 - 8
-};
+
 
 //PlayGrid::PlayGrid() {}
 void PlayGrid::setDifficulty(int difficulty) {
@@ -92,12 +90,12 @@ void PlayGrid::displayGridGameOver() {
 		std::cout << " | " << rowLetter << " | ";
 		for (int j = 0; j < gameGrid.size(); ++j) {
 			if (j + 1 < 10) {
-				if (gameGrid[i][j] == -1) { std::cout << (char)254u << " | "; }
-				else { std::cout << gameGrid[i][j] << " | "; }
+				if (gameGrid[i][j].value == -1) { std::cout << (char)254u << " | "; }
+				else { std::cout << gameGrid[i][j].value << " | "; }
 			}
 			else if (j + 1 >= 10) {
-				if (gameGrid[i][j] == -1) { std::cout << (char)254u << "  | "; }
-				else { std::cout << gameGrid[i][j] << "  | "; }
+				if (gameGrid[i][j].value == -1) { std::cout << (char)254u << "  | "; }
+				else { std::cout << gameGrid[i][j].value << "  | "; }
 			}
 		}
 		++rowLetter;
@@ -113,15 +111,15 @@ void PlayGrid::createEmptyGrid() {
 	switch (difficulty) {
 		case 0:
 			setGridSize(EASY);
-			gameGrid.resize(EASY, std::vector<int>(EASY, 0));
+			gameGrid.resize(EASY, std::vector<Cell>(EASY));
 			break;
 		case 1:
 			setGridSize(NORMAL);
-			gameGrid.resize(NORMAL, std::vector<int>(NORMAL, 0));
+			gameGrid.resize(NORMAL, std::vector<Cell>(NORMAL));
 			break;
 		case 2:
 			setGridSize(HARD);
-			gameGrid.resize(HARD, std::vector<int>(HARD, 0));
+			gameGrid.resize(HARD, std::vector<Cell>(HARD));
 			break;
 		default:
 			std::cout << "DEBUG PlayGrid::generateGrid() - Failed to recognize difficulty level.\n";
@@ -139,7 +137,7 @@ void PlayGrid::seedGrid(std::pair<int, int> userCoord) {
 	int placed = 0;
 	for (auto& coordinate : listCopy) {
 		if (coordinate != userCoord) {
-			gameGrid[coordinate.first][coordinate.second] = -1;
+			gameGrid[coordinate.first][coordinate.second].value = -1;
 			if (++placed == numBombs) { break; }
 		}
 	}
@@ -148,23 +146,23 @@ void PlayGrid::seedGrid(std::pair<int, int> userCoord) {
 }
 
 //Helper function to seedGrid(). Checks if a neighboring cell on a 2D grid has a -1 and then increases the current Cell's own count by one if -1 is seen.
-void PlayGrid::countNeighbors(std::vector<std::vector<int>> &numVects2D) {
+void PlayGrid::countNeighbors(std::vector<std::vector<Cell>> &numVects2D) {
 	for (int i = 0; i < gridSize; ++i) {
 		for (int j = 0; j < gridSize; ++j) {
-			auto& currCell = numVects2D[i][j];
+			auto& currCell = numVects2D[i][j].value;
 			if (currCell == -1) { continue; }	//If the current cell is already a bomb, it is skipped so as to not be overwritten.
 			int count = 0;
 			//Check neighbors of the current cell
-			if ((j != gridSize - 1) && (numVects2D[i][j + 1] == -1)) { ++count; }									//EAST - directly to the right
-			if ((i != gridSize - 1) && (numVects2D[i + 1][j] == -1)){ ++count; }									//SOUTH - directly below the current cell
-			if ((i != gridSize - 1) && (j != gridSize - 1) && (numVects2D[i + 1][j + 1] == -1)) { ++count; }		//SOUTH-EAST - down and right
+			if ((j != gridSize - 1) && (numVects2D[i][j + 1].value == -1)) { ++count; }									//EAST - directly to the right
+			if ((i != gridSize - 1) && (numVects2D[i + 1][j].value == -1)){ ++count; }									//SOUTH - directly below the current cell
+			if ((i != gridSize - 1) && (j != gridSize - 1) && (numVects2D[i + 1][j + 1].value == -1)) { ++count; }		//SOUTH-EAST - down and right
 
-			if ((i >= 1) && (numVects2D[i - 1][j] == -1)) { ++count; }												//NORTH - directly above	
-			if ((i >= 1) && (j != gridSize - 1) && (numVects2D[i - 1][j + 1] == -1)) { ++count; }					//NORTH-EAST - up and right
+			if ((i >= 1) && (numVects2D[i - 1][j].value == -1)) { ++count; }												//NORTH - directly above	
+			if ((i >= 1) && (j != gridSize - 1) && (numVects2D[i - 1][j + 1].value == -1)) { ++count; }					//NORTH-EAST - up and right
 			
-			if ((j >= 1) && (numVects2D[i][j - 1] == -1)) { ++count; }												// WEST - left neighbor 
-			if ((i >= 1) && (j >= 1) && (numVects2D[i - 1][j - 1] == -1)) { ++count; }								// NORTH-WEST - up and left
-			if ((i != gridSize - 1) && (j >= 1) && (numVects2D[i + 1][j - 1] == -1)) { ++count; }					// SOUTH-WEST - down and left
+			if ((j >= 1) && (numVects2D[i][j - 1].value == -1)) { ++count; }												// WEST - left neighbor 
+			if ((i >= 1) && (j >= 1) && (numVects2D[i - 1][j - 1].value == -1)) { ++count; }								// NORTH-WEST - up and left
+			if ((i != gridSize - 1) && (j >= 1) && (numVects2D[i + 1][j - 1].value == -1)) { ++count; }					// SOUTH-WEST - down and left
 			currCell = count;
 		}
 	}
