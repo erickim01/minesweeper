@@ -105,7 +105,7 @@ int main() {
 		else { //Otherwise difficulty is selected.
 			gridObject.setDifficulty(selectDifficulty());
 			gridObject.createEmptyGrid();
-			gridObject.setFirstMove();
+			gridObject.setFirstMove(true);
 			status = GameState::Active;
 			clearConsole();
 			std::cout << "\n\t\t\tGame Start.\n";
@@ -117,17 +117,17 @@ int main() {
 		////////////////////////////
 		while (static_cast<int>(status) == 2) { 
 			//gridObject.displayGrid();
-			gridObject.displayGrid(); //DEBUG Displays game over right now.
+			gridObject.displayGrid(); 
 			std::pair<int, int> userCoords = getInput(gridObject.getGridSize());
 			bool rightClick = false;
-			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << userCoords.second << ", " << clickInput(rightClick) << std::endl << std::endl;
+			gridObject.displayGridGameOver(); //DEBUG Displays game over right now.
+			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << (userCoords.second + 1) << ", " << clickInput(rightClick) << std::endl << std::endl;
 
-			static bool firstMove = true;
-			if (firstMove) {
+		
+			if (gridObject.getFirstMove()) {
 				gridObject.seedGrid(userCoords);
-				firstMove = false;
+				gridObject.setFirstMove(false);
 			}
-			gridObject.seedGrid(userCoords); //The first square chosen is always free,
 
 			gridObject.clickCell(rightClick, userCoords);
 

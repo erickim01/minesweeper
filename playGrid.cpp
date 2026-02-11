@@ -6,6 +6,9 @@
 
 
 //PlayGrid::PlayGrid() {}
+
+void PlayGrid::setFirstMove(bool setState) { firstMove = setState; } //Resets firstMove flag to true at the start of a new game and once called is set to false.
+
 void PlayGrid::setDifficulty(int difficulty) {
 	this->difficulty = difficulty;
 	setBombs();
@@ -45,6 +48,8 @@ void PlayGrid::setGridList() {
 		}
 	}
 }
+
+bool PlayGrid::getFirstMove() { return firstMove; }
 
 int PlayGrid::getDifficulty() { return difficulty; }
 

@@ -15,11 +15,13 @@ class PlayGrid {
 public:
 
 	//PlayGrid();
+	void setFirstMove(bool setState);
 	void setDifficulty(int difficulty);
 	void setBombs();
 	void setGridSize(int gridSize);
 	void setGridList();
 	
+	bool getFirstMove();
 	int getDifficulty();
 	int getBombs();
 	int getGridSize();
@@ -34,6 +36,7 @@ public:
 	
 
 private:
+	bool firstMove;
 	int difficulty = -1;
 	int numBombs = -1;
 	int gridSize = -1;
