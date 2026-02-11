@@ -67,12 +67,14 @@ void PlayGrid::displayGrid() {
 		std::cout << " | " << rowLetter << " | ";
 		for (int j = 0; j < gameGrid.size(); ++j) {
 			if (j + 1 < 10) {
-				if (gameGrid[i][j].revealed == false) { std::cout << (char)254u << " | "; }
-				else { std::cout << "P" << " | "; }
+				if (!gameGrid[i][j].revealed && !gameGrid[i][j].flagged) { std::cout << (char)254u << " | "; } //Most common case first.
+				else if (gameGrid[i][j].revealed) { std::cout << gameGrid[i][j].value << " | "; } //Check if has been revealed, and if so displays the value.
+				else { std::cout << "P" << " | "; } //The Cell isflagged.
 			}
 			else if (j + 1 >= 10) {
-				if (gameGrid[i][j].revealed == false) { std::cout << (char)254u << " | "; }
-				else { std::cout << "P" << " | "; }
+				if (!gameGrid[i][j].revealed && !gameGrid[i][j].flagged) { std::cout << (char)254u << "  | "; }	
+				else if (gameGrid[i][j].revealed) { std::cout << gameGrid[i][j].value << "  | "; }
+				else { std::cout << "P" << "  | "; } 
 			}
 		}
 		++rowLetter;
@@ -171,8 +173,6 @@ void PlayGrid::countNeighbors(std::vector<std::vector<Cell>> &numVects2D) {
 	}
 }
 
-
-
 /*		Alternate better code for countNeighbors that I don't understand
 * 
 * //Direction Array / offsets
@@ -209,3 +209,26 @@ void PlayGrid::countNeighbors(std::vector<std::vector<Cell>> &numVects2D) {
 		std::cout << std::endl;
 	}
 */
+
+
+void PlayGrid::clickCell(bool isRightClicked, std::pair<int, int> userCoord) {	//RMB right-click if 1, LMB left-click if 0; 
+	auto& isRevealed = gameGrid[userCoord.first][userCoord.second].revealed;	//Reference variables for readabilty, updates based on being clicked.
+	auto& isFlagged = gameGrid[userCoord.first][userCoord.second].flagged; 
+	if (isRightClicked) {
+		if(!isRevealed) {							//Flag status is changed only while the tile is unrevealed.
+			if (isFlagged) { isFlagged = false; }		//If the cell is currently flagged, removes the flag.
+			else { isFlagged = true; }					//Otherwise a flag is placed on the tile.
+		}
+	}
+	else {
+		if (gameGrid[userCoord.first][userCoord.second].value == -1) {
+			//Bomb was left clicked. Game over ensuses.
+			//Function to set every tile to reveal and set main state to gameover.
+			std::cout << "\nBOMB LEFT CLICKED.\n";
+		}
+		else { 
+			isRevealed = true; 
+			isFlagged = false;
+		}
+	}
+}

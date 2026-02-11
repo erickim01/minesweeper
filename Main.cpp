@@ -81,7 +81,7 @@ std::string clickInput(bool &rightClick) { //returns "Right/Left-Click in text o
 	while (std::cout << "\nRight or Left click? ('R' / 'L'): ", std::getline(std::cin, userInput)) {
 		normalizeInput(userInput);
 		if (userInput == "RIGHT" || userInput == "R") { clearConsole(); rightClick = true; return "Right-Click."; }
-		else if (userInput == "LEFT" || userInput == "L") { clearConsole(); rightClick = true; return "Left-CLick."; }
+		else if (userInput == "LEFT" || userInput == "L") { clearConsole(); rightClick = false; return "Left-CLick."; }
 		else { std::cout << "Input not recognized. Please enter a click operation (Right / R, or Left / L.\n"; }
 	}
 }
@@ -105,6 +105,7 @@ int main() {
 		else { //Otherwise difficulty is selected.
 			gridObject.setDifficulty(selectDifficulty());
 			gridObject.createEmptyGrid();
+			gridObject.setFirstMove();
 			status = GameState::Active;
 			clearConsole();
 			std::cout << "\n\t\t\tGame Start.\n";
@@ -121,9 +122,14 @@ int main() {
 			bool rightClick = false;
 			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << userCoords.second << ", " << clickInput(rightClick) << std::endl << std::endl;
 
+			static bool firstMove = true;
+			if (firstMove) {
+				gridObject.seedGrid(userCoords);
+				firstMove = false;
+			}
 			gridObject.seedGrid(userCoords); //The first square chosen is always free,
 
-			//gridObject.clickCell(rightClick);
+			gridObject.clickCell(rightClick, userCoords);
 
 			//NEED
 			// Click a square
