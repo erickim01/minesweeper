@@ -5,6 +5,9 @@
 #include <cctype>		//<std::tolower> <std::toupper>		//These handle the user input when choosing menu options.
 #include <chrono>
 #include "PlayGrid.h"
+#include "Stopwatch.hpp"
+
+namespace sw = stopwatch;
 
 //ANSI Clear Screen		-	\x1b[2J 
 //ANSI Cursor to Top Left	-	\x1b[1;1H
@@ -19,7 +22,7 @@ enum class GameState {
 
 struct GameStats {
 	int flagsLeft = 0;			//later set to gridObject.getBombs()
-	std::chrono::steady_clock::time_point timeElapsed;
+	//sw::Stopwatch timeElapsed;
 	double tilesOpen = 0.00;	//Number of tiles currently revealed, divided by the total tiles minus number of bombs and multiplied by 100 for a percentage.
 };
 
@@ -93,6 +96,13 @@ std::string clickInput(bool &rightClick) { //returns "Right/Left-Click in text o
 	}
 }
 
+/*
+void printTime()  {
+	//std::cout << "\nTime Elapsed : " << elapsedSeconds << std::endl;
+				
+}
+*/
+
 int main() {
 	GameState status = GameState::Menu;	
 	std::string menuInput = "";
@@ -131,9 +141,12 @@ int main() {
 		while (static_cast<int>(status) == 2) { 
 			currGameStats.tilesOpen = 0 / (gridObject.getGridSize() - gridObject.getBombs()); //TODOTODOTODO Replace 0 with reveal counter to properly update
 			gridObject.displayGrid();
+			sw::Stopwatch timeElapsed;
+			timeElapsed.start();
+			//Stopwatch Statements
 			if (!gridObject.getFirstMove()) {
-				//auto now = std::chrono::steady_clock::now();
-				currGameStats.timeElapsed = std::chrono::steady_clock::now(); //TODOTODOTODO write output function to format the current time elapse mm:ss.
+				std::uint64_t elapsed_ms = timeElapsed.elapsed<sw::microseconds>();
+				std::cout << "Time Elapsed: " << elapsed_ms << std::endl;
 			}
 			else { std::cout << "\nTime Elapsed: 00:00\n"; }
 			std::cout << "Flags Left: " << currGameStats.flagsLeft << std::endl;
