@@ -251,7 +251,7 @@ bool PlayGrid::clickCell(bool isRightClicked, std::pair<int, int> userCoord) {	/
 		if (gameGrid[row][col].value == -1) {
 			//Bomb was left clicked. Game over ensuses.
 			//Function to set every tile to reveal and set main state to gameover.
-			std::cout << "\nYour selected cell, " << static_cast<char>(row + 65) << col + 1 << "was a BOMB.\n";
+			std::cout << "\nYour selected cell, " << static_cast<char>(row + 65) << "-" << col + 1 << ", was a BOMB.\n";
 			return true;
 		}
 		else if (!currCell.revealed) { revealCell(row, col, currCell.revealed, currCell.flagged); return false; }

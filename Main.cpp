@@ -1,6 +1,7 @@
 #include <string>
+#include <fstream>		//Savegames and highscore record keeping.
 #include <iostream>
-#include <iomanip>
+#include <iomanip>		//Stats formatting.
 #include <vector>
 #include <algorithm>	//<std::transform> <std::remove_if>
 #include <cctype>		//<std::tolower> <std::toupper>		//These handle the user input when choosing menu options.
@@ -97,7 +98,7 @@ int main() {
 		///////////////////////////////
 		//////MENU - PLAY OR QUIT//////
 		///////////////////////////////
-		std::cout << "\t\t\t --- Minesweeper Clone --- \t\t\t" << std::endl;
+		std::cout << "\t\t--- Minesweeper Clone ---\t\t" << std::endl;
 		std::cout << "\n\n>Play ('p') \n>Quit ('q')\n";
 		std::cin >> menuInput;
 		std::cin.ignore();
@@ -139,7 +140,7 @@ int main() {
 				gridObject.setFirstMove(false);
 			}
 			gameOver = gridObject.clickCell(rightClick, userCoords);
-			//gridObject.displayGridGameOver(); //DEBUG Displays game over right now.
+			gridObject.displayGridGameOver(); //DEBUG Displays game over right now.
 
 			
 			//Will need value to track how many clear squares are uncleared. When all safe squares are clicked OR a bomb is clicked, gameOver = true.
