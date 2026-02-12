@@ -109,10 +109,7 @@ int main() {
 			gridObject.setDifficulty(selectDifficulty());
 			gridObject.createEmptyGrid();
 			gridObject.setFirstMove(true);
-			status = GameState::Active;
-			//currGameStats.flagsLeft = gridObject.getBombs();
-			
-			
+			status = GameState::Active;		
 			clearConsole();
 			std::cout << "\n\t\t\tGame Start.\n";
 		}
@@ -130,14 +127,6 @@ int main() {
 			std::cout << "Tiles Revealed: " << gridObject.getTilesRevealed() << " of " << nonBombTiles;
 			std::cout << " (" << std::fixed << std::setprecision(2) << (static_cast <float>(gridObject.getTilesRevealed()) / static_cast <float>(nonBombTiles)) * 100 << "%)";
 			std::cout << "\nFlags Left : " << gridObject.getFlags() << std::endl;
-
-			/*
-			double tilesPercentHard = static_cast < float>(2) / static_cast <float>(112);
-			double tilesPercent = static_cast<float>(currGameStats.tilesDone / nonBombTiles);
-			std::cout << "\n\nDEBUG: numBombTiles = [" << nonBombTiles << "], tilesDone = [" << currGameStats.tilesDone << "]";
-			std::cout << "\n tilesPercentHard = " << tilesPercentHard;
-			std::cout << "\n tilesPercent = " << tilesPercent << "\n";
-			*/
 			
 			std::pair<int, int> userCoords = getInput(gridObject.getGridSize());
 			bool rightClick = false;
@@ -148,6 +137,7 @@ int main() {
 				gridObject.setFirstMove(false);
 			}
 			gridObject.clickCell(rightClick, userCoords);
+			gridObject.displayGridGameOver();
 
 			//
 			//

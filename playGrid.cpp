@@ -112,11 +112,11 @@ void PlayGrid::displayGridGameOver() {
 		std::cout << " | " << rowLetter << " | ";
 		for (int j = 0; j < gameGrid.size(); ++j) {
 			if (j + 1 < 10) {
-				if (gameGrid[i][j].value == -1) { std::cout << (char)254u << " | "; }
+				if (gameGrid[i][j].value == -1) { std::cout << "* | "; }
 				else { std::cout << gameGrid[i][j].value << " | "; }
 			}
 			else if (j + 1 >= 10) {
-				if (gameGrid[i][j].value == -1) { std::cout << (char)254u << "  | "; }
+				if (gameGrid[i][j].value == -1) { std::cout << "*  | "; }
 				else { std::cout << gameGrid[i][j].value << "  | "; }
 			}
 		}
@@ -228,24 +228,24 @@ void PlayGrid::countNeighbors(std::vector<std::vector<Cell>> &numVects2D) {
 */
 
 
-void PlayGrid::clickCell(bool isRightClicked, std::pair<int, int> userCoord) {	//RMB right-click if 1, LMB left-click if 0; 
+void PlayGrid::clickCell(bool isRightClicked, std::pair<int, int> userCoord) {	//RMB right-click if 1, LMB left-click if 0;
 	const auto& row = userCoord.first;
 	const auto& col = userCoord.second;
-	auto& isRevealed = gameGrid[row][col].revealed;	//Reference variables for readabilty, updates based on being clicked.
-	auto& isFlagged = gameGrid[row][col].flagged;
+	Cell& currCell = gameGrid[row][col];
 	if (isRightClicked) {
-		if(!isRevealed) {							//Flag status is changed only while the tile is unrevealed.
-			if (isFlagged) { isFlagged = false; ++flagsLeft; }		//If the cell is currently flagged, removes the flag.
-			else { isFlagged = true; --flagsLeft; }					//Otherwise a flag is placed on the tile.
+		if(!currCell.revealed) {													//Flag status is changed only while the tile is unrevealed.
+			if (currCell.flagged) { currCell.flagged = false; ++flagsLeft; }		//If the cell is currently flagged, removes the flag.
+			else { currCell.flagged = true; --flagsLeft; }							//Otherwise a flag is placed on the tile.
 		}
 	}
 	else {
+		//if (currCell.flagged) { return; }
 		if (gameGrid[row][col].value == -1) {
 			//Bomb was left clicked. Game over ensuses.
 			//Function to set every tile to reveal and set main state to gameover.
 			std::cout << "\nBOMB LEFT CLICKED.\n";
 		}
-		else if (!isRevealed) { revealCell(row, col, isRevealed, isFlagged); }
+		else if (!currCell.revealed) { revealCell(row, col, currCell.revealed, currCell.flagged); }
 	}
 }
 
