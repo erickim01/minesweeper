@@ -229,8 +229,10 @@ void PlayGrid::countNeighbors(std::vector<std::vector<Cell>> &numVects2D) {
 
 
 void PlayGrid::clickCell(bool isRightClicked, std::pair<int, int> userCoord) {	//RMB right-click if 1, LMB left-click if 0; 
-	auto& isRevealed = gameGrid[userCoord.first][userCoord.second].revealed;	//Reference variables for readabilty, updates based on being clicked.
-	auto& isFlagged = gameGrid[userCoord.first][userCoord.second].flagged; 
+	const auto& row = userCoord.first;
+	const auto& col = userCoord.second;
+	auto& isRevealed = gameGrid[row][col].revealed;	//Reference variables for readabilty, updates based on being clicked.
+	auto& isFlagged = gameGrid[row][col].flagged;
 	if (isRightClicked) {
 		if(!isRevealed) {							//Flag status is changed only while the tile is unrevealed.
 			if (isFlagged) { isFlagged = false; ++flagsLeft; }		//If the cell is currently flagged, removes the flag.
@@ -238,16 +240,40 @@ void PlayGrid::clickCell(bool isRightClicked, std::pair<int, int> userCoord) {	/
 		}
 	}
 	else {
-		if (gameGrid[userCoord.first][userCoord.second].value == -1) {
+		if (gameGrid[row][col].value == -1) {
 			//Bomb was left clicked. Game over ensuses.
 			//Function to set every tile to reveal and set main state to gameover.
 			std::cout << "\nBOMB LEFT CLICKED.\n";
 		}
-		else if (!isRevealed) { 
-			//count neighbors call to execute these same three lines down here on all tiles that equal zero
-			isRevealed = true; 
-			isFlagged = false;
-			++tilesRevealed;
+		else if (!isRevealed) { revealCell(row, col, isRevealed, isFlagged); }
+	}
+}
+
+//Helper function to check neighboring cells for zeroes and cascade reveal cells.
+void PlayGrid::revealCell(int row, int col, bool &isRevealed, bool &isFlagged) {
+	if (!isRevealed) {
+		++tilesRevealed;		//Cell is revealed if it has not yet been revealed
+		isRevealed = true;		//Avoids double counting a cell as revealed.
+		isFlagged = false;
+	}
+	if (gameGrid[row][col].value == 0) {		//If a neighbor exists, and hasn't been revealed yet, add it to a list of neighbors of the current cell
+
+
+		std::vector<std::pair<int, int>> neighborList;
+		if ((col != gridSize - 1) && (!gameGrid[row][col + 1].revealed)) { neighborList.push_back(std::make_pair(row, col + 1)); }									//EAST - directly to the right
+		if ((row != gridSize - 1) && (!gameGrid[row + 1][col].revealed)) { neighborList.push_back(std::make_pair(row + 1, col)); }									//SOUTH - directly below the current cell
+		if ((row != gridSize - 1) && (col != gridSize - 1) && (!gameGrid[row + 1][col + 1].revealed)) { neighborList.push_back(std::make_pair(row + 1, col + 1)); }		//SOUTH-EAST - down and right
+
+		if ((row >= 1) && (!gameGrid[row - 1][col].revealed)) { neighborList.push_back(std::make_pair(row - 1, col)); }												//NORTH - directly above	
+		if ((row >= 1) && (col != gridSize - 1) && (!gameGrid[row - 1][col + 1].revealed)) { neighborList.push_back(std::make_pair(row - 1, col + 1)); }					//NORTH-EAST - up and right
+
+		if ((col >= 1) && (!gameGrid[row][col - 1].revealed)) { neighborList.push_back(std::make_pair(row, col - 1)); }												// WEST - left neighbor 
+		if ((row >= 1) && (col >= 1) && (!gameGrid[row - 1][col - 1].revealed)) { neighborList.push_back(std::make_pair(row - 1, col - 1)); }								// NORTH-WEST - up and left
+		if ((row != gridSize - 1) && (col >= 1) && (!gameGrid[row + 1][col - 1].revealed)) { neighborList.push_back(std::make_pair(row + 1, col - 1)); }					// SOUTH-WEST - down and left
+
+		for (int i = 0; i < neighborList.size(); ++i) {
+			revealCell(neighborList[i].first, neighborList[i].second, gameGrid[neighborList[i].first][neighborList[i].second].revealed,
+				gameGrid[neighborList[i].first][neighborList[i].second].flagged);
 		}
 	}
 }

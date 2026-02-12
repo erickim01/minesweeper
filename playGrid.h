@@ -49,27 +49,28 @@ private:
 	std::vector<std::vector<Cell>> gameGrid;								//2D Matrix representation of every cell on the playing field.
 	std::vector<std::pair<int, int>> gridList;								//A registry of every possible cell in play to simplify bomb seeding.
 	void countNeighbors(std::vector<std::vector<Cell>>& numVects2D);
+	void revealCell(int row, int col, bool& isRevealed, bool& isFlagged);
 
 };
 
 //TODO TODO TODO
 /*
-*	- Right clicking replaces square with flag			(DONE)
+*	- Right clicking replaces square with flag				(DONE)
 * 
-*	- Right clicking open/revealed tile does nothing	(DONE)
+*	- Right clicking open/revealed tile does nothing		(DONE)
 * 
-*	- Left clicking reveals tile, and if it's a bomb    50%
+*	- Left clicking reveals tile, and if it's a bomb		  50%
 	  immediately triggers game over.
 
 *	- Revealing all non-bomb tiles triggers victory, 
       saves to high score.
 
-	- Right Clicking decrements flagsLeft by one.
+	- Right Clicking decrements flagsLeft by one.			(DONE)
 
 	- time counter that updates timeElapsed with each 
 	  click.
 
-	- tilesClicked function that divides number of 
+	- tilesClicked function that divides number of			(DONE)
 	  revealed tiles *that are not bombs* by gridSize 
 	  squared, and then multipled by 100%.
 
