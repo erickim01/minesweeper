@@ -228,14 +228,22 @@ void PlayGrid::countNeighbors(std::vector<std::vector<Cell>> &numVects2D) {
 */
 
 
-void PlayGrid::clickCell(bool isRightClicked, std::pair<int, int> userCoord) {	//RMB right-click if 1, LMB left-click if 0;
+bool PlayGrid::clickCell(bool isRightClicked, std::pair<int, int> userCoord) {	//RMB right-click if 1, LMB left-click if 0;
 	const auto& row = userCoord.first;
 	const auto& col = userCoord.second;
 	Cell& currCell = gameGrid[row][col];
 	if (isRightClicked) {
 		if(!currCell.revealed) {													//Flag status is changed only while the tile is unrevealed.
-			if (currCell.flagged) { currCell.flagged = false; ++flagsLeft; }		//If the cell is currently flagged, removes the flag.
-			else { currCell.flagged = true; --flagsLeft; }							//Otherwise a flag is placed on the tile.
+			if (currCell.flagged) { 
+				currCell.flagged = false;
+				++flagsLeft;
+				return false;
+			}		//If the cell is currently flagged, removes the flag.
+			else {
+				currCell.flagged = true;
+				--flagsLeft; 
+				return false;
+			}							//Otherwise a flag is placed on the tile.
 		}
 	}
 	else {
@@ -243,10 +251,12 @@ void PlayGrid::clickCell(bool isRightClicked, std::pair<int, int> userCoord) {	/
 		if (gameGrid[row][col].value == -1) {
 			//Bomb was left clicked. Game over ensuses.
 			//Function to set every tile to reveal and set main state to gameover.
-			std::cout << "\nBOMB LEFT CLICKED.\n";
+			std::cout << "\nYour selected cell, " << static_cast<char>(row + 65) << col + 1 << "was a BOMB.\n";
+			return true;
 		}
-		else if (!currCell.revealed) { revealCell(row, col, currCell.revealed, currCell.flagged); }
+		else if (!currCell.revealed) { revealCell(row, col, currCell.revealed, currCell.flagged); return false; }
 	}
+	return false;
 }
 
 //Helper function to check neighboring cells for zeroes and cascade reveal cells.

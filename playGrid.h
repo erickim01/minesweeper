@@ -35,12 +35,12 @@ public:
 	void displayGridGameOver();
 	void createEmptyGrid();
 	void seedGrid(std::pair<int, int> userCoord);
-	void clickCell(bool clickChoice, std::pair<int, int> userCoord);
+	bool clickCell(bool clickChoice, std::pair<int, int> userCoord);
 	
 	
 
 private:
-	bool firstMove;
+	bool firstMove = false;
 	int difficulty = -1;
 	int numBombs = -1;
 	int gridSize = -1;

@@ -13,7 +13,8 @@ void clearConsole() { std::cout << "\x1b[2J\x1b[1;1H"; }
 enum class GameState {
 	Menu = 1,
 	Active = 2,
-	Quit = 3
+	Gameover = 3,
+	Quit = 4
 
 };
 
@@ -91,7 +92,8 @@ int main() {
 	GameState status = GameState::Menu;	
 	std::string menuInput = "";
 	PlayGrid gridObject;
-	while (static_cast<int>(status) != 3) {		//Program runs in console while quit flag not raised.
+	bool gameOver = false;
+	while (static_cast<int>(status) != 4) {		//Program runs in console while quit flag not raised.
 		///////////////////////////////
 		//////MENU - PLAY OR QUIT//////
 		///////////////////////////////
@@ -106,6 +108,7 @@ int main() {
 			break;
 		}
 		else { //Otherwise difficulty is selected.
+			bool gameOver = false;
 			gridObject.setDifficulty(selectDifficulty());
 			gridObject.createEmptyGrid();
 			gridObject.setFirstMove(true);
@@ -130,26 +133,16 @@ int main() {
 			
 			std::pair<int, int> userCoords = getInput(gridObject.getGridSize());
 			bool rightClick = false;
-			//gridObject.displayGridGameOver(); //DEBUG Displays game over right now.
 			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << (userCoords.second + 1) << ", " << clickInput(rightClick) << std::endl << std::endl;
 			if (gridObject.getFirstMove()) {
 				gridObject.seedGrid(userCoords);
 				gridObject.setFirstMove(false);
 			}
-			gridObject.clickCell(rightClick, userCoords);
-			gridObject.displayGridGameOver();
-
-			//
-			//
-			//This needs to be encapsulated in a conditional that uses getFirstMove and displays zero if true, then displays noramlly every other loop.
+			gameOver = gridObject.clickCell(rightClick, userCoords);
+			//gridObject.displayGridGameOver(); //DEBUG Displays game over right now.
 
 			
-			
-			
-			//int squaresLeft = 
-
-
-			bool gameOver = false; //Will need value to track how many clear squares are uncleared. When all safe squares are clicked OR a bomb is clicked, gameOver = true.
+			//Will need value to track how many clear squares are uncleared. When all safe squares are clicked OR a bomb is clicked, gameOver = true.
 			if (gameOver) {
 				clearConsole();
 				std::cout << "\n\t\t\tGame Over.\n";
