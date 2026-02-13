@@ -98,6 +98,27 @@ std::string clickInput(bool &rightClick) { //returns "Right/Left-Click in text o
 	}
 }
 
+void saveGame(bool saveFirstMove, int saveDifficulty, int saveNumBombs, int saveGridSize, int) {
+	std::cout << "Enter Save Name: ";
+	std::string saveName;
+	std::getline(std::cin, saveName);
+	std:: ofstream saveWrite(saveName);
+	if(saveWrite) { 
+		saveWrite;
+	}				//Writes the necessary data to load a game back up later.
+	saveWrite.close();
+}
+
+/*
+
+	int tilesRevealed = 0;													//Keeps a count of how many non-bomb tiles have been revealed.
+	int flagsLeft = -1;
+	std::vector<std::vector<Cell>> gameGrid;								//2D Matrix representation of every cell on the playing field.
+	std::vector<std::pair<int, int>> gridList;								//A registry of every possible cell in play to simplify bomb seeding.
+	void countNeighbors(std::vector<std::vector<Cell>>& numVects2D);
+	void revealCell(int row, int col, bool& isRevealed, bool& isFlagged);
+*/
+
 int main() {
 	GameState status = GameState::Menu;	
 	std::string menuInput = "";
@@ -148,7 +169,10 @@ int main() {
 				if (userCoords.second == 0) {
 					//saveGame();
 				}
-				else { status = GameState::Quit; break; }
+				else { 
+					status = GameState::Quit; 
+					break;
+				}
 			}
 			bool rightClick = false;
 			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << (userCoords.second + 1) << ", " << clickInput(rightClick) << std::endl << std::endl;

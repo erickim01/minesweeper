@@ -74,7 +74,7 @@ private:
 	  revealed tiles *that are not bombs* by gridSize 
 	  squared, and then multipled by 100%.
 
-	- Save/Load game exports/imports.
+	- Save/Load game exports/imports.						(20%)
 
 	- High score log.
 */
