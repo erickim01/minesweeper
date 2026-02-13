@@ -36,7 +36,7 @@ public:
 	void createEmptyGrid();
 	void seedGrid(std::pair<int, int> userCoord);
 	bool clickCell(bool clickChoice, std::pair<int, int> userCoord);
-	
+	bool saveGame(const std::string& saveName) const;
 	
 
 private:
@@ -50,6 +50,7 @@ private:
 	std::vector<std::pair<int, int>> gridList;								//A registry of every possible cell in play to simplify bomb seeding.
 	void countNeighbors(std::vector<std::vector<Cell>>& numVects2D);
 	void revealCell(int row, int col, bool& isRevealed, bool& isFlagged);
+	
 
 };
 
@@ -59,23 +60,23 @@ private:
 * 
 *	- Right clicking open/revealed tile does nothing		(DONE)
 * 
-*	- Left clicking reveals tile, and if it's a bomb		  50%
+*	- Left clicking reveals tile, and if it's a bomb		(DONE)
 	  immediately triggers game over.
 
-*	- Revealing all non-bomb tiles triggers victory, 
+*	- Revealing all non-bomb tiles triggers victory,		  60%
       saves to high score.
 
 	- Right Clicking decrements flagsLeft by one.			(DONE)
 
-	- time counter that updates timeElapsed with each 
+	- time counter that updates timeElapsed with each		  10%
 	  click.
 
 	- tilesClicked function that divides number of			(DONE)
 	  revealed tiles *that are not bombs* by gridSize 
 	  squared, and then multipled by 100%.
 
-	- Save/Load game exports/imports.						(20%)
+	- Save/Load game exports/imports.						 40%
 
-	- High score log.
+	- High score log.										 80% (NEEDS TESTING)
 */
 

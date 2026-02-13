@@ -3,6 +3,11 @@
 #include <random> //<auto rng = std::default_random_engine {};>
 #include "PlayGrid.h"
 
+//saveGame() function - Likely to move this function and these #includes to a parent class.
+#include <fstream>
+#include <string>
+
+
 
 
 //PlayGrid::PlayGrid() {}
@@ -166,6 +171,9 @@ void PlayGrid::seedGrid(std::pair<int, int> userCoord) {
 	//DEBUG - Show Registry Contents for (int i = 0; i < listCopy.size(); ++i) { std::cout << listCopy[i].first << ", " << listCopy[i].second << std::endl; }
 	countNeighbors(gameGrid);
 }
+//The initial click is not only free, but is always a zero surrounded by other zeroes.
+
+
 
 //Helper function to seedGrid(). Checks if a neighboring cell on a 2D grid has a -1 and then increases the current Cell's own count by one if -1 is seen.
 void PlayGrid::countNeighbors(std::vector<std::vector<Cell>> &numVects2D) {
@@ -267,8 +275,7 @@ void PlayGrid::revealCell(int row, int col, bool &isRevealed, bool &isFlagged) {
 		isFlagged = false;
 	}
 	if (gameGrid[row][col].value == 0) {		//If a neighbor exists, and hasn't been revealed yet, add it to a list of neighbors of the current cell
-
-
+		//A "zero" tile reveals EVERY one of its neighbors; A nonzero tile only reveals itself
 		std::vector<std::pair<int, int>> neighborList;
 		if ((col != gridSize - 1) && (!gameGrid[row][col + 1].revealed)) { neighborList.push_back(std::make_pair(row, col + 1)); }									//EAST - directly to the right
 		if ((row != gridSize - 1) && (!gameGrid[row + 1][col].revealed)) { neighborList.push_back(std::make_pair(row + 1, col)); }									//SOUTH - directly below the current cell
@@ -288,6 +295,34 @@ void PlayGrid::revealCell(int row, int col, bool &isRevealed, bool &isFlagged) {
 	}
 }
 
-//A "zero" tile reveals EVERY one of its neighbors
-//A nonzero tile only reveals itself
-//The initial click is not only free, but is always a zero surrounded by other zeroes.
+
+
+bool PlayGrid::saveGame(const std::string& saveName) const {
+	
+	std::ofstream saveWrite(saveName);
+	if (saveWrite) {
+		saveWrite << firstMove << std::endl;
+		saveWrite << difficulty << std::endl;
+		saveWrite << numBombs << std::endl;
+		saveWrite << tilesRevealed << std::endl;
+		saveWrite << flagsLeft << std::endl;
+		
+		for (const auto& i : gameGrid) {
+			for (const auto& j : i) {
+				saveWrite << j.value << "," << j.revealed << "," << j.flagged << " ";
+			}
+			saveWrite << std::endl;
+		}
+		//for (const auto& i : gridList) {}		//For use if gridList becomes used for other features later on.
+	}
+	else {
+		std::cerr << "Failed to open file: " << saveName << std::endl; 
+		return false;
+	}
+	saveWrite.close();
+	return true;
+}
+
+
+std::vector<std::vector<Cell>> gameGrid;								//2D Matrix representation of every cell on the playing field.
+std::vector<std::pair<int, int>> gridList;								//A registry of every possible cell in play to simplify bomb seeding.
