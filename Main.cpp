@@ -47,7 +47,16 @@ std::pair<int, int> getInput(int gridSize) {
 		std::string coordInput;
 		std::getline(std::cin, coordInput);				// DEBUG std::cout << "Raw after getline: [" << myStr << "], len=" << myStr.length() << "\n";
 		normalizeInput(coordInput);
-		
+
+		//Savegame and quit sequences
+		if (coordInput == "SAVE" || coordInput == "S") {
+			std::pair<int, int> saveSequence = { -1, 0 };
+			return saveSequence;
+		}
+		if (coordInput == "QUIT" || coordInput == "Q") {
+			std::pair<int, int> quitSequence = { -1, 1 };
+			return quitSequence;
+		}
 		if (coordInput.length() < 2 || coordInput.length() > 3) {
 			std::cout << "\nInvalid length! Use a single letter followed by 1 - 2 digits (e.g. A1, B2, etc.)\n";
 			continue;
@@ -98,8 +107,8 @@ int main() {
 		///////////////////////////////
 		//////MENU - PLAY OR QUIT//////
 		///////////////////////////////
-		std::cout << "\t\t--- Minesweeper Clone ---\t\t" << std::endl;
-		std::cout << "\n\n>Play ('p') \n>Quit ('q')\n";
+		std::cout << "\t\t  --- Minesweeper Clone ---\t\t" << std::endl;
+		std::cout << "\n\n>Play ('p') \n>Quit ('q')\n";						//TODO TODO TODO - Add options for loading a game, viewing credits, viewing highscores. Tweak diff settings?
 		std::cin >> menuInput;
 		std::cin.ignore();
 		std::transform(menuInput.begin(), menuInput.end(), menuInput.begin(), [](unsigned char c) { return std::toupper(c); });
@@ -124,31 +133,46 @@ int main() {
 		////////////////////////////
 		while (static_cast<int>(status) == 2) { 
 			static int nonBombTiles = (gridObject.getGridSize() * gridObject.getGridSize()) - gridObject.getBombs();
+			float percentDone = (static_cast <float>(gridObject.getTilesRevealed()) / static_cast <float>(nonBombTiles)) * 100;
 			gridObject.displayGrid();
 			
 			//////Game stats UI outputs//////
 			std::cout << "\nTime Elapsed: 00:00\n";
 			std::cout << "Tiles Revealed: " << gridObject.getTilesRevealed() << " of " << nonBombTiles;
-			std::cout << " (" << std::fixed << std::setprecision(2) << (static_cast <float>(gridObject.getTilesRevealed()) / static_cast <float>(nonBombTiles)) * 100 << "%)";
+			std::cout << " (" << std::fixed << std::setprecision(2) << percentDone << "%)";
 			std::cout << "\nFlags Left : " << gridObject.getFlags() << std::endl;
 			
 			std::pair<int, int> userCoords = getInput(gridObject.getGridSize());
+			//if userCoordinates returned a -1 in the first slot, a save or quit sequence has been triggered.
+			if (userCoords.first == -1) {
+				if (userCoords.second == 0) {
+					//saveGame();
+				}
+				else { status = GameState::Quit; break; }
+			}
 			bool rightClick = false;
 			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << (userCoords.second + 1) << ", " << clickInput(rightClick) << std::endl << std::endl;
 			if (gridObject.getFirstMove()) {
 				gridObject.seedGrid(userCoords);
 				gridObject.setFirstMove(false);
 			}
+			clearConsole();
 			gameOver = gridObject.clickCell(rightClick, userCoords);
-			gridObject.displayGridGameOver(); //DEBUG Displays game over right now.
-
-			
-			//Will need value to track how many clear squares are uncleared. When all safe squares are clicked OR a bomb is clicked, gameOver = true.
+			//gridObject.displayGridGameOver(); //DEBUG Displays game over right now.
+			if (gridObject.getTilesRevealed() == (gridObject.getGridSize() * gridObject.getGridSize())) { 
+				std::cout << "\nWinner! All open spaces have been discovered.\n";
+				gameOver = true; 
+			}
 			if (gameOver) {
-				clearConsole();
-				std::cout << "\n\t\t\tGame Over.\n";
+				std::cout << "\n\t\t----Game Over----\n";
 				gridObject.displayGridGameOver();
 				status = GameState::Menu;
+				//Write results of game to scores.csv file.
+				int timeElapsed = -1;
+				int currDate = -1;
+				std::ofstream scoresWrite("scores.csv", std::ios::app);
+				if (scoresWrite) { scoresWrite << gridObject.getDifficulty() << timeElapsed << percentDone << currDate << "\n"; }
+				scoresWrite.close();
 			}
 		}
 	}
