@@ -333,14 +333,41 @@ bool PlayGrid::saveGame(const std::string& saveName) const {
 	return true;
 }
 
+//TODO TODO TODO - Change name to more generic "displayFiles".
 bool PlayGrid::displaySaves(const std::string& path) {
 	if (!checkDirExists(path)) { 
 		std::cerr << "DISPLAY SAVES: Directory " << path << "not found.\n";
 		return 0; 
 	}
-	for (const auto& file : fs::directory_iterator(path)) { std::cout << file.path() << std::endl; }
+	int saveIndex = 0;
+	for (const auto& file : fs::directory_iterator(path)) {
+		//std::cout << saveIndex + 1 << file.path() << std::endl;
+		std::string fileName = file.path().string();
+		std::cout << fileName << "\n";
+		++saveIndex;
+	}
 	return 1;
 }
-bool PlayGrid::loadGame() {
-	return 0;
+
+
+
+
+//TODO TODO TODO - Split this function into a generic "select file" and then run a loadGame function specific to Minesweeper.
+bool PlayGrid::loadGame(const std::string& path, const int& targetIndex) {
+	if (!checkDirExists(path)) {
+		std::cerr << "DISPLAY SAVES: Directory " << path << "not found.\n";
+		return 0;
+	}
+	//--targetIndex;
+	int currIndex = 0;
+	std::vector<std::pair<int, std::string>> fileList;
+	for (const auto& file : fs::directory_iterator(path)) {
+		//fileList.push_back(std::make_pair(0, file));
+	}
+	//for each entry in our target directory
+	//Make a pair vector with the index and name of save file
+	//for each pair in pairVector
+	//If targetIndex = that entry, pass the name of that file to loadGame.
+	//break loop
+	//return 1
 }

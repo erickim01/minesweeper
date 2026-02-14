@@ -132,15 +132,14 @@ int main() {
 			break;
 		}
 		else if (menuInput == "LOAD" || menuInput == "L") {
-			//Check if Save file exists
-			std::string saveDir = "Saves";
+			std::string saveDir = "Saves"; //Check if Save file exists
 			if (!gridObject.checkDirExists(saveDir)) { std::cout << "Saves folder not found.\n"; }
 			else {
-				//gridObject.displaySaves(saveDir);
-				std::cout << "Choose save file: ";
+				gridObject.displaySaves(saveDir);
+				std::cout << "Choose save file by number: ";
 				std::cin >> menuInput;
 				std::cin.ignore();
-				//gridObject.loadGame();
+				//gridObject.loadGame(saveDir, menuInput);
 			}
 		}
 		else { //Otherwise difficulty is selected.
@@ -170,9 +169,7 @@ int main() {
 			std::pair<int, int> userCoords = getInput(gridObject.getGridSize());
 
 			//SAVE - QUIT CONDITIONALS
-			//if userCoordinates returned a -1 in the first slot, a save or quit sequence has been triggered.
-			
-			if (userCoords.first == -1) {
+			if (userCoords.first == -1) {	//if userCoordinates returned a -1 in the first slot, a save or quit sequence has been triggered.
 				clearConsole();	
 				if (userCoords.second == 0) {
 					std::cout << "Enter Save Name: ";
@@ -184,6 +181,7 @@ int main() {
 				}
 				else {
 					if (!gridObject.getFirstMove()) {	//Autosaves occur only if at least one move has been made (i.e. bombs have been planted).
+						std::cout << "Autosaving.\n";
 						auto timeIs = std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now());
 						std::string autoSave = "save.";
 						gridObject.saveGame(autoSave + std::format("{:%Y%m%d-%H%M%S}", timeIs) + ".csv");

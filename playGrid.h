@@ -39,7 +39,7 @@ public:
 	bool checkDirExists(const std::string& path);						//All public functions from this point on likely to be moved to base class later.
 	bool saveGame(const std::string& saveName) const;
 	bool displaySaves(const std::string& path);
-	bool loadGame();
+	bool loadGame(const std::string& path, const int& targetIndex);
 	
 
 private:
@@ -53,8 +53,6 @@ private:
 	std::vector<std::pair<int, int>> gridList;								//A registry of every possible cell in play to simplify bomb seeding.
 	void countNeighbors(std::vector<std::vector<Cell>>& numVects2D);
 	void revealCell(int row, int col, bool& isRevealed, bool& isFlagged);
-	
-
 };
 
 //TODO TODO TODO
