@@ -298,7 +298,6 @@ void PlayGrid::revealCell(int row, int col, bool &isRevealed, bool &isFlagged) {
 
 
 bool PlayGrid::saveGame(const std::string& saveName) const {
-	
 	std::ofstream saveWrite(saveName);
 	if (saveWrite) {
 		saveWrite << firstMove << std::endl;
