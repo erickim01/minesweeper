@@ -1,4 +1,6 @@
 ﻿  Main.cpp
+  PlayGrid.cpp
+  Generating Code...
 C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\Main.cpp(101,1): warning C4715: 'clickInput': not all control paths return a value
 C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\Main.cpp(91,1): warning C4715: 'getInput': not all control paths return a value
   Minesweeper.vcxproj -> C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\x64\Debug\Minesweeper.exe

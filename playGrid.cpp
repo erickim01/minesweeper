@@ -4,6 +4,7 @@
 #include "PlayGrid.h"
 
 //saveGame() function - Likely to move this function and these #includes to a parent class.
+#include <filesystem>
 #include <fstream>
 #include <string>
 
@@ -296,9 +297,22 @@ void PlayGrid::revealCell(int row, int col, bool &isRevealed, bool &isFlagged) {
 }
 
 
+std::string getPath(const std::string& fileName) {
+	namespace fs = std::filesystem;
+	fs::path saveDir = "Saves";
+	fs::create_directory(saveDir);
+	if (!fs::exists(saveDir)) {
+		std::cerr << "Failed to create Saves directory\n";
+		return "";  // or throw, or return fallback path
+	} 
+	std::cout << "Created saves file.\n";
+	return(saveDir / fileName).string();
+}
 
+//TODO TODO TODO - Check if a saveName with invalid characters can be handled.
 bool PlayGrid::saveGame(const std::string& saveName) const {
-	std::ofstream saveWrite(saveName);
+	std::string fullPath = getPath(saveName);
+	std::ofstream saveWrite(fullPath);
 	if (saveWrite) {	//As long as the file was opened the private members of the current game are written, followed by each cell value.
 		saveWrite << firstMove << std::endl << difficulty << std::endl << numBombs << std::endl << tilesRevealed << std::endl << flagsLeft << std::endl;
 		for (const auto& i : gameGrid) {	

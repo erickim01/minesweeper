@@ -100,6 +100,14 @@ std::string clickInput(bool &rightClick) { //returns "Right/Left-Click in text o
 	}
 }
 
+/*
+bool checkSaveDir() {	//Checks if Saves Directory exists and creates it if necessary.
+	const char* path = "";
+	return 0;
+}
+*/
+
+
 int main() {
 	GameState status = GameState::Menu;	
 	std::string menuInput = "";
@@ -195,7 +203,7 @@ int main() {
 			}
 		}
 	}
-	std::cout << "\nGoodbye.\n";
+	std::cout << "Goodbye.\n";
 	return 0;
 }
 
