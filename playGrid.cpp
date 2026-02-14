@@ -297,9 +297,12 @@ void PlayGrid::revealCell(int row, int col, bool &isRevealed, bool &isFlagged) {
 }
 
 
+namespace fs = std::filesystem;
+
+bool PlayGrid::checkDirExists(const std::string& path) { return fs::is_directory(fs::status(path)); }
+
 //Helper to saveGame that checks if Saves folder exists and returns save file path.
 std::string getPath(const std::string& fileName) {
-	namespace fs = std::filesystem;
 	fs::path saveDir = "Saves";
 	fs::create_directory(saveDir);
 	if (!fs::exists(saveDir)) {

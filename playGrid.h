@@ -36,6 +36,7 @@ public:
 	void createEmptyGrid();
 	void seedGrid(std::pair<int, int> userCoord);
 	bool clickCell(bool clickChoice, std::pair<int, int> userCoord);
+	bool checkDirExists(const std::string& path);
 	bool saveGame(const std::string& saveName) const;
 	
 
@@ -75,7 +76,7 @@ private:
 	  revealed tiles *that are not bombs* by gridSize 
 	  squared, and then multipled by 100%.
 
-	- Save/Load game exports/imports.						 40%
+	- Save/Load game exports/imports.						 60%
 
 	- High score log.										 80% (NEEDS TESTING)
 */

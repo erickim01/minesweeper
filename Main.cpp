@@ -119,7 +119,10 @@ int main() {
 		//////MENU - PLAY OR QUIT//////
 		///////////////////////////////
 		std::cout << "\t\t  --- Minesweeper Clone ---\t\t" << std::endl;
-		std::cout << "\n\n>Play ('p') \n>Quit ('q')\n";						//TODO TODO TODO - Add options for loading a game, viewing credits, viewing highscores. Tweak diff settings?
+		std::cout << "\n\n>Play ('p') \nLoad Game ('l') \n>Quit ('q')\n";	
+
+
+		//TODO TODO TODO - Add options for loading a game, viewing credits, viewing highscores. Tweak diff settings?
 		std::cin >> menuInput;
 		std::cin.ignore();
 		std::transform(menuInput.begin(), menuInput.end(), menuInput.begin(), [](unsigned char c) { return std::toupper(c); });
@@ -127,6 +130,14 @@ int main() {
 		if (menuInput == "QUIT" || menuInput == "Q") { //Sets state to "Quit" and breaks the while loop.
 			status = GameState::Quit;
 			break;
+		}
+		else if (menuInput == "LOAD" || menuInput == "L") {
+			//Check if Save file exists
+			if (!gridObject.checkDirExists("Saves")) {
+				std::cout << "Saves folder not found.\n";
+			}
+
+			//std::cout << "Saves folder not found.\n";
 		}
 		else { //Otherwise difficulty is selected.
 			bool gameOver = false;
