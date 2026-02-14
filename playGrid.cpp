@@ -297,15 +297,15 @@ void PlayGrid::revealCell(int row, int col, bool &isRevealed, bool &isFlagged) {
 }
 
 
+//Helper to saveGame that checks if Saves folder exists and returns save file path.
 std::string getPath(const std::string& fileName) {
 	namespace fs = std::filesystem;
 	fs::path saveDir = "Saves";
 	fs::create_directory(saveDir);
 	if (!fs::exists(saveDir)) {
-		std::cerr << "Failed to create Saves directory\n";
-		return "";  // or throw, or return fallback path
+		std::cerr << "Failed to find or create Saves directory!\n";
+		return "";  //Could potentially throw error instead. Currently, saves directly to solution directory.
 	} 
-	std::cout << "Created saves file.\n";
 	return(saveDir / fileName).string();
 }
 
@@ -326,7 +326,7 @@ bool PlayGrid::saveGame(const std::string& saveName) const {
 		return false;
 	}
 	saveWrite.close();
-	std::cout << "Saved game " << saveName << " .\n";
+	std::cout << "Saved game " << saveName << std::endl;
 	return true;
 }
 

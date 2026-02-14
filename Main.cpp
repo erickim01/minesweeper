@@ -156,8 +156,9 @@ int main() {
 
 			//SAVE - QUIT CONDITIONALS
 			//if userCoordinates returned a -1 in the first slot, a save or quit sequence has been triggered.
+			
 			if (userCoords.first == -1) {
-				clearConsole();
+				clearConsole();	
 				if (userCoords.second == 0) {
 					std::cout << "Enter Save Name: ";
 					std::string saveStr;
@@ -167,9 +168,11 @@ int main() {
 					continue;
 				}
 				else {
-					auto timeIs = std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now());
-					std::string autoSave = "save.";
-					gridObject.saveGame(autoSave + std::format("{:%Y%m%d-%H%M%S}", timeIs) + ".csv");
+					if (!gridObject.getFirstMove()) {	//Autosaves occur only if at least one move has been made (i.e. bombs have been planted).
+						auto timeIs = std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now());
+						std::string autoSave = "save.";
+						gridObject.saveGame(autoSave + std::format("{:%Y%m%d-%H%M%S}", timeIs) + ".csv");
+					}
 					status = GameState::Quit; 
 					break;
 				}
