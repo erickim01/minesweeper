@@ -111,9 +111,9 @@ bool checkSaveDir() {	//Checks if Saves Directory exists and creates it if neces
 int main() {
 	GameState status = GameState::Menu;	
 	std::string menuInput = "";
+	
 	PlayGrid gridObject;
 	bool gameOver = false;
-
 	while (static_cast<int>(status) != 4) {		//Program runs in console while quit flag not raised.
 		///////////////////////////////
 		//////MENU - PLAY OR QUIT//////
@@ -133,11 +133,15 @@ int main() {
 		}
 		else if (menuInput == "LOAD" || menuInput == "L") {
 			//Check if Save file exists
-			if (!gridObject.checkDirExists("Saves")) {
-				std::cout << "Saves folder not found.\n";
+			std::string saveDir = "Saves";
+			if (!gridObject.checkDirExists(saveDir)) { std::cout << "Saves folder not found.\n"; }
+			else {
+				//gridObject.displaySaves(saveDir);
+				std::cout << "Choose save file: ";
+				std::cin >> menuInput;
+				std::cin.ignore();
+				//gridObject.loadGame();
 			}
-
-			//std::cout << "Saves folder not found.\n";
 		}
 		else { //Otherwise difficulty is selected.
 			bool gameOver = false;

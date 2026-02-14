@@ -333,6 +333,14 @@ bool PlayGrid::saveGame(const std::string& saveName) const {
 	return true;
 }
 
-
-std::vector<std::vector<Cell>> gameGrid;								//2D Matrix representation of every cell on the playing field.
-std::vector<std::pair<int, int>> gridList;								//A registry of every possible cell in play to simplify bomb seeding.
+bool PlayGrid::displaySaves(const std::string& path) {
+	if (!checkDirExists(path)) { 
+		std::cerr << "DISPLAY SAVES: Directory " << path << "not found.\n";
+		return 0; 
+	}
+	for (const auto& file : fs::directory_iterator(path)) { std::cout << file.path() << std::endl; }
+	return 1;
+}
+bool PlayGrid::loadGame() {
+	return 0;
+}
