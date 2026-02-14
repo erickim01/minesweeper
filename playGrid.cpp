@@ -299,17 +299,10 @@ void PlayGrid::revealCell(int row, int col, bool &isRevealed, bool &isFlagged) {
 
 bool PlayGrid::saveGame(const std::string& saveName) const {
 	std::ofstream saveWrite(saveName);
-	if (saveWrite) {
-		saveWrite << firstMove << std::endl;
-		saveWrite << difficulty << std::endl;
-		saveWrite << numBombs << std::endl;
-		saveWrite << tilesRevealed << std::endl;
-		saveWrite << flagsLeft << std::endl;
-		
-		for (const auto& i : gameGrid) {
-			for (const auto& j : i) {
-				saveWrite << j.value << "," << j.revealed << "," << j.flagged << " ";
-			}
+	if (saveWrite) {	//As long as the file was opened the private members of the current game are written, followed by each cell value.
+		saveWrite << firstMove << std::endl << difficulty << std::endl << numBombs << std::endl << tilesRevealed << std::endl << flagsLeft << std::endl;
+		for (const auto& i : gameGrid) {	
+			for (const auto& j : i) { saveWrite << j.value << "," << j.revealed << "," << j.flagged << " "; }
 			saveWrite << std::endl;
 		}
 		//for (const auto& i : gridList) {}		//For use if gridList becomes used for other features later on.
@@ -319,6 +312,7 @@ bool PlayGrid::saveGame(const std::string& saveName) const {
 		return false;
 	}
 	saveWrite.close();
+	std::cout << "Saved game " << saveName << " .\n";
 	return true;
 }
 

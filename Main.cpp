@@ -1,10 +1,12 @@
 #include <string>
 #include <fstream>		//Savegames and highscore record keeping.
 #include <iostream>
-#include <iomanip>		//Stats formatting.
+#include <iomanip>		//<std::put_time> and other stats formatting.
 #include <vector>
 #include <algorithm>	//<std::transform> <std::remove_if>
 #include <cctype>		//<std::tolower> <std::toupper>		//These handle the user input when choosing menu options.
+#include <chrono>		//Autosaving file naming convention and time spent in a game.
+#include <format>
 #include "PlayGrid.h"
 
 //ANSI Clear Screen		-	\x1b[2J 
@@ -103,6 +105,7 @@ int main() {
 	std::string menuInput = "";
 	PlayGrid gridObject;
 	bool gameOver = false;
+
 	while (static_cast<int>(status) != 4) {		//Program runs in console while quit flag not raised.
 		///////////////////////////////
 		//////MENU - PLAY OR QUIT//////
@@ -141,24 +144,29 @@ int main() {
 			std::cout << "Tiles Revealed: " << gridObject.getTilesRevealed() << " of " << nonBombTiles;
 			std::cout << " (" << std::fixed << std::setprecision(2) << percentDone << "%)";
 			std::cout << "\nFlags Left : " << gridObject.getFlags() << std::endl;
-			
 			std::pair<int, int> userCoords = getInput(gridObject.getGridSize());
+
+			//SAVE - QUIT CONDITIONALS
 			//if userCoordinates returned a -1 in the first slot, a save or quit sequence has been triggered.
 			if (userCoords.first == -1) {
+				clearConsole();
 				if (userCoords.second == 0) {
-					clearConsole();
 					std::cout << "Enter Save Name: ";
 					std::string saveStr;
 					std::getline(std::cin, saveStr);
-					bool isSaved = gridObject.saveGame(saveStr);
+					bool isSaved = gridObject.saveGame(saveStr + ".csv");
 					if (isSaved) { std::cout << "Game saved successfully.\n"; }
 					continue;
 				}
-				else { 
+				else {
+					auto timeIs = std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now());
+					std::string autoSave = "save.";
+					gridObject.saveGame(autoSave + std::format("{:%Y%m%d-%H%M%S}", timeIs) + ".csv");
 					status = GameState::Quit; 
 					break;
 				}
 			}
+
 			bool rightClick = false;
 			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << (userCoords.second + 1)
 				<< ", " << clickInput(rightClick) << std::endl << std::endl;
@@ -183,10 +191,10 @@ int main() {
 				std::ofstream scoresWrite("scores.csv", std::ios::app);
 				if (scoresWrite) { scoresWrite << gridObject.getDifficulty() << timeElapsed << percentDone << currDate << "\n"; }
 				scoresWrite.close();
+				clearConsole();
 			}
 		}
 	}
-	clearConsole();
 	std::cout << "\nGoodbye.\n";
 	return 0;
 }
