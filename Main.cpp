@@ -139,7 +139,7 @@ int main() {
 				std::cout << "Choose save file by number: ";
 				std::cin >> menuInput;
 				std::cin.ignore();
-				//gridObject.loadGame(saveDir, menuInput);
+				//gridObject.loadGame(saveDir, static_cast<int>(menuInput) - 1);		//TODO TODO TODO - menuInput MUST BE INTEGER
 			}
 		}
 		else { //Otherwise difficulty is selected.

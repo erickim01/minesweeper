@@ -343,31 +343,59 @@ bool PlayGrid::displaySaves(const std::string& path) {
 	for (const auto& file : fs::directory_iterator(path)) {
 		//std::cout << saveIndex + 1 << file.path() << std::endl;
 		std::string fileName = file.path().string();
-		std::cout << fileName << "\n";
+		//std::cout << fileName << "\n"; // Remove "Saves\" or file name and "\" from name
 		++saveIndex;
 	}
 	return 1;
 }
 
-
-
-
 //TODO TODO TODO - Split this function into a generic "select file" and then run a loadGame function specific to Minesweeper.
-bool PlayGrid::loadGame(const std::string& path, const int& targetIndex) {
+//INPUT MUST BE CHECKED FOR IS VALID INTEGER IN RANGE OF FILE LIST.
+bool PlayGrid::selectFile(const std::string& path, const int& targetIndex) {
 	if (!checkDirExists(path)) {
 		std::cerr << "DISPLAY SAVES: Directory " << path << "not found.\n";
 		return 0;
 	}
-	//--targetIndex;
+	targetIndex;
 	int currIndex = 0;
 	std::vector<std::pair<int, std::string>> fileList;
 	for (const auto& file : fs::directory_iterator(path)) {
-		//fileList.push_back(std::make_pair(0, file));
+		fileList.push_back(std::make_pair(0, file.path().string()));
 	}
-	//for each entry in our target directory
-	//Make a pair vector with the index and name of save file
-	//for each pair in pairVector
-	//If targetIndex = that entry, pass the name of that file to loadGame.
-	//break loop
-	//return 1
+	std::string targetString;	//TODO TODO TODO - Remove this variable when passing string to loadGame later.
+	for (auto& entry : fileList) {
+		if (targetIndex == entry.first) {
+			loadGame(entry.second);
+			break;
+		}
+	}
+	return 1;
 }
+
+bool PlayGrid::loadGame(const std::string& selectedFile) {
+	//READ CONTENTS OF FILE INTO EACH VARIABLE IN ORDER
+}
+
+/*
+* 
+* 
+* 
+*  saveWrite << firstMove << std::endl << difficulty << std::endl << numBombs << std::endl << tilesRevealed << std::endl << flagsLeft << std::endl;
+		for (const auto& i : gameGrid) {	
+			for (const auto& j : i) { saveWrite << j.value << "," << j.revealed << "," << j.flagged << " "; }
+			saveWrite << std::endl;
+		}
+
+
+bool firstMove = false;
+	int difficulty = -1;
+	int numBombs = -1;
+	int gridSize = -1;
+	int tilesRevealed = 0;													//Keeps a count of how many non-bomb tiles have been revealed.
+	int flagsLeft = -1;
+	std::vector<std::vector<Cell>> gameGrid;								//2D Matrix representation of every cell on the playing field.
+	std::vector<std::pair<int, int>> gridList;								//A registry of every possible cell in play to simplify bomb seeding.
+	void countNeighbors(std::vector<std::vector<Cell>>& numVects2D);
+	void revealCell(int row, int col, bool& isRevealed, bool& isFlagged);
+
+*/

@@ -39,7 +39,8 @@ public:
 	bool checkDirExists(const std::string& path);						//All public functions from this point on likely to be moved to base class later.
 	bool saveGame(const std::string& saveName) const;
 	bool displaySaves(const std::string& path);
-	bool loadGame(const std::string& path, const int& targetIndex);
+	bool selectFile(const std::string& path, const int& targetIndex);
+	bool loadGame(const std::string& selectedFile);
 	
 
 private:
@@ -76,7 +77,7 @@ private:
 	  revealed tiles *that are not bombs* by gridSize 
 	  squared, and then multipled by 100%.
 
-	- Save/Load game exports/imports.						 60%
+	- Save/Load game exports/imports.						 75%
 
 	- High score log.										 80% (NEEDS TESTING)
 */
