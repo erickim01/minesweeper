@@ -362,7 +362,8 @@ bool PlayGrid::selectFile(const std::string& path, const int& targetIndex) {
 	int currIndex = 0;
 	std::vector<std::pair<int, std::string>> fileList;
 	for (const auto& file : fs::directory_iterator(path)) {
-		fileList.push_back(std::make_pair(0, file.path().string()));
+		fileList.push_back(std::make_pair(currIndex, file.path().string()));
+		++currIndex;
 	}
 	for (auto& entry : fileList) {
 		if (targetIndex == entry.first) {
