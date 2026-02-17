@@ -389,8 +389,11 @@ void PlayGrid::loadGame(const std::string& selectedFile) {
 			std::getline(loadFile, line);
 			*ptr = std::stoi(line);
 		}
-		
-		while (std::getline(loadFile, line)) {
+											//	Each cell on a row is saved as { "cell.value", "cell.revealed", "cell.flagged" }, 
+		std::stringstream ss(line);			//	followed by a whitespace for the next cell. Each row is separated by a newline.
+		std::string currCell;
+		std::vector<Cell> currRow;
+		while (std::getline(ss, line)) {
 			
 			//Later - Get the values of each cell struct.
 
@@ -399,7 +402,7 @@ void PlayGrid::loadGame(const std::string& selectedFile) {
 }
 
 
-//std::stringstream ss(line);
+
 /*
 * 
 * 
