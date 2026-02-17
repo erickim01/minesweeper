@@ -38,7 +38,7 @@ public:
 	bool clickCell(bool clickChoice, std::pair<int, int> userCoord);
 	bool checkDirExists(const std::string& path);						//All public functions from this point on likely to be moved to base class later.
 	bool saveGame(const std::string& saveName) const;
-	bool displaySaves(const std::string& path);
+	int displayFiles(const std::string& path);
 	bool selectFile(const std::string& path, const int& targetIndex);
 	void loadGame(const std::string& selectedFile);
 	

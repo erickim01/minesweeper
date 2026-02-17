@@ -333,11 +333,11 @@ bool PlayGrid::saveGame(const std::string& saveName) const {
 	return true;
 }
 
-//TODO TODO TODO - Change name to more generic "displayFiles".
-bool PlayGrid::displaySaves(const std::string& path) {
+//Returns a count of the number of files in the directory. This is the highest possible number file a user can choose from.
+int PlayGrid::displayFiles(const std::string& path) {
 	if (!checkDirExists(path)) { 
 		std::cerr << "DISPLAY SAVES: Directory " << path << "not found.\n";
-		return 0; 
+		return -1; 
 	}
 	int saveIndex = 0;
 	for (const auto& file : fs::directory_iterator(path)) {
@@ -351,7 +351,7 @@ bool PlayGrid::displaySaves(const std::string& path) {
 		std::cout << "(" << saveIndex + 1 << ") " << fileName << std::endl;
 		++saveIndex;
 	}
-	return 1;
+	return saveIndex;
 }
 
 //INPUT MUST BE CHECKED FOR IS VALID INTEGER IN RANGE OF FILE LIST.

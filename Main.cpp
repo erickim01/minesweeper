@@ -42,7 +42,7 @@ int selectDifficulty() {
 }
 
 //Implementation of a while loop to get valid coordinates via text input.
-std::pair<int, int> getInput(int gridSize) {
+std::pair<int, int> getCoordinates(int gridSize) {
 	bool needInput = true;
 	while (needInput) {
 		std::cout << "\nInput ROW Letter and COLUMN Number using values shown on grid > ";
@@ -108,6 +108,7 @@ bool checkSaveDir() {	//Checks if Saves Directory exists and creates it if neces
 */
 
 
+
 int main() {
 	GameState status = GameState::Menu;	
 	std::string menuInput = "";
@@ -136,10 +137,26 @@ int main() {
 			std::string saveDir = "Saves"; //Check if Save file exists
 			if (!gridObject.checkDirExists(saveDir)) { std::cout << "Saves folder not found.\n"; }
 			else {
-				gridObject.displaySaves(saveDir);
-				std::cout << "Choose save file by number: ";
-				std::cin >> menuInput;
-				std::cin.ignore();
+				int fileIndexRange = gridObject.displayFiles(saveDir);
+				if (fileIndexRange != -1) {
+					int loadInput;
+					std::cin.exceptions(std::istream::failbit);
+					while (true) {
+						std::cout << "Choose save file by number: ";
+						try {
+							std::cin >> loadInput;
+							if (!std::cin.fail()) {break;}
+						}
+						catch (const std::ios_base::failure& err) {
+							std::cerr << "Invalid input. Please try again." << std::endl;
+							std::cin.clear();
+							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+						}
+					}		
+					//if ((isdigit(menuInput)) && (menuInput <= fileIndexRange))
+				}
+				
+
 				//gridObject.loadGame(saveDir, static_cast<int>(menuInput) - 1);		//TODO TODO TODO - menuInput MUST BE INTEGER
 			}
 		}
@@ -167,7 +184,7 @@ int main() {
 			std::cout << "Tiles Revealed: " << gridObject.getTilesRevealed() << " of " << nonBombTiles;
 			std::cout << " (" << std::fixed << std::setprecision(2) << percentDone << "%)";
 			std::cout << "\nFlags Left : " << gridObject.getFlags() << std::endl;
-			std::pair<int, int> userCoords = getInput(gridObject.getGridSize());
+			std::pair<int, int> userCoords = getCoordinates(gridObject.getGridSize());
 
 			//SAVE - QUIT CONDITIONALS
 			if (userCoords.first == -1) {	//if userCoordinates returned a -1 in the first slot, a save or quit sequence has been triggered.
