@@ -314,8 +314,7 @@ std::string getPath(const std::string& fileName) {
 
 //TODO TODO TODO - Check if a saveName with invalid characters can be handled.
 bool PlayGrid::saveGame(const std::string& saveName) const {
-	std::string fullPath = getPath(saveName);
-	std::ofstream saveWrite(fullPath);
+	std::ofstream saveWrite(getPath(saveName));
 	if (saveWrite) {	//As long as the file was opened the private members of the current game are written, followed by each cell value.
 		saveWrite << firstMove << std::endl << difficulty << std::endl << numBombs << std::endl << tilesRevealed << std::endl << flagsLeft << std::endl;
 		for (const auto& i : gameGrid) {	
@@ -356,11 +355,10 @@ int PlayGrid::displayFiles(const std::string& path) {
 
 //INPUT MUST BE CHECKED FOR IS VALID INTEGER IN RANGE OF FILE LIST.
 bool PlayGrid::selectFile(const std::string& path, const int& targetIndex) {
-	if (!checkDirExists(path)) {
+	if (!checkDirExists(path)) {		//This check should have been performed earlier in this program, however it is left in this function for redundancy.
 		std::cerr << "DISPLAY SAVES: Directory " << path << "not found.\n";
 		return 0;
 	}
-	targetIndex;
 	int currIndex = 0;
 	std::vector<std::pair<int, std::string>> fileList;
 	for (const auto& file : fs::directory_iterator(path)) {
@@ -375,10 +373,32 @@ bool PlayGrid::selectFile(const std::string& path, const int& targetIndex) {
 	return 1;
 }
 
+#include <array>
 void PlayGrid::loadGame(const std::string& selectedFile) {
 	//READ CONTENTS OF FILE INTO EACH VARIABLE IN ORDER
+	std::ifstream loadFile(selectedFile);
+	if (loadFile) {
+		std::string line;
+		
+		//The first five lines of the file are private member values. "firstMove" is a bool and cannot be included in the array.
+		std::getline(loadFile, line);
+		firstMove = std::stoi(line);
+		std::array<int*, 4> membersArray = {&difficulty, &numBombs, &tilesRevealed, &flagsLeft};
+		for (int* ptr : membersArray) {
+			std::getline(loadFile, line);
+			*ptr = std::stoi(line);
+		}
+		
+		while (std::getline(loadFile, line)) {
+			
+			//Later - Get the values of each cell struct.
+
+		}
+	}
 }
 
+
+//std::stringstream ss(line);
 /*
 * 
 * 

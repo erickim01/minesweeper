@@ -100,10 +100,10 @@ std::string clickInput(bool &rightClick) { //returns "Right/Left-Click in text o
 	}
 }
 
-int getValidInteger(int maxVal) {
+int getValidInt(int maxVal) {
 	int inVal = 0;
 	while (true) {
-		std::cout << "\nChoose save file by number (" << 0 << "-" << maxVal << "): ";
+		std::cout << "\nChoose save file by number (" << 1 << "-" << maxVal << "): ";
 		if (!(std::cin >> inVal)) {
 			std::cin.clear();
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -111,7 +111,7 @@ int getValidInteger(int maxVal) {
 			continue;
 		}
 		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		if (inVal < 0 || inVal > maxVal) {
+		if (inVal < 1 || inVal > maxVal) {
 			std::cerr << "Your value is out of range of zero and the highest possible file number. \n";
 			continue;
 		}
@@ -151,17 +151,17 @@ int main() {
 			else {
 				int fileIndexRange = gridObject.displayFiles(saveDir);
 				if (fileIndexRange != -1) {
-					getValidInteger(fileIndexRange);
+					status = GameState::Active;
+					gridObject.selectFile(saveDir, getValidInt(fileIndexRange) - 1);	//Needs to return a bool to check if save was invalid.
+					gridObject.createEmptyGrid();		//DEBUG - Remove this after loadGame can read in cell values.
+					std::cout << "\n\t\t\tGame Loaded.\n";
 				}
-				
-
-				//gridObject.loadGame(saveDir, static_cast<int>(menuInput) - 1);		//TODO TODO TODO - menuInput MUST BE INTEGER
 			}
 		}
 		else { //Otherwise difficulty is selected.
 			bool gameOver = false;
 			gridObject.setDifficulty(selectDifficulty());
-			gridObject.createEmptyGrid();
+			
 			gridObject.setFirstMove(true);
 			status = GameState::Active;		
 			clearConsole();
