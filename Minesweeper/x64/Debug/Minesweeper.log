@@ -1,3 +1,3 @@
 ﻿  PlayGrid.cpp
-C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(373,1): warning C4715: 'PlayGrid::loadGame': not all control paths return a value
+C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(347,11): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   Minesweeper.vcxproj -> C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\x64\Debug\Minesweeper.exe

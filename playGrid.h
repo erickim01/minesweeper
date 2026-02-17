@@ -40,7 +40,7 @@ public:
 	bool saveGame(const std::string& saveName) const;
 	bool displaySaves(const std::string& path);
 	bool selectFile(const std::string& path, const int& targetIndex);
-	bool loadGame(const std::string& selectedFile);
+	void loadGame(const std::string& selectedFile);
 	
 
 private:

@@ -132,6 +132,7 @@ int main() {
 			break;
 		}
 		else if (menuInput == "LOAD" || menuInput == "L") {
+			clearConsole();
 			std::string saveDir = "Saves"; //Check if Save file exists
 			if (!gridObject.checkDirExists(saveDir)) { std::cout << "Saves folder not found.\n"; }
 			else {

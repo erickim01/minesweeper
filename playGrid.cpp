@@ -341,15 +341,19 @@ bool PlayGrid::displaySaves(const std::string& path) {
 	}
 	int saveIndex = 0;
 	for (const auto& file : fs::directory_iterator(path)) {
-		//std::cout << saveIndex + 1 << file.path() << std::endl;
+		
 		std::string fileName = file.path().string();
-		//std::cout << fileName << "\n"; // Remove "Saves\" or file name and "\" from name
+		std::string pathName = "Saves\\";
+		int pos = fileName.find(pathName);
+		if (pos != std::string::npos) {
+			fileName.erase(pos, pathName.length());
+		}
+		std::cout << "(" << saveIndex + 1 << ") " << fileName << std::endl;
 		++saveIndex;
 	}
 	return 1;
 }
 
-//TODO TODO TODO - Split this function into a generic "select file" and then run a loadGame function specific to Minesweeper.
 //INPUT MUST BE CHECKED FOR IS VALID INTEGER IN RANGE OF FILE LIST.
 bool PlayGrid::selectFile(const std::string& path, const int& targetIndex) {
 	if (!checkDirExists(path)) {
@@ -362,7 +366,6 @@ bool PlayGrid::selectFile(const std::string& path, const int& targetIndex) {
 	for (const auto& file : fs::directory_iterator(path)) {
 		fileList.push_back(std::make_pair(0, file.path().string()));
 	}
-	std::string targetString;	//TODO TODO TODO - Remove this variable when passing string to loadGame later.
 	for (auto& entry : fileList) {
 		if (targetIndex == entry.first) {
 			loadGame(entry.second);
@@ -372,7 +375,7 @@ bool PlayGrid::selectFile(const std::string& path, const int& targetIndex) {
 	return 1;
 }
 
-bool PlayGrid::loadGame(const std::string& selectedFile) {
+void PlayGrid::loadGame(const std::string& selectedFile) {
 	//READ CONTENTS OF FILE INTO EACH VARIABLE IN ORDER
 }
 
