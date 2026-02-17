@@ -100,12 +100,24 @@ std::string clickInput(bool &rightClick) { //returns "Right/Left-Click in text o
 	}
 }
 
-/*
-bool checkSaveDir() {	//Checks if Saves Directory exists and creates it if necessary.
-	const char* path = "";
-	return 0;
+int getValidInteger(int maxVal) {
+	int inVal = 0;
+	while (true) {
+		std::cout << "\nChoose save file by number (" << 0 << "-" << maxVal << "): ";
+		if (!(std::cin >> inVal)) {
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			std::cerr << "Invalid input: please enter an integer.\n";
+			continue;
+		}
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		if (inVal < 0 || inVal > maxVal) {
+			std::cerr << "Your value is out of range of zero and the highest possible file number. \n";
+			continue;
+		}
+		return inVal;
+	}
 }
-*/
 
 
 
@@ -139,21 +151,7 @@ int main() {
 			else {
 				int fileIndexRange = gridObject.displayFiles(saveDir);
 				if (fileIndexRange != -1) {
-					int loadInput;
-					std::cin.exceptions(std::istream::failbit);
-					while (true) {
-						std::cout << "Choose save file by number: ";
-						try {
-							std::cin >> loadInput;
-							if (!std::cin.fail()) {break;}
-						}
-						catch (const std::ios_base::failure& err) {
-							std::cerr << "Invalid input. Please try again." << std::endl;
-							std::cin.clear();
-							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-						}
-					}		
-					//if ((isdigit(menuInput)) && (menuInput <= fileIndexRange))
+					getValidInteger(fileIndexRange);
 				}
 				
 
