@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm> //<std::ranges::shuffle>
 #include <random> //<auto rng = std::default_random_engine {};>
+#include <array>
 #include "PlayGrid.h"
 
 //saveGame() function - Likely to move this function and these #includes to a parent class.
@@ -333,7 +334,7 @@ bool PlayGrid::saveGame(const std::string& saveName) const {
 }
 
 //Returns a count of the number of files in the directory. This is the highest possible number file a user can choose from.
-int PlayGrid::displayFiles(const std::string& path) {
+int PlayGrid::displayFiles(const std::string& path, const std::string& pathName) {
 	if (!checkDirExists(path)) { 
 		std::cerr << "DISPLAY SAVES: Directory " << path << "not found.\n";
 		return -1; 
@@ -342,7 +343,6 @@ int PlayGrid::displayFiles(const std::string& path) {
 	for (const auto& file : fs::directory_iterator(path)) {
 		
 		std::string fileName = file.path().string();
-		std::string pathName = "Saves\\";
 		int pos = fileName.find(pathName);
 		if (pos != std::string::npos) {
 			fileName.erase(pos, pathName.length());
@@ -374,28 +374,54 @@ bool PlayGrid::selectFile(const std::string& path, const int& targetIndex) {
 	return 1;
 }
 
-#include <array>
-void PlayGrid::loadGame(const std::string& selectedFile) {
+
+void PlayGrid::loadGame(const std::string& inputFile) {
 	//READ CONTENTS OF FILE INTO EACH VARIABLE IN ORDER
-	std::ifstream loadFile(selectedFile);
-	if (loadFile) {
+	std::ifstream selectedFile(inputFile);
+	if (selectedFile) {
 		std::string line;
 		
 		//The first five lines of the file are private member values. "firstMove" is a bool and cannot be included in the array.
-		std::getline(loadFile, line);
+		std::getline(selectedFile, line);
 		firstMove = std::stoi(line);
 		std::array<int*, 4> membersArray = {&difficulty, &numBombs, &tilesRevealed, &flagsLeft};
 		for (int* ptr : membersArray) {
-			std::getline(loadFile, line);
+			std::getline(selectedFile, line);
 			*ptr = std::stoi(line);
 		}
 											//	Each cell on a row is saved as { "cell.value", "cell.revealed", "cell.flagged" }, 
 		std::stringstream ss(line);			//	followed by a whitespace for the next cell. Each row is separated by a newline.
 		std::string currCell;
-		std::vector<Cell> currRow;
-		while (std::getline(loadFile, line)) {
-			std::cout << "Grid line read: [" << line << "]\n";
-			//fo
+		createEmptyGrid();
+		
+
+		
+		
+			
+				
+		
+		
+		int currRow = 0;
+		while (std::getline(selectedFile, line)) {
+			std::cout << "DEBUG Current row: [" << line << "]\n";
+			std::stringstream ss(line);
+			std::string cellStr;
+			for (int currCell = 0; currCell < gameGrid.size(); ++currCell) {
+				std::getline(ss, cellStr, ' ');
+				std::stringstream ssSub(cellStr);
+				std::string currNum;
+				std::getline(ssSub, currNum, ',');
+				gameGrid[currRow][currCell].value = stoi(currNum);
+				std::getline(ssSub, currNum, ',');
+				gameGrid[currRow][currCell].revealed = stoi(currNum);
+				std::getline(ssSub, currNum, ',');
+				gameGrid[currRow][currCell].flagged = stoi(currNum);
+				std::cout << "DEBUG GameGrid at index [" << currRow << "][" << currCell << "]: \n";
+				std::cout << "Value: " << gameGrid[currRow][currCell].value << std::endl;
+				std::cout << "Revealed: " << gameGrid[currRow][currCell].revealed << std::endl;
+				std::cout << "Flagged: " << gameGrid[currRow][currCell].flagged << std::endl;
+			}
+			++currRow;
 		}
 
 	}

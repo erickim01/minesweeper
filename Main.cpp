@@ -149,7 +149,7 @@ int main() {
 			std::string saveDir = "Saves"; //Check if Save file exists
 			if (!gridObject.checkDirExists(saveDir)) { std::cout << "Saves folder not found.\n"; }
 			else {
-				int fileIndexRange = gridObject.displayFiles(saveDir);
+				int fileIndexRange = gridObject.displayFiles(saveDir, "Saves\\");
 				if (fileIndexRange != -1) {
 					clearConsole();
 					status = GameState::Active;
