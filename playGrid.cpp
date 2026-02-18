@@ -374,6 +374,16 @@ bool PlayGrid::selectFile(const std::string& path, const int& targetIndex) {
 	return 1;
 }
 
+void parseCell(Cell& cell, const std::string& cellVals) {
+	std::stringstream ssSub(cellVals);
+	std::string value;
+	std::getline(ssSub, value, ',');
+	cell.value = stoi(value);
+	std::getline(ssSub, value, ',');
+	cell.revealed = stoi(value);
+	std::getline(ssSub, value, ',');
+	cell.flagged = stoi(value);
+}
 
 void PlayGrid::loadGame(const std::string& inputFile) {
 	//READ CONTENTS OF FILE INTO EACH VARIABLE IN ORDER
@@ -389,18 +399,10 @@ void PlayGrid::loadGame(const std::string& inputFile) {
 			std::getline(selectedFile, line);
 			*ptr = std::stoi(line);
 		}
-											//	Each cell on a row is saved as { "cell.value", "cell.revealed", "cell.flagged" }, 
-		std::stringstream ss(line);			//	followed by a whitespace for the next cell. Each row is separated by a newline.
-		std::string currCell;
+		
 		createEmptyGrid();
-		
-
-		
-		
-			
-				
-		
-		
+		std::stringstream ss(line);			//	Each cell on a row is saved as { "cell.value", "cell.revealed", "cell.flagged" }, 
+		std::string currCell;				//	followed by a whitespace for the next cell. Each row is separated by a newline.
 		int currRow = 0;
 		while (std::getline(selectedFile, line)) {
 			std::cout << "DEBUG Current row: [" << line << "]\n";
@@ -408,22 +410,10 @@ void PlayGrid::loadGame(const std::string& inputFile) {
 			std::string cellStr;
 			for (int currCell = 0; currCell < gameGrid.size(); ++currCell) {
 				std::getline(ss, cellStr, ' ');
-				std::stringstream ssSub(cellStr);
-				std::string currNum;
-				std::getline(ssSub, currNum, ',');
-				gameGrid[currRow][currCell].value = stoi(currNum);
-				std::getline(ssSub, currNum, ',');
-				gameGrid[currRow][currCell].revealed = stoi(currNum);
-				std::getline(ssSub, currNum, ',');
-				gameGrid[currRow][currCell].flagged = stoi(currNum);
-				std::cout << "DEBUG GameGrid at index [" << currRow << "][" << currCell << "]: \n";
-				std::cout << "Value: " << gameGrid[currRow][currCell].value << std::endl;
-				std::cout << "Revealed: " << gameGrid[currRow][currCell].revealed << std::endl;
-				std::cout << "Flagged: " << gameGrid[currRow][currCell].flagged << std::endl;
+				parseCell(gameGrid[currRow][currCell], cellStr);
 			}
 			++currRow;
 		}
-
 	}
 }
 
