@@ -1,16 +1,16 @@
 #include <string>
-#include <fstream>		//Savegames and highscore record keeping.
+#include <fstream>		//	Savegames and highscore record keeping.
 #include <iostream>
-#include <iomanip>		//<std::put_time> and other stats formatting.
+#include <iomanip>		//	<std::put_time> and other stats formatting.
 #include <vector>
-#include <algorithm>	//<std::transform> <std::remove_if>
-#include <cctype>		//<std::tolower> <std::toupper>		//These handle the user input when choosing menu options.
-#include <chrono>		//Autosaving file naming convention and time spent in a game.
+#include <algorithm>	//	<std::transform> <std::remove_if>
+#include <cctype>		//	<std::tolower> <std::toupper>		//These handle the user input when choosing menu options.
+#include <chrono>		//	Autosaving file naming convention and time spent in a game.
 #include <format>
 #include "PlayGrid.h"
 
-//ANSI Clear Screen		-	\x1b[2J 
-//ANSI Cursor to Top Left	-	\x1b[1;1H
+//	ANSI Clear Screen		-	\x1b[2J 
+//	ANSI Cursor to Top Left	-	\x1b[1;1H
 void clearConsole() { std::cout << "\x1b[2J\x1b[1;1H"; }
 
 enum class GameState {
@@ -21,7 +21,7 @@ enum class GameState {
 
 };
 
-//Removes whitespaces from input and capitalizes all alphabetic characters.
+//	Removes whitespaces from input and capitalizes all alphabetic characters.
 std::string normalizeInput(std::string &str) { 
 	str.erase(std::remove_if(str.begin(), str.end(), [](unsigned char c) { return std::isspace(c);  }), str.end());
 	std::transform(str.begin(), str.end(), str.begin(), [](unsigned char c) {return std::toupper(c); });
@@ -32,7 +32,7 @@ int selectDifficulty() {
 	std::cout << "\nSelect Difficulty: \n> Easy \n> Normal \n> Hard \n\n> ";
 	while (true) {
 		std::string diffInput;
-		std::getline(std::cin, diffInput);					//DEBUG std::cout << "Raw after getline: [" << diffInput << "], len=" << diffInput.length() << "\n";
+		std::getline(std::cin, diffInput);					//	DEBUG std::cout << "Raw after getline: [" << diffInput << "], len=" << diffInput.length() << "\n";
 		normalizeInput(diffInput);
 		if ((diffInput == "HARD") || (diffInput == "H")) { return 2; }
 		else if ((diffInput == "NORMAL") || (diffInput == "NM")) { return 1; }
@@ -41,7 +41,7 @@ int selectDifficulty() {
 	}
 }
 
-//Implementation of a while loop to get valid coordinates via text input.
+//	Implementation of a while loop to get valid coordinates via text input.
 std::pair<int, int> getCoordinates(int gridSize) {
 	bool needInput = true;
 	while (needInput) {
@@ -50,7 +50,7 @@ std::pair<int, int> getCoordinates(int gridSize) {
 		std::getline(std::cin, coordInput);				// DEBUG std::cout << "Raw after getline: [" << myStr << "], len=" << myStr.length() << "\n";
 		normalizeInput(coordInput);
 
-		//Savegame and quit sequences
+		//	Savegame and quit sequences
 		if (coordInput == "SAVE" || coordInput == "S") {
 			std::pair<int, int> saveSequence = { -1, 0 };
 			return saveSequence;
@@ -63,12 +63,12 @@ std::pair<int, int> getCoordinates(int gridSize) {
 			std::cout << "\nInvalid length! Use a single letter followed by 1 - 2 digits (e.g. A1, B2, etc.)\n";
 			continue;
 		}
-		//Get the first char and check if it's a valid character. On Difficulty = 1 "Normal", this is A - L.		
+		//	Get the first char and check if it's a valid character. On Difficulty = 1 "Normal", this is A - L.		
 		if (coordInput.at(0) < 'A' || coordInput.at(0) > static_cast<char>(64 + gridSize)) {
 			std::cout << "\nInvalid character! Please use a valid character ranging from " << "A" << " to " << static_cast<char>(64 + gridSize) << ".\n";
 			continue;
 		}
-		//Get the second char and check if it's a valid integer, and convert to an int. On "Normal", this is 1 - 12.
+		//	Get the second char and check if it's a valid integer, and convert to an int. On "Normal", this is 1 - 12.
 		std::string numStr = coordInput.substr(1);
 		if (numStr.empty() || !std::all_of(numStr.begin(), numStr.end(), ::isdigit)) {
 			std::cout << "\nInvalid number! Use digits 1-" << gridSize << ".\n";
@@ -81,8 +81,8 @@ std::pair<int, int> getCoordinates(int gridSize) {
 			continue;
 		}
 
-		// These lines of code executing means the input was valid.
-		char coordChar = coordInput.at(0);		//Note: This returns as the ASCII int value starting from A = 65, B = 66, etc. Subtracting from 65 to get index.
+		//	These lines of code executing means the input was valid.
+		char coordChar = coordInput.at(0);		//	Note: This returns as the ASCII int value starting from A = 65, B = 66, etc. Subtracting from 65 to get index.
 		int coordInt = candidateInt;
 		needInput = false;
 		std::pair<int, int> coordsFinal = { (coordChar - 65), coordInt - 1};
@@ -90,7 +90,7 @@ std::pair<int, int> getCoordinates(int gridSize) {
 	}
 }
 
-std::string clickInput(bool &rightClick) { //returns "Right/Left-Click in text output, modifies a boolean in main to describe behavior to PlayGrid class.
+std::string clickInput(bool &rightClick) { //	returns "Right/Left-Click in text output, modifies a boolean in main to describe behavior to PlayGrid class.
 	std::string userInput;
 	while (std::cout << "\nRight or Left click? ('R' / 'L'): ", std::getline(std::cin, userInput)) {
 		normalizeInput(userInput);
@@ -127,7 +127,7 @@ int main() {
 	
 	PlayGrid gridObject;
 	bool gameOver = false;
-	while (static_cast<int>(status) != 4) {		//Program runs in console while quit flag not raised.
+	while (static_cast<int>(status) != 4) {		//	Program runs in console while quit flag not raised.
 		///////////////////////////////
 		//////MENU - PLAY OR QUIT//////
 		///////////////////////////////
@@ -135,7 +135,7 @@ int main() {
 		std::cout << "\n\n>Play ('p') \nLoad Game ('l') \n>Quit ('q')\n";	
 
 
-		//TODO TODO TODO - Add options for loading a game, viewing credits, viewing highscores. Tweak diff settings?
+		//TODO TODO TODO - Add options for viewing credits, viewing highscores. Tweak diff settings?
 		std::cin >> menuInput;
 		std::cin.ignore();
 		std::transform(menuInput.begin(), menuInput.end(), menuInput.begin(), [](unsigned char c) { return std::toupper(c); });
@@ -216,7 +216,7 @@ int main() {
 			}
 			clearConsole();
 			gameOver = gridObject.clickCell(rightClick, userCoords);
-			//gridObject.displayGridGameOver(); //DEBUG Displays game over right now.
+			//	gridObject.displayGridGameOver(); //	DEBUG Displays game over right now.
 			if (gridObject.getTilesRevealed() == (gridObject.getGridSize() * gridObject.getGridSize())) { 
 				std::cout << "\nWinner! All open spaces have been discovered.\n";
 				gameOver = true; 
@@ -225,12 +225,17 @@ int main() {
 				std::cout << "\n\t\t----Game Over----\n";
 				gridObject.displayGridGameOver();
 				status = GameState::Menu;
-				//Write results of game to scores.csv file.
-				int timeElapsed = -1;
+
+				//	Write results of game to scores.csv file.
+				int timeElapsed = -1;				
 				int currDate = -1;
 				std::ofstream scoresWrite("scores.csv", std::ios::app);
 				if (scoresWrite) { scoresWrite << gridObject.getDifficulty() << timeElapsed << percentDone << currDate << "\n"; }
 				scoresWrite.close();
+
+				std::cout << "\nPress Any Key to Continue. ";
+				std::cin >> menuInput;
+				std::cin.ignore();
 				clearConsole();
 			}
 		}
@@ -238,7 +243,6 @@ int main() {
 	std::cout << "Goodbye.\n";
 	return 0;
 }
-
 
 /*
 
