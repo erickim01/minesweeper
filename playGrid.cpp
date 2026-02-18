@@ -393,11 +393,11 @@ void PlayGrid::loadGame(const std::string& selectedFile) {
 		std::stringstream ss(line);			//	followed by a whitespace for the next cell. Each row is separated by a newline.
 		std::string currCell;
 		std::vector<Cell> currRow;
-		while (std::getline(ss, line)) {
-			
-			//Later - Get the values of each cell struct.
-
+		while (std::getline(loadFile, line)) {
+			std::cout << "Grid line read: [" << line << "]\n";
+			//fo
 		}
+
 	}
 }
 

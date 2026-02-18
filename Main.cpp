@@ -151,9 +151,9 @@ int main() {
 			else {
 				int fileIndexRange = gridObject.displayFiles(saveDir);
 				if (fileIndexRange != -1) {
+					clearConsole();
 					status = GameState::Active;
 					gridObject.selectFile(saveDir, getValidInt(fileIndexRange) - 1);	//Needs to return a bool to check if save was invalid.
-					gridObject.createEmptyGrid();		//DEBUG - Remove this after loadGame can read in cell values.
 					std::cout << "\n\t\t\tGame Loaded.\n";
 				}
 			}
