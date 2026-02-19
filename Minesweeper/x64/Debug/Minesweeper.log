@@ -1,7 +1,2 @@
-﻿  Main.cpp
-  PlayGrid.cpp
-C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\PlayGrid.cpp(326,11): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  Generating Code...
-C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\Main.cpp(101,1): warning C4715: 'clickInput': not all control paths return a value
-C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\Main.cpp(91,1): warning C4715: 'getCoordinates': not all control paths return a value
+﻿  PlayGrid.cpp
   Minesweeper.vcxproj -> C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\x64\Debug\Minesweeper.exe

@@ -35,8 +35,8 @@ int selectDifficulty() {
 		std::getline(std::cin, diffInput);					//	DEBUG std::cout << "Raw after getline: [" << diffInput << "], len=" << diffInput.length() << "\n";
 		normalizeInput(diffInput);
 		if ((diffInput == "HARD") || (diffInput == "H")) { return 2; }
-		else if ((diffInput == "NORMAL") || (diffInput == "NM")) { return 1; }
-		else if ((diffInput == "EASY") || (diffInput == "EZ")) { return 0; }
+		else if ((diffInput == "NORMAL") || (diffInput == "NM") || (diffInput == "N")) { return 1; }
+		else if ((diffInput == "EASY") || (diffInput == "EZ") || (diffInput == "E")) { return 0; }
 		else { std::cout << "\nDifficulty not recognized. Please choose easy, normal, or hard difficulty by typing. \nSelect Difficulty > "; }
 	}
 }
@@ -119,8 +119,6 @@ int getValidInt(int maxVal) {
 	}
 }
 
-
-
 int main() {
 	GameState status = GameState::Menu;	
 	std::string menuInput = "";
@@ -161,7 +159,7 @@ int main() {
 		else { //Otherwise difficulty is selected.
 			bool gameOver = false;
 			gridObject.setDifficulty(selectDifficulty());
-			
+			gridObject.createEmptyGrid();
 			gridObject.setFirstMove(true);
 			status = GameState::Active;		
 			clearConsole();
@@ -210,7 +208,9 @@ int main() {
 			bool rightClick = false;
 			std::cout << "\nYour coordinates: " << static_cast<char>(userCoords.first + 65) << (userCoords.second + 1)
 				<< ", " << clickInput(rightClick) << std::endl << std::endl;
-			if (gridObject.getFirstMove()) {
+
+			//The grid is seeded with bombs only when the first square is revealed with a left-click.
+			if (gridObject.getFirstMove() && !rightClick) {
 				gridObject.seedGrid(userCoords);
 				gridObject.setFirstMove(false);
 			}

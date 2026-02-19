@@ -36,7 +36,7 @@ public:
 	void createEmptyGrid();
 	void seedGrid(std::pair<int, int> userCoord);
 	bool clickCell(bool clickChoice, std::pair<int, int> userCoord);
-	bool checkDirExists(const std::string& path);						//All public functions from this point on likely to be moved to base class later.
+	bool checkDirExists(const std::string& path);						//	All public functions from this point on likely to be moved to base class later.
 	bool saveGame(const std::string& saveName) const;
 	int displayFiles(const std::string& path, const std::string& pathName);
 	bool selectFile(const std::string& path, const int& targetIndex);
@@ -48,15 +48,16 @@ private:
 	int difficulty = -1;
 	int numBombs = -1;
 	int gridSize = -1;
-	int tilesRevealed = 0;													//Keeps a count of how many non-bomb tiles have been revealed.
+	int tilesRevealed = 0;													//	Keeps a count of how many non-bomb tiles have been revealed.
 	int flagsLeft = -1;
-	std::vector<std::vector<Cell>> gameGrid;								//2D Matrix representation of every cell on the playing field.
-	std::vector<std::pair<int, int>> gridList;								//A registry of every possible cell in play to simplify bomb seeding.
-	void countNeighbors(std::vector<std::vector<Cell>>& numVects2D);
+	std::vector<std::vector<Cell>> gameGrid;								//	2D Matrix representation of every cell on the playing field.
+	std::vector<std::pair<int, int>> gridList;								//	A registry of every possible cell in play to simplify bomb seeding.
+	void countAllNeighbors(std::vector<std::vector<Cell>>& numVects2D);
+	std::vector<std::pair<int, int>> getNeighbors(const int& row, const int& cell, const int& numNeighbors);
 	void revealCell(int row, int col, bool& isRevealed, bool& isFlagged);
 };
 
-//TODO TODO TODO
+//	TODO TODO TODO
 /*
 *	- Right clicking replaces square with flag				(DONE)
 * 
@@ -70,6 +71,9 @@ private:
 
 	- Right Clicking decrements flagsLeft by one.			(DONE)
 
+	- First click is a gaurunteed zero, and random			  5%
+	  amount of neighbors are also zeroes.
+
 	- time counter that updates timeElapsed with each		  10%
 	  click.
 
@@ -77,7 +81,7 @@ private:
 	  revealed tiles *that are not bombs* by gridSize 
 	  squared, and then multipled by 100%.
 
-	- Save/Load game exports/imports.						 75%
+	- Save/Load game exports/imports.						 (DONE)
 
 	- High score log.										 80% (NEEDS TESTING)
 */

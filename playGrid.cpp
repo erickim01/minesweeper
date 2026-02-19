@@ -144,12 +144,32 @@ void PlayGrid::createEmptyGrid() {
 	}
 }
 
+//Helper that randomizes a vector of pairs.
+void shuffleList(std::vector<std::pair<int, int>>& list) {
+	std::random_device rd;
+	std::mt19937 rng(rd());
+	std::shuffle(std::begin(list), std::end(list), rng);
+}
+
 void PlayGrid::seedGrid(std::pair<int, int> userCoord) {
 	setGridList();		//	Create Registry and a shuffled copy of registry
 	std::vector<std::pair<int, int>> listCopy = gridList;
-	std::random_device rd;
-	std::mt19937 rng(rd());
-	std::shuffle(std::begin(listCopy), std::end(listCopy), rng);
+	shuffleList(listCopy);
+
+	std::vector<std::pair<int, int>> userNeighbors = getNeighbors(userCoord.first, userCoord.second, 8);		//	Create a list of all the neighbors of the user's first clicked square.
+	//Recursively call this function and randomly get a specified number of neighbors
+	for (auto& entry : userNeighbors) {
+		//std::vector<std::pair<int, int>> neighborsExtended = getNeighbors(entry.first, entry.second, 3);
+		//for (auto& entry : neighborsExtended) { userNeighbors.push_back(entry); }
+	}
+	for (auto& entry : userNeighbors) {
+		std::cout << userCoord.first << ", " << userCoord.second << std::endl;
+	}	
+	std::sort(userNeighbors.begin(), userNeighbors.end());
+	//Check for and remove duplicates.
+
+	//If any of the coordinates in this list would be made bombs, they are skipped in the next for loop.
+
 
 	int placed = 0;
 	for (auto& coordinate : listCopy) {
@@ -158,29 +178,71 @@ void PlayGrid::seedGrid(std::pair<int, int> userCoord) {
 			if (++placed == numBombs) { break; }
 		}
 	}
-	//	DEBUG - Show Registry Contents for (int i = 0; i < listCopy.size(); ++i) { std::cout << listCopy[i].first << ", " << listCopy[i].second << std::endl; }
-	countNeighbors(gameGrid);
+	
+	countAllNeighbors(gameGrid);
+
+	gameGrid[userCoord.first][userCoord.second].value = 0;
+	//placed -= checkNeighborsSolo(userCoord.first, userCoord.second);
+	std::cout << "Bombs to be reloacted: " << numBombs - placed << std::endl;
+	countAllNeighbors(gameGrid);
 }
+
+
+
 //	The initial click is not only free, but is always a zero surrounded by other zeroes.
+//	DEBUG - Show Registry Contents for (int i = 0; i < listCopy.size(); ++i) { std::cout << listCopy[i].first << ", " << listCopy[i].second << std::endl; }
+
+
+//	Checks every neighboring cell and returns the number of bombs neighboring a single index (a "cell") in a 2D Vector.
+std::vector<std::pair<int, int>> PlayGrid::getNeighbors(const int& row, const int& cell, const int& neighborsWanted) {
+
+	std::vector<std::pair<int, int>> neighborList;	//	A list of every neighbor the cell has.
+	if ((cell != gridSize - 1) ) { neighborList.push_back(std::make_pair(row, cell + 1)); }										//	EAST - directly to the right
+	if ((row != gridSize - 1) ) { neighborList.push_back(std::make_pair(row + 1, cell)); }										//	SOUTH - directly below the current cell
+	if ((row != gridSize - 1) && (cell != gridSize - 1)) { neighborList.push_back(std::make_pair(row + 1, cell + 1)); }			//	SOUTH-EAST - down and right
+
+	if ((row >= 1)) { neighborList.push_back(std::make_pair(row - 1, cell)); }													//	NORTH - directly above	
+	if ((row >= 1) && (cell != gridSize - 1) ) { neighborList.push_back(std::make_pair(row - 1, cell + 1)); }						//	NORTH-EAST - up and right
+
+	if ((cell >= 1)) { neighborList.push_back(std::make_pair(row, cell - 1)); }													//	WEST - left neighbor 
+	if ((row >= 1) && (cell >= 1) ) { neighborList.push_back(std::make_pair(row - 1, cell - 1)); }								//	NORTH-WEST - up and left
+	if ((row != gridSize - 1) && (cell >= 1)) { neighborList.push_back(std::make_pair(row + 1, cell - 1)); }						//	SOUTH-WEST - down and left
+
+	/*
+	int bombsRemoved = 0;
+	for (auto& entry : validNeighbors) {
+		if (gameGrid[entry.first][entry.second].value == -1) { 
+			gameGrid[entry.first][entry.second].value = 0;
+			++bombsRemoved;
+		}
+	}
+	return bombsRemoved;
+	*/
+
+	//	The list of possible neighboring cells is randomized. As long as the number of neighbors wanted is less than the amount of possible neighbors
+	shuffleList(neighborList);
+	while (neighborsWanted < neighborList.size()) {	neighborList.erase(neighborList.begin()); }
+	return neighborList;
+}
 
 //	Helper function to seedGrid(). Checks if a neighboring cell on a 2D grid has a -1 and then increases the current Cell's own count by one if -1 is seen.
-void PlayGrid::countNeighbors(std::vector<std::vector<Cell>> &numVects2D) {
-	for (int i = 0; i < gridSize; ++i) {
-		for (int j = 0; j < gridSize; ++j) {
-			auto& currCell = numVects2D[i][j].value;
+void PlayGrid::countAllNeighbors(std::vector<std::vector<Cell>> &numVects2D) {
+	for (int row = 0; row < gridSize; ++row) {
+		for (int cell = 0; cell < gridSize; ++cell) {
+			auto& currCell = numVects2D[row][cell].value;
 			if (currCell == -1) { continue; }	//	If the current cell is already a bomb, it is skipped so as to not be overwritten.
 			int count = 0;
 			//	Check neighbors of the current cell
-			if ((j != gridSize - 1) && (numVects2D[i][j + 1].value == -1)) { ++count; }									//	EAST - directly to the right
-			if ((i != gridSize - 1) && (numVects2D[i + 1][j].value == -1)){ ++count; }									//	SOUTH - directly below the current cell
-			if ((i != gridSize - 1) && (j != gridSize - 1) && (numVects2D[i + 1][j + 1].value == -1)) { ++count; }		//	SOUTH-EAST - down and right
+			if ((cell != gridSize - 1) && (numVects2D[row][cell + 1].value == -1)) { ++count; }									//	EAST - directly to the right
+			if ((row != gridSize - 1) && (numVects2D[row + 1][cell].value == -1)){ ++count; }									//	SOUTH - directly below the current cell
+			if ((row != gridSize - 1) && (cell != gridSize - 1) && (numVects2D[row + 1][cell + 1].value == -1)) { ++count; }		//	SOUTH-EAST - down and right
 
-			if ((i >= 1) && (numVects2D[i - 1][j].value == -1)) { ++count; }											//	NORTH - directly above	
-			if ((i >= 1) && (j != gridSize - 1) && (numVects2D[i - 1][j + 1].value == -1)) { ++count; }					//	NORTH-EAST - up and right
+			if ((row >= 1) && (numVects2D[row - 1][cell].value == -1)) { ++count; }											//	NORTH - directly above	
+			if ((row >= 1) && (cell != gridSize - 1) && (numVects2D[row - 1][cell + 1].value == -1)) { ++count; }					//	NORTH-EAST - up and right
 			
-			if ((j >= 1) && (numVects2D[i][j - 1].value == -1)) { ++count; }											//	WEST - left neighbor 
-			if ((i >= 1) && (j >= 1) && (numVects2D[i - 1][j - 1].value == -1)) { ++count; }							//	NORTH-WEST - up and left
-			if ((i != gridSize - 1) && (j >= 1) && (numVects2D[i + 1][j - 1].value == -1)) { ++count; }					//	SOUTH-WEST - down and left
+			if ((cell >= 1) && (numVects2D[row][cell - 1].value == -1)) { ++count; }											//	WEST - left neighbor 
+			if ((row >= 1) && (cell >= 1) && (numVects2D[row - 1][cell - 1].value == -1)) { ++count; }							//	NORTH-WEST - up and left
+			if ((row != gridSize - 1) && (cell >= 1) && (numVects2D[row + 1][cell - 1].value == -1)) { ++count; }					//	SOUTH-WEST - down and left
 			currCell = count;
 		}
 	}
@@ -323,7 +385,7 @@ int PlayGrid::displayFiles(const std::string& path, const std::string& pathName)
 	int saveIndex = 0;
 	for (const auto& file : fs::directory_iterator(path)) {
 		std::string fileName = file.path().string();
-		int pos = fileName.find(pathName);
+		size_t pos = fileName.find(pathName);
 		if (pos != std::string::npos) {
 			fileName.erase(pos, pathName.length());
 		}
