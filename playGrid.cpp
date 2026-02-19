@@ -34,7 +34,7 @@ void PlayGrid::setDifficulty(int difficulty) {
 
 //	Number of bombs is dependent on difficulty.
 void PlayGrid::setBombs() {
-	const int BOMBS_EASY = 10;
+	const int BOMBS_EASY = 3;
 	const int BOMBS_NORMAL = 32;
 	const int BOMBS_HARD = 100;
 	switch (difficulty) {
@@ -129,7 +129,9 @@ void PlayGrid::displayGridGameOver() {
 		++rowLetter;
 		std::cout << std::endl;
 	}
-	//std::cout << "  _______________________________________________________\n\t\n";
+	std::cout << " \n";
+	for (int i = 0; i < gridSize; ++i) { std::cout << "_____"; }
+	std::cout << "\n\t\n\n";
 }
 
 void PlayGrid::createEmptyGrid() {
@@ -194,20 +196,8 @@ void PlayGrid::seedGrid(std::pair<int, int> userCoord) {
 			if (++placed == numBombs) { break; }
 		}
 	}
-	
-	countAllNeighbors(gameGrid);
-
-	gameGrid[userCoord.first][userCoord.second].value = 0;
-	//placed -= checkNeighborsSolo(userCoord.first, userCoord.second);
-	std::cout << "Bombs to be reloacted: " << numBombs - placed << std::endl;
 	countAllNeighbors(gameGrid);
 }
-
-
-
-//	The initial click is not only free, but is always a zero surrounded by other zeroes.
-//	DEBUG - Show Registry Contents for (int i = 0; i < listCopy.size(); ++i) { std::cout << listCopy[i].first << ", " << listCopy[i].second << std::endl; }
-
 
 //	Checks every neighboring cell and returns the number of bombs neighboring a single index (a "cell") in a 2D Vector.
 std::vector<std::pair<int, int>> PlayGrid::getNeighbors(const int& row, const int& cell, const int& neighborsWanted) {
@@ -223,17 +213,6 @@ std::vector<std::pair<int, int>> PlayGrid::getNeighbors(const int& row, const in
 	if ((cell >= 1)) { neighborList.push_back(std::make_pair(row, cell - 1)); }													//	WEST - left neighbor 
 	if ((row >= 1) && (cell >= 1) ) { neighborList.push_back(std::make_pair(row - 1, cell - 1)); }								//	NORTH-WEST - up and left
 	if ((row != gridSize - 1) && (cell >= 1)) { neighborList.push_back(std::make_pair(row + 1, cell - 1)); }						//	SOUTH-WEST - down and left
-
-	/*
-	int bombsRemoved = 0;
-	for (auto& entry : validNeighbors) {
-		if (gameGrid[entry.first][entry.second].value == -1) { 
-			gameGrid[entry.first][entry.second].value = 0;
-			++bombsRemoved;
-		}
-	}
-	return bombsRemoved;
-	*/
 
 	//	The list of possible neighboring cells is randomized. As long as the number of neighbors wanted is less than the amount of possible neighbors
 	shuffleList(neighborList);

@@ -218,8 +218,8 @@ int main() {
 			}
 			clearConsole();
 			gameOver = gridObject.clickCell(rightClick, userCoords);
-			//	gridObject.displayGridGameOver(); //	DEBUG Displays game over right now.
-			if (gridObject.getTilesRevealed() == (gridObject.getGridSize() * gridObject.getGridSize())) { 
+			gridObject.displayGridGameOver(); //	DEBUG Displays game over right now.
+			if (gridObject.getTilesRevealed() == (gridObject.getGridSize() * gridObject.getGridSize()) - gridObject.getBombs()) { 
 				std::cout << "\nWinner! All open spaces have been discovered.\n";
 				gameOver = true; 
 			}

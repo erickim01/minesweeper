@@ -71,7 +71,7 @@ private:
 
 	- Right Clicking decrements flagsLeft by one.			(DONE)
 
-	- First click is a gaurunteed zero, and random			  60%
+	- First click is a gaurunteed zero, and random			(DONE)
 	  amount of neighbors are also zeroes.
 
 	- time counter that updates timeElapsed with each		  10%
