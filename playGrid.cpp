@@ -1,7 +1,8 @@
 #include <iostream>
 #include <algorithm> //	<std::ranges::shuffle>
-#include <random> //	<auto rng = std::default_random_engine {};>
+#include <random>	//	<auto rng = std::default_random_engine {};>
 #include <array>
+#include <unordered_set>		//	Faster seedGrid() lookups
 #include "PlayGrid.h"
 
 /////	saveGame() function - Likely to move these #includes to a parent class.
@@ -10,6 +11,16 @@
 #include <string>
 namespace fs = std::filesystem;
 ////	End of saveGame() & loadGame() Includes.
+
+template<>
+struct std::hash<std::pair<int, int>> {
+	std::size_t operator()(const std::pair<int, int>& p) const noexcept {
+		// Simple but decent hash combine (many variations exist)
+		std::size_t h1 = std::hash<int>{}(p.first);
+		std::size_t h2 = std::hash<int>{}(p.second);
+		return h1 ^ (h2 << 1);   // or h1 + 0x9e3779b9 + (h2 << 6) + (h2 >> 2), etc.
+	}
+};
 
 
 //PlayGrid::PlayGrid() {}
@@ -158,24 +169,27 @@ void PlayGrid::seedGrid(std::pair<int, int> userCoord) {
 	//	Create a list of all the neighbors of the user's first clicked square.
 	//	FEATURE FEATURE FEATURE -	If desired, the magic numbers in uni_int_dist may be replaced by variables that scale with difficulty.
 	auto rng = std::mt19937(std::random_device{}());
-	std::vector<std::pair<int, int>> userNeighbors = getNeighbors(userCoord.first, userCoord.second, std::uniform_int_distribution(7, 8)(rng));		//Recursively call this function and randomly get a specified number of neighbors
+	std::vector<std::pair<int, int>> neighborCoords = getNeighbors(userCoord.first, userCoord.second, std::uniform_int_distribution(8, 8)(rng));
 	std::vector<std::pair<int, int>> neighborsExtended;
-	for (auto& entry : userNeighbors) {		//	FEATURE FEATURE FEATURE -	A third iteration of rdNum3(1, 2) may take place for slightly more start variety.
+	for (auto& entry : neighborCoords) {		//	FEATURE FEATURE FEATURE -	A third iteration of rdNum3(1, 2) may take place for slightly more start variety.
 		std::vector<std::pair<int, int>> tempPairVector = getNeighbors(entry.first, entry.second, std::uniform_int_distribution(2, 4)(rng));
 		for (auto& entry : tempPairVector) { neighborsExtended.push_back(entry); }
 	}	
-	for (auto& entry : neighborsExtended) { userNeighbors.push_back(entry); }
-	std::sort(userNeighbors.begin(), userNeighbors.end());
-	userNeighbors.erase(std::unique(userNeighbors.begin(), userNeighbors.end()), userNeighbors.end());		//	TODO TODO TODO - Rewrite this section as a hash table to avoid erase calls.
+	for (auto& entry : neighborsExtended) { neighborCoords.push_back(entry); }
+	neighborCoords.push_back(userCoord);
+	std::sort(neighborCoords.begin(), neighborCoords.end());
+	neighborCoords.erase(std::unique(neighborCoords.begin(), neighborCoords.end()), neighborCoords.end());		//	TODO TODO TODO - Rewrite this section as a hash table to avoid erase calls.
 	
-	for (auto& entry : userNeighbors) { std::cout << entry.first << ", " << entry.second << ": " << gameGrid[entry.first][entry.second].value << std::endl;; }
+	for (auto& entry : neighborCoords) { std::cout << entry.first << ", " << entry.second << ": " << gameGrid[entry.first][entry.second].value << std::endl;; }
 
-	//If any of the coordinates in this list would be made bombs, they are skipped in the next for loop.
-
-
+	//If any of the coordinates in the "safe zone" list would be made bombs, they are skipped in the next for loop.
+	//This setup is such that the program will continue to attempt bomb placements until all bombs have been placed or the end of the grid is reached.
+	//Check desired num of bombs and uniform_int_dist's allow enough spaces for bombs to be planted.
 	int placed = 0;
+	std::unordered_set<std::pair<int, int>> safeList(neighborCoords.begin(), neighborCoords.end());
 	for (auto& coordinate : listCopy) {
-		if (coordinate != userCoord) {
+		bool isSafe = safeList.find(coordinate) != safeList.end();
+		if (!isSafe) {
 			gameGrid[coordinate.first][coordinate.second].value = -1;
 			if (++placed == numBombs) { break; }
 		}

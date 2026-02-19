@@ -71,7 +71,7 @@ private:
 
 	- Right Clicking decrements flagsLeft by one.			(DONE)
 
-	- First click is a gaurunteed zero, and random			  5%
+	- First click is a gaurunteed zero, and random			  60%
 	  amount of neighbors are also zeroes.
 
 	- time counter that updates timeElapsed with each		  10%
@@ -89,5 +89,11 @@ private:
 	- seedGrid() - If desired, the magic numbers in uni_int_dist may be replaced by variables that scale with difficulty.
 
 	- seedGrid() - A third iteration of rdNum3(1, 2) may take place for slightly more start variety.
+
+	- saveGame() - A game that was already saved once tracks the name of the save, and saves to that file
+
+	- saveGame() - Overwrite save name handling.
+
+	- saveGame() - Handle attempts to make a save with invalid file characters.
 */
 

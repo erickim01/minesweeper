@@ -119,6 +119,8 @@ int getValidInt(int maxVal) {
 	}
 }
 
+
+//	TODO TODO TODO - Fix issue of gridObject already loaded when restarting new game in same instance.
 int main() {
 	GameState status = GameState::Menu;	
 	std::string menuInput = "";
