@@ -84,5 +84,10 @@ private:
 	- Save/Load game exports/imports.						 (DONE)
 
 	- High score log.										 80% (NEEDS TESTING)
+
+	//	UNINCLUDED FEATURES LIST	
+	- seedGrid() - If desired, the magic numbers in uni_int_dist may be replaced by variables that scale with difficulty.
+
+	- seedGrid() - A third iteration of rdNum3(1, 2) may take place for slightly more start variety.
 */
 

@@ -145,28 +145,30 @@ void PlayGrid::createEmptyGrid() {
 }
 
 //Helper that randomizes a vector of pairs.
-void shuffleList(std::vector<std::pair<int, int>>& list) {
-	std::random_device rd;
-	std::mt19937 rng(rd());
-	std::shuffle(std::begin(list), std::end(list), rng);
-}
+void shuffleList(std::vector<std::pair<int, int>>& list) { std::shuffle(std::begin(list), std::end(list), std::mt19937(std::random_device{}())); }
 
+
+//	Placement of bombs and processing the first click, making a free space of zeroes.
 void PlayGrid::seedGrid(std::pair<int, int> userCoord) {
 	setGridList();		//	Create Registry and a shuffled copy of registry
 	std::vector<std::pair<int, int>> listCopy = gridList;
 	shuffleList(listCopy);
 
-	std::vector<std::pair<int, int>> userNeighbors = getNeighbors(userCoord.first, userCoord.second, 8);		//	Create a list of all the neighbors of the user's first clicked square.
-	//Recursively call this function and randomly get a specified number of neighbors
-	for (auto& entry : userNeighbors) {
-		//std::vector<std::pair<int, int>> neighborsExtended = getNeighbors(entry.first, entry.second, 3);
-		//for (auto& entry : neighborsExtended) { userNeighbors.push_back(entry); }
-	}
-	for (auto& entry : userNeighbors) {
-		std::cout << userCoord.first << ", " << userCoord.second << std::endl;
+	
+	//	Create a list of all the neighbors of the user's first clicked square.
+	//	FEATURE FEATURE FEATURE -	If desired, the magic numbers in uni_int_dist may be replaced by variables that scale with difficulty.
+	auto rng = std::mt19937(std::random_device{}());
+	std::vector<std::pair<int, int>> userNeighbors = getNeighbors(userCoord.first, userCoord.second, std::uniform_int_distribution(7, 8)(rng));		//Recursively call this function and randomly get a specified number of neighbors
+	std::vector<std::pair<int, int>> neighborsExtended;
+	for (auto& entry : userNeighbors) {		//	FEATURE FEATURE FEATURE -	A third iteration of rdNum3(1, 2) may take place for slightly more start variety.
+		std::vector<std::pair<int, int>> tempPairVector = getNeighbors(entry.first, entry.second, std::uniform_int_distribution(2, 4)(rng));
+		for (auto& entry : tempPairVector) { neighborsExtended.push_back(entry); }
 	}	
+	for (auto& entry : neighborsExtended) { userNeighbors.push_back(entry); }
 	std::sort(userNeighbors.begin(), userNeighbors.end());
-	//Check for and remove duplicates.
+	userNeighbors.erase(std::unique(userNeighbors.begin(), userNeighbors.end()), userNeighbors.end());		//	TODO TODO TODO - Rewrite this section as a hash table to avoid erase calls.
+	
+	for (auto& entry : userNeighbors) { std::cout << entry.first << ", " << entry.second << ": " << gameGrid[entry.first][entry.second].value << std::endl;; }
 
 	//If any of the coordinates in this list would be made bombs, they are skipped in the next for loop.
 
