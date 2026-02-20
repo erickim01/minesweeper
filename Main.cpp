@@ -238,6 +238,7 @@ int main() {
 		}
 
 		else { //Otherwise difficulty is selected.
+			timeKeeperObject.reset();
 			gridObject.resetObject();
 			gridObject.setDifficulty(selectDifficulty());
 			gridObject.setBombs();
@@ -269,6 +270,7 @@ int main() {
 			//SAVE - QUIT CONDITIONALS
 							
 			if (userCoords.first == -1) {	//if userCoordinates returned a -1 in the first slot, a save or quit sequence has been triggered.
+				timeKeeperObject.pause();
 				clearConsole();	
 				if (userCoords.second == 0) {
 					std::cout << "Enter Save Name: ";
@@ -278,6 +280,7 @@ int main() {
 					if (isSaved) { std::cout << "Game saved successfully...\n"; }
 					else { std::cout << "Failed to save game.\n"; }
 					std::this_thread::sleep_for(std::chrono::seconds(3));
+					timeKeeperObject.start();
 					continue;
 				}
 				else {
@@ -311,6 +314,7 @@ int main() {
 				std::cout << "\n\t\t----Game Over----\n";		//FEATURE FEATURE FEATURE - number of tabs scales with difficulty for nicer placement.
 				gridObject.displayGridGameOver();
 				status = GameState::Menu;
+				timeKeeperObject.pause();
 
 				//	Write results of game to scores.csv file.
 				auto dateIs = std::chrono::floor<std::chrono::days>(std::chrono::system_clock::now());

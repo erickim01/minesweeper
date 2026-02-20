@@ -85,8 +85,10 @@ private:
 
 	- Save/Load game exports/imports.					    (DONE)
 
-	- High score log.										90%
-						
+	- High score log.										(DONE)
+			
+
+	-	TODO -	Time is not saved to save files and does not correctly update.
 
 
 
