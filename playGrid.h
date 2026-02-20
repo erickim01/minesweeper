@@ -61,33 +61,7 @@ private:
 
 //	TODO TODO TODO
 /*
-*	- Right clicking replaces square with flag				(DONE)
-* 
-*	- Right clicking open/revealed tile does nothing		(DONE)
-* 
-*	- Left clicking reveals tile, and if it's a bomb		(DONE)
-	  immediately triggers game over.
-
-*	- Revealing all non-bomb tiles triggers victory,	    (DONE)
-      saves to high score.
-
-	- Right Clicking decrements flagsLeft by one.			(DONE)
-
-	- First click is a gaurunteed zero, and random			(DONE)
-	  amount of neighbors are also zeroes.
-
-	- time counter that updates timeElapsed with each		(DONE)
-	  click.
-
-	- tilesClicked function that divides number of			(DONE)
-	  revealed tiles *that are not bombs* by gridSize 
-	  squared, and then multipled by 100%.
-
-	- Save/Load game exports/imports.					    (DONE)
-
-	- High score log.										(DONE)
 			
-
 	-	TODO -	Time is not saved to save files and does not correctly update.
 
 
