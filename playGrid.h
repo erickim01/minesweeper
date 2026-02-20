@@ -76,7 +76,7 @@ private:
 	- First click is a gaurunteed zero, and random			(DONE)
 	  amount of neighbors are also zeroes.
 
-	- time counter that updates timeElapsed with each		  10%
+	- time counter that updates timeElapsed with each		(DONE)
 	  click.
 
 	- tilesClicked function that divides number of			(DONE)

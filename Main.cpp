@@ -152,10 +152,10 @@ int main() {
 			else {
 				int fileIndexRange = gridObject.displayFiles(saveDir, "Saves\\");
 				if (fileIndexRange != -1) {
-					clearConsole();
 					status = GameState::Active;
 					gridObject.resetObject();
 					gridObject.selectFile(saveDir, getValidInt(fileIndexRange) - 1);	//Needs to return a bool to check if save was invalid.
+					clearConsole();
 					std::cout << "\n\t\t\tGame Loaded.\n";
 				}
 			}
