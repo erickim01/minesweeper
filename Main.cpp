@@ -7,7 +7,9 @@
 #include <cctype>		//	<std::tolower> <std::toupper>		//These handle the user input when choosing menu options.
 #include <chrono>		//	Autosaving file naming convention and time spent in a game.
 #include <format>
+#include <thread>		//	Sleeping the program for a couple seconds to allow some messages to be visible.
 #include "PlayGrid.h"
+#include "Stopwatch.h"
 
 //	ANSI Clear Screen		-	\x1b[2J 
 //	ANSI Cursor to Top Left	-	\x1b[1;1H
@@ -125,13 +127,14 @@ int main() {
 	GameState status = GameState::Menu;	
 	std::string menuInput = "";
 	PlayGrid gridObject;
+	Stopwatch timeKeeperObject;
 	bool gameOver = false;
 	while (static_cast<int>(status) != 4) {		//	Program runs in console while quit flag not raised.
 		///////////////////////////////
 		//////MENU - PLAY OR QUIT//////
 		///////////////////////////////
 		std::cout << "\t\t  --- Minesweeper Clone ---\t\t" << std::endl;
-		std::cout << "\n\n>Play ('p') \n>Load Game ('l') \n>High Scores ('h'/'s') \n>Options ('o') \n>Credits ('c') \n>Quit ('q')\n";	
+		std::cout << "\n\n>Play ('p') \n\n>Load Game ('l') \n\n>High Scores ('h'/'s') \n\n>Options ('o') \n\n>Credits ('c') \n\n>Quit ('q')\n";	
 
 		
 		std::cin >> menuInput;
@@ -159,7 +162,7 @@ int main() {
 		}
 		else if (menuInput == "HIGHSCORES" || menuInput == "H" || menuInput == "SCORES" || menuInput == "S" || menuInput == "HIGH-SCORES") {
 			clearConsole();
-			std::cout << "\n\t\t--- High Scores ---\t\t\n";
+			std::cout << "\n\t\t--- High Scores ---\t\t\n\n";
 			std::cout << std::left
 				<< std::setw(12) << "Time"
 				<< std::setw(18) << "Tiles Revealed"
@@ -194,7 +197,6 @@ int main() {
 			std::cout << "\nOptions menu and custom difficulty settings coming soon.\n\n";
 		}
 		else { //Otherwise difficulty is selected.
-			bool gameOver = false;
 			gridObject.resetObject();
 			gridObject.setDifficulty(selectDifficulty());
 			gridObject.setBombs();
@@ -208,19 +210,23 @@ int main() {
 		////  ACTIVE GAME LOOP  ////
 		////				    ////
 		////////////////////////////
-		while (static_cast<int>(status) == 2) { 
+		while (static_cast<int>(status) == 2) {
+			//Calculation of stats to display along with grid.
 			static int nonBombTiles = (gridObject.getGridSize() * gridObject.getGridSize()) - gridObject.getBombs();
 			float percentDone = (static_cast <float>(gridObject.getTilesRevealed()) / static_cast <float>(nonBombTiles)) * 100;
 			gridObject.displayGrid();
 			
 			//////Game stats UI outputs//////
-			std::cout << "\nTime Elapsed: 00:00\n";
+			//std::cout << "\nTime Elapsed: 00:00\n";
+			std::cout << "\nTime Elapsed: " << timeKeeperObject.timeIs(timeKeeperObject.elapsed()) << std::endl;
 			std::cout << "Tiles Revealed: " << gridObject.getTilesRevealed() << " of " << nonBombTiles;
 			std::cout << " (" << std::fixed << std::setprecision(2) << percentDone << "%)";
 			std::cout << "\nFlags Left : " << gridObject.getFlags() << std::endl;
 			std::pair<int, int> userCoords = getCoordinates(gridObject.getGridSize());
+			timeKeeperObject.start();
 
 			//SAVE - QUIT CONDITIONALS
+							
 			if (userCoords.first == -1) {	//if userCoordinates returned a -1 in the first slot, a save or quit sequence has been triggered.
 				clearConsole();	
 				if (userCoords.second == 0) {
@@ -228,14 +234,16 @@ int main() {
 					std::string saveStr;
 					std::getline(std::cin, saveStr);
 					bool isSaved = gridObject.saveGame(saveStr + ".csv");
-					if (isSaved) { std::cout << "Game saved successfully.\n"; }
+					if (isSaved) { std::cout << "Game saved successfully...\n"; }
+					else { std::cout << "Failed to save game.\n"; }
+					std::this_thread::sleep_for(std::chrono::seconds(3));
 					continue;
 				}
 				else {
 					if (!gridObject.getFirstMove()) {	//Autosaves occur only if at least one move has been made (i.e. bombs have been planted).
 						std::cout << "Autosaving.\n";
 						auto timeIs = std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now());
-						std::string autoSave = "save.";
+						std::string autoSave = "autosave.";
 						gridObject.saveGame(autoSave + std::format("{:%Y%m%d-%H%M%S}", timeIs) + ".csv");
 					}
 					status = GameState::Quit; 
@@ -252,7 +260,7 @@ int main() {
 				gridObject.seedGrid(userCoords);
 				gridObject.setFirstMove(false);
 			}
-			clearConsole();
+			clearConsole(); 
 			gameOver = gridObject.clickCell(rightClick, userCoords);
 			if (gridObject.getTilesRevealed() == (gridObject.getGridSize() * gridObject.getGridSize()) - gridObject.getBombs()) { 
 				std::cout << "\nWinner! All open spaces have been discovered.\n";

@@ -380,7 +380,7 @@ bool PlayGrid::saveGame(const std::string& saveName) const {
 		return false;
 	}
 	saveWrite.close();
-	std::cout << "Saved game " << saveName << std::endl;
+	std::cout << "Saving " << saveName << std::endl;
 	return true;
 }
 

@@ -11,7 +11,6 @@ struct Cell {
 };
 
 class PlayGrid {
-
 public:
 
 	//PlayGrid();
@@ -84,9 +83,9 @@ private:
 	  revealed tiles *that are not bombs* by gridSize 
 	  squared, and then multipled by 100%.
 
-	- Save/Load game exports/imports.						 (DONE)
+	- Save/Load game exports/imports.					    (DONE)
 
-	- High score log.										 80% (NEEDS DISPLAY SCORES ON MENU)
+	- High score log.										(DONE)
 
 	//	UNINCLUDED FEATURES LIST	
 	- seedGrid() - If desired, the magic numbers in uni_int_dist may be replaced by variables that scale with difficulty.
