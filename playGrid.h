@@ -85,7 +85,13 @@ private:
 
 	- Save/Load game exports/imports.					    (DONE)
 
-	- High score log.										(DONE)
+	- High score log.										90%
+
+	-	HIGH SCORE - Display Difficulty before timeOutput "Tiles Revealed: " << revealCount << " of " << tTiles << percent(formatted).Instead of just the percent format.
+						If All tiles were revealed, output "Win" instead.
+
+
+
 
 	//	UNINCLUDED FEATURES LIST	
 	- seedGrid() - If desired, the magic numbers in uni_int_dist may be replaced by variables that scale with difficulty.
@@ -98,6 +104,10 @@ private:
 
 	- saveGame() - Handle attempts to make a save with invalid file characters.
 
+	- loadGame() - Keep track of file name to delete save after gameOver
+
 	- main(): GAMEOVER - number of tabs scales with difficulty for nicer placement.
+
+	- main(): HIGHSCORES - Show hard games first on the scoreboard, followed by most tiles revealed, followed by time, followed by date.
 */
 

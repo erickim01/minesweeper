@@ -145,6 +145,7 @@ int main() {
 			status = GameState::Quit;
 			break;
 		}
+
 		else if (menuInput == "LOAD" || menuInput == "L") {
 			clearConsole();
 			std::string saveDir = "Saves"; //Check if Save file exists
@@ -160,6 +161,7 @@ int main() {
 				}
 			}
 		}
+
 		else if (menuInput == "HIGHSCORES" || menuInput == "H" || menuInput == "SCORES" || menuInput == "S" || menuInput == "HIGH-SCORES") {
 			clearConsole();
 			std::cout << "\n\t\t--- High Scores ---\t\t\n\n";
@@ -181,9 +183,9 @@ int main() {
 						scoreValueStr.at(i) = subText;
 					}
 					std::cout << std::left
-						<< std::setw(12) << scoreValueStr[0]
-						<< std::setw(18) << scoreValueStr[1]
-						<< scoreValueStr[2] << "\n";
+						<< std::setw(12) << scoreValueStr.at(0)
+						<< std::setw(18) << (scoreValueStr.at(1) + "%")
+						<< scoreValueStr.at(2) << "\n";
 					//std::cout << "Time - " << scoreValueStr.at(0) << " | Tiles Revealed - " << scoreValueStr.at(1) << " | Date - " << scoreValueStr.at(2) << std::endl;
 				}
 				std::cout << "\nPress Enter to Continue...";
@@ -192,10 +194,12 @@ int main() {
 				std::cout << std::endl << std::endl;
 			}
 		}
+
 		else if (menuInput == "OPTIONS" || menuInput == "O") {	//	FEATURE FEATURE FEATURE - Add options for tweak diff settings?
 			clearConsole();
 			std::cout << "\nOptions menu and custom difficulty settings coming soon.\n\n";
 		}
+
 		else { //Otherwise difficulty is selected.
 			gridObject.resetObject();
 			gridObject.setDifficulty(selectDifficulty());
@@ -271,11 +275,10 @@ int main() {
 				gridObject.displayGridGameOver();
 				status = GameState::Menu;
 
-				//	Write results of game to scores.csv file.
-				int timeElapsed = -1;				
+				//	Write results of game to scores.csv file.				
 				int currDate = -1;
 				std::ofstream scoresWrite("scores.csv", std::ios::app);
-				if (scoresWrite) { scoresWrite << gridObject.getDifficulty() << timeElapsed << percentDone << currDate << "\n"; }
+				if (scoresWrite) { scoresWrite << gridObject.getDifficulty() << timeKeeperObject.timeIs(timeKeeperObject.elapsed()) << percentDone << currDate << "\n"; }
 				scoresWrite.close();
 
 				std::cout << "\nPress Enter to Continue. ";
