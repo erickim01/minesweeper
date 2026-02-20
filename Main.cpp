@@ -131,8 +131,7 @@ int main() {
 		//////MENU - PLAY OR QUIT//////
 		///////////////////////////////
 		std::cout << "\t\t  --- Minesweeper Clone ---\t\t" << std::endl;
-		std::cout << "\n\n>Play ('p') \nLoad Game ('l') \n>Quit ('q')\n";	
-
+		std::cout << "\n\n>Play ('p') \nLoad Game ('l') \nHigh Scores ('h') \nOptions ('o') \nCredits ('c') \n>Quit ('q')\n";	
 
 		//TODO TODO TODO - Add options for viewing credits, viewing highscores. Tweak diff settings?
 		std::cin >> menuInput;
@@ -157,6 +156,14 @@ int main() {
 					std::cout << "\n\t\t\tGame Loaded.\n";
 				}
 			}
+		}
+		else if (menuInput == "HIGHSCORES" || menuInput == "H" || menuInput == "SCORES") {
+			clearConsole();
+			std::cout << "Options menu and custom difficulty settings coming soon.\nPress Enter to continue.\n";
+		}
+		else if (menuInput == "OPTIONS" || menuInput == "O") {
+			clearConsole();
+			std::cout << "\nOptions menu and custom difficulty settings coming soon.\n\n";
 		}
 		else { //Otherwise difficulty is selected.
 			bool gameOver = false;
@@ -241,6 +248,12 @@ int main() {
 				clearConsole();
 			}
 		}
+	}
+	if (menuInput == "CREDITS" || menuInput == "C") {
+		clearConsole();
+		std::cout << "\nDesigned and devloped Eric Kim over the course of 40 hours.\n\n";
+		std::cout << "\nCopyright (c) 2026 Eric Kim. See License for more details.\n\n";
+		
 	}
 	std::cout << "Goodbye.\n";
 	return 0;
