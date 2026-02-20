@@ -1,7 +1,7 @@
 #include <string>
 #include <fstream>		//	Savegames and highscore record keeping.
 #include <iostream>
-#include <iomanip>		//	<std::put_time> and other stats formatting.
+#include <iomanip>		//	<std::put_time> and high-score output formatting.
 #include <vector>
 #include <algorithm>	//	<std::transform> <std::remove_if>
 #include <cctype>		//	<std::tolower> <std::toupper>		//These handle the user input when choosing menu options.
@@ -131,9 +131,9 @@ int main() {
 		//////MENU - PLAY OR QUIT//////
 		///////////////////////////////
 		std::cout << "\t\t  --- Minesweeper Clone ---\t\t" << std::endl;
-		std::cout << "\n\n>Play ('p') \nLoad Game ('l') \nHigh Scores ('h') \nOptions ('o') \nCredits ('c') \n>Quit ('q')\n";	
+		std::cout << "\n\n>Play ('p') \n>Load Game ('l') \n>High Scores ('h'/'s') \n>Options ('o') \n>Credits ('c') \n>Quit ('q')\n";	
 
-		//TODO TODO TODO - Add options for viewing credits, viewing highscores. Tweak diff settings?
+		
 		std::cin >> menuInput;
 		std::cin.ignore();
 		std::transform(menuInput.begin(), menuInput.end(), menuInput.begin(), [](unsigned char c) { return std::toupper(c); });
@@ -157,11 +157,39 @@ int main() {
 				}
 			}
 		}
-		else if (menuInput == "HIGHSCORES" || menuInput == "H" || menuInput == "SCORES") {
+		else if (menuInput == "HIGHSCORES" || menuInput == "H" || menuInput == "SCORES" || menuInput == "S" || menuInput == "HIGH-SCORES") {
 			clearConsole();
-			std::cout << "Options menu and custom difficulty settings coming soon.\nPress Enter to continue.\n";
+			std::cout << "\n\t\t--- High Scores ---\t\t\n";
+			std::cout << std::left
+				<< std::setw(12) << "Time"
+				<< std::setw(18) << "Tiles Revealed"
+				<< "Date\n"
+				<< std::string(50, '-') << "\n";
+
+			std::ifstream scoreReader("scores.csv");
+			if (scoreReader) {
+				std::string line;
+				while (std::getline(scoreReader, line)) {
+					std::vector<std::string> scoreValueStr(3);
+					std::stringstream ss(line);
+					std::string subText;
+					for (int i = 0; i < scoreValueStr.size(); ++i) {
+						std::getline(ss, subText, '-');
+						scoreValueStr.at(i) = subText;
+					}
+					std::cout << std::left
+						<< std::setw(12) << scoreValueStr[0]
+						<< std::setw(18) << scoreValueStr[1]
+						<< scoreValueStr[2] << "\n";
+					//std::cout << "Time - " << scoreValueStr.at(0) << " | Tiles Revealed - " << scoreValueStr.at(1) << " | Date - " << scoreValueStr.at(2) << std::endl;
+				}
+				std::cout << "\nPress Enter to Continue...";
+				std::cin.get();
+				std::cin.ignore();
+				std::cout << std::endl << std::endl;
+			}
 		}
-		else if (menuInput == "OPTIONS" || menuInput == "O") {
+		else if (menuInput == "OPTIONS" || menuInput == "O") {	//	FEATURE FEATURE FEATURE - Add options for tweak diff settings?
 			clearConsole();
 			std::cout << "\nOptions menu and custom difficulty settings coming soon.\n\n";
 		}
@@ -253,7 +281,6 @@ int main() {
 		clearConsole();
 		std::cout << "\nDesigned and devloped Eric Kim over the course of 40 hours.\n\n";
 		std::cout << "\nCopyright (c) 2026 Eric Kim. See License for more details.\n\n";
-		
 	}
 	std::cout << "Goodbye.\n";
 	return 0;
