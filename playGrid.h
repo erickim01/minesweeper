@@ -105,6 +105,8 @@ private:
 
 	- loadGame() - Keep track of file name to delete save after gameOver
 
+	- main(): MIDGAME QUIT - Add an option to return to the menu instead of exiting program.
+
 	- main(): GAMEOVER - number of tabs scales with difficulty for nicer placement.
 
 	- main(): HIGHSCORES - Show hard games first on the scoreboard, followed by most tiles revealed, followed by time, followed by date.
