@@ -18,10 +18,12 @@ public:
 	void setFirstMove(bool setState);
 	void setDifficulty(int difficulty);
 	void setBombs();
+	void setBombs(int numbombs);
 	void setFlags(int bombs);
 	void setGridSize(int gridSize);
 	void setTilesRevealed(int tilesRevealed);
 	void setGridList();
+	void resetObject();
 	
 	bool getFirstMove();
 	int getDifficulty();
@@ -47,9 +49,10 @@ private:
 	bool firstMove = false;
 	int difficulty = -1;
 	int numBombs = -1;
-	int gridSize = -1;
-	int tilesRevealed = 0;													//	Keeps a count of how many non-bomb tiles have been revealed.
 	int flagsLeft = -1;
+	int gridSize = -1;
+	int tilesRevealed = 0;						//	Keeps a count of how many non-bomb tiles have been revealed.
+	
 	std::vector<std::vector<Cell>> gameGrid;								//	2D Matrix representation of every cell on the playing field.
 	std::vector<std::pair<int, int>> gridList;								//	A registry of every possible cell in play to simplify bomb seeding.
 	void countAllNeighbors(std::vector<std::vector<Cell>>& numVects2D);
@@ -66,7 +69,7 @@ private:
 *	- Left clicking reveals tile, and if it's a bomb		(DONE)
 	  immediately triggers game over.
 
-*	- Revealing all non-bomb tiles triggers victory,		  60%
+*	- Revealing all non-bomb tiles triggers victory,	    (DONE)
       saves to high score.
 
 	- Right Clicking decrements flagsLeft by one.			(DONE)
@@ -83,7 +86,7 @@ private:
 
 	- Save/Load game exports/imports.						 (DONE)
 
-	- High score log.										 80% (NEEDS TESTING)
+	- High score log.										 80% (NEEDS DISPLAY SCORES ON MENU)
 
 	//	UNINCLUDED FEATURES LIST	
 	- seedGrid() - If desired, the magic numbers in uni_int_dist may be replaced by variables that scale with difficulty.
@@ -95,5 +98,7 @@ private:
 	- saveGame() - Overwrite save name handling.
 
 	- saveGame() - Handle attempts to make a save with invalid file characters.
+
+	- main(): GAMEOVER - number of tabs scales with difficulty for nicer placement.
 */
 

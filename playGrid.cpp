@@ -27,14 +27,11 @@ struct std::hash<std::pair<int, int>> {
 
 void PlayGrid::setFirstMove(bool setState) { firstMove = setState; } //	Resets firstMove flag to true at the start of a new game and once called is set to false.
 
-void PlayGrid::setDifficulty(int difficulty) {
-	this->difficulty = difficulty;
-	setBombs();
-}
+void PlayGrid::setDifficulty(int difficulty) { this->difficulty = difficulty; }
 
 //	Number of bombs is dependent on difficulty.
 void PlayGrid::setBombs() {
-	const int BOMBS_EASY = 3;
+	const int BOMBS_EASY = 10;
 	const int BOMBS_NORMAL = 32;
 	const int BOMBS_HARD = 100;
 	switch (difficulty) {
@@ -54,9 +51,12 @@ void PlayGrid::setBombs() {
 	setFlags(numBombs);
 }
 
+//Overloaded setBombs, to be called ONLY when resetting with resetObject().
+void PlayGrid::setBombs(int numbombs) { this->numBombs = numbombs; }
+
 void PlayGrid::setFlags(int bombs) { this->flagsLeft = bombs; }
 
-void PlayGrid::setGridSize(int gridSize) { this->gridSize = gridSize; }
+void PlayGrid::setGridSize(int gridSize) { this->gridSize = gridSize; }		//	Note: GridSize currently serves little to no purpose
 
 void PlayGrid::setTilesRevealed(int tilesRevealed) { this->tilesRevealed = tilesRevealed; }
 
@@ -67,6 +67,19 @@ void PlayGrid::setGridList() {
 			gridList.push_back({i, j});
 		}
 	}
+}
+
+//At the start of every new game, calling this function clears data from any previous game in the same instance.
+void PlayGrid::resetObject() {		//	This should potentially just be a constructor's job and a destructor gets called when a game finishes.
+	setFirstMove(true);		//	firstMove is set to "true" by default here as a new game is presumed to be beginning when this function is called.
+	setDifficulty(-1);
+	setBombs(-1);
+	setFlags(-1);
+	setGridSize(-1);
+	setTilesRevealed(0);
+	gameGrid.clear();
+	gridList.clear();
+	
 }
 
 bool PlayGrid::getFirstMove() { return firstMove; }
@@ -411,6 +424,7 @@ bool PlayGrid::selectFile(const std::string& path, const int& targetIndex) {
 	return 1;
 }
 
+//Helper to loadGame. This function and loadGame() should NOT be migrated to a base class.
 void parseCell(Cell& cell, const std::string& cellVals) {
 	std::stringstream ssSub(cellVals);
 	std::string value;

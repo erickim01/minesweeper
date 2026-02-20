@@ -124,7 +124,6 @@ int getValidInt(int maxVal) {
 int main() {
 	GameState status = GameState::Menu;	
 	std::string menuInput = "";
-	
 	PlayGrid gridObject;
 	bool gameOver = false;
 	while (static_cast<int>(status) != 4) {		//	Program runs in console while quit flag not raised.
@@ -153,6 +152,7 @@ int main() {
 				if (fileIndexRange != -1) {
 					clearConsole();
 					status = GameState::Active;
+					gridObject.resetObject();
 					gridObject.selectFile(saveDir, getValidInt(fileIndexRange) - 1);	//Needs to return a bool to check if save was invalid.
 					std::cout << "\n\t\t\tGame Loaded.\n";
 				}
@@ -160,9 +160,10 @@ int main() {
 		}
 		else { //Otherwise difficulty is selected.
 			bool gameOver = false;
+			gridObject.resetObject();
 			gridObject.setDifficulty(selectDifficulty());
+			gridObject.setBombs();
 			gridObject.createEmptyGrid();
-			gridObject.setFirstMove(true);
 			status = GameState::Active;		
 			clearConsole();
 			std::cout << "\n\t\t\tGame Start.\n";
@@ -218,13 +219,12 @@ int main() {
 			}
 			clearConsole();
 			gameOver = gridObject.clickCell(rightClick, userCoords);
-			gridObject.displayGridGameOver(); //	DEBUG Displays game over right now.
 			if (gridObject.getTilesRevealed() == (gridObject.getGridSize() * gridObject.getGridSize()) - gridObject.getBombs()) { 
 				std::cout << "\nWinner! All open spaces have been discovered.\n";
 				gameOver = true; 
 			}
 			if (gameOver) {
-				std::cout << "\n\t\t----Game Over----\n";
+				std::cout << "\n\t\t----Game Over----\n";		//FEATURE FEATURE FEATURE - number of tabs scales with difficulty for nicer placement.
 				gridObject.displayGridGameOver();
 				status = GameState::Menu;
 
@@ -235,8 +235,8 @@ int main() {
 				if (scoresWrite) { scoresWrite << gridObject.getDifficulty() << timeElapsed << percentDone << currDate << "\n"; }
 				scoresWrite.close();
 
-				std::cout << "\nPress Any Key to Continue. ";
-				std::cin >> menuInput;
+				std::cout << "\nPress Enter to Continue. ";
+				std::cin.get();
 				std::cin.ignore();
 				clearConsole();
 			}
