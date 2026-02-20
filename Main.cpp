@@ -131,7 +131,7 @@ int main() {
 	bool gameOver = false;
 	while (static_cast<int>(status) != 4) {		//	Program runs in console while quit flag not raised.
 		///////////////////////////////
-		//////MENU - PLAY OR QUIT//////
+		////// MAIN MENU OPTIONS //////
 		///////////////////////////////
 		std::cout << "\t\t  --- Minesweeper Clone ---\t\t" << std::endl;
 		std::cout << "\n\n>Play ('p') \n\n>Load Game ('l') \n\n>High Scores ('h'/'s') \n\n>Options ('o') \n\n>Credits ('c') \n\n>Quit ('q')\n";	
@@ -165,28 +165,65 @@ int main() {
 		else if (menuInput == "HIGHSCORES" || menuInput == "H" || menuInput == "SCORES" || menuInput == "S" || menuInput == "HIGH-SCORES") {
 			clearConsole();
 			std::cout << "\n\t\t--- High Scores ---\t\t\n\n";
-			std::cout << std::left
-				<< std::setw(12) << "Time"
-				<< std::setw(18) << "Tiles Revealed"
-				<< "Date\n"
-				<< std::string(50, '-') << "\n";
+			std::cout << std::left << std::setw(12) << "Difficulty" << std::setw(18) << "Time" << std::setw(18) << "Tiles Revealed" << "Date\n" << std::string(60, ',') << "\n";
 
 			std::ifstream scoreReader("scores.csv");
 			if (scoreReader) {
 				std::string line;
 				while (std::getline(scoreReader, line)) {
-					std::vector<std::string> scoreValueStr(3);
+					std::vector<std::string> scoreValueStr(4);
 					std::stringstream ss(line);
 					std::string subText;
 					for (int i = 0; i < scoreValueStr.size(); ++i) {
-						std::getline(ss, subText, '-');
+						std::getline(ss, subText, ',');
 						scoreValueStr.at(i) = subText;
 					}
-					std::cout << std::left
-						<< std::setw(12) << scoreValueStr.at(0)
-						<< std::setw(18) << (scoreValueStr.at(1) + "%")
-						<< scoreValueStr.at(2) << "\n";
-					//std::cout << "Time - " << scoreValueStr.at(0) << " | Tiles Revealed - " << scoreValueStr.at(1) << " | Date - " << scoreValueStr.at(2) << std::endl;
+
+					//	Switch logic to convert data to sensible input for user based on difficulty settings at time of writing.
+					int totalTiles = 0;	//	WARNING - This value is hardcoded and will not update if difficulty settings are tweaked in PlayGrid class!
+					switch (stoi(scoreValueStr.at(0))) {
+						case 0:
+							scoreValueStr.at(0) = "Easy";
+							totalTiles = 64 - 10;
+							break;
+						case 1:
+							scoreValueStr.at(0) = "Normal";
+							totalTiles = 144 - 32;
+							break;
+						case 2:
+							scoreValueStr.at(0) = "Hard";
+							totalTiles = 576 - 100;
+							break;
+					/*******case 3:
+							scoreValueStr.at(0) = "Custom";
+							totalTiles = (gridSize * gridSize) - numBombs;		//	TODO - Implement these variables.
+							break;
+					*******/
+						default:
+							scoreValueStr.at(0) = "ERROR";
+							totalTiles = -1;
+							break;
+					}
+					double percentVal = (static_cast<double>(stoi(scoreValueStr.at(2))) / static_cast<double>(totalTiles)) * 100;
+					std::string percentStr = std::to_string(static_cast<int>(percentVal));
+
+					//	Final outputs on the Score sheet. If all empty tiles were revealed that output is simply a "Won".
+					if (static_cast<int>(stoi(scoreValueStr.at(2))) != totalTiles) {
+						std::cout << std::left
+							<< std::setw(12) << scoreValueStr.at(0)
+							<< std::setw(18) << scoreValueStr.at(1)
+							<< std::setw(18) << (scoreValueStr.at(2) + " of " + std::to_string(totalTiles) + " (" + percentStr + "%)")
+							<< scoreValueStr.at(3) << "\n";
+					}
+					else {
+						std::cout << std::left
+							<< std::setw(12) << scoreValueStr.at(0)
+							<< std::setw(18) << scoreValueStr.at(1)
+							<< std::setw(18) << ("Won")
+							<< scoreValueStr.at(3) << "\n";
+					}
+
+					
 				}
 				std::cout << "\nPress Enter to Continue...";
 				std::cin.get();
@@ -275,10 +312,12 @@ int main() {
 				gridObject.displayGridGameOver();
 				status = GameState::Menu;
 
-				//	Write results of game to scores.csv file.				
-				int currDate = -1;
+				//	Write results of game to scores.csv file.
+				auto dateIs = std::chrono::floor<std::chrono::days>(std::chrono::system_clock::now());
+				std::string currDate = std::format("{:%d-%m-%y}", dateIs);
 				std::ofstream scoresWrite("scores.csv", std::ios::app);
-				if (scoresWrite) { scoresWrite << gridObject.getDifficulty() << timeKeeperObject.timeIs(timeKeeperObject.elapsed()) << percentDone << currDate << "\n"; }
+				if (scoresWrite) { scoresWrite << gridObject.getDifficulty() << ',' << timeKeeperObject.timeIs(timeKeeperObject.elapsed()) << ',' << gridObject.getTilesRevealed() << ',' << currDate << "\n"; }
+				else { std::cerr << "Warning, failed to open scores.csv to save your highscore!\n"; }
 				scoresWrite.close();
 
 				std::cout << "\nPress Enter to Continue. ";
@@ -290,7 +329,7 @@ int main() {
 	}
 	if (menuInput == "CREDITS" || menuInput == "C") {
 		clearConsole();
-		std::cout << "\nDesigned and devloped Eric Kim over the course of 40 hours.\n\n";
+		std::cout << "\nPlanned,designed and dvloped (sic) by Eric Kim over the course of 40 hours.\n\n";
 		std::cout << "\nCopyright (c) 2026 Eric Kim. See License for more details.\n\n";
 	}
 	std::cout << "Goodbye.\n";

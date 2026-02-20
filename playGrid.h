@@ -86,10 +86,7 @@ private:
 	- Save/Load game exports/imports.					    (DONE)
 
 	- High score log.										90%
-
-	-	HIGH SCORE - Display Difficulty before timeOutput "Tiles Revealed: " << revealCount << " of " << tTiles << percent(formatted).Instead of just the percent format.
-						If All tiles were revealed, output "Win" instead.
-
+						
 
 
 

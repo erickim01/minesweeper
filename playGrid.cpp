@@ -35,18 +35,18 @@ void PlayGrid::setBombs() {
 	const int BOMBS_NORMAL = 32;
 	const int BOMBS_HARD = 100;
 	switch (difficulty) {
-	case 0:
-		this->numBombs = BOMBS_EASY;
-		break;
-	case 1:
-		this->numBombs = BOMBS_NORMAL;
-		break;
-	case 2:
-		this->numBombs = BOMBS_HARD;
-		break;
-	default:
-		std::cout << "ERROR: INVALID DIFFICULTY IN	SWITCH setBombs()." << std::endl;
-		break;
+		case 0:
+			this->numBombs = BOMBS_EASY;
+			break;
+		case 1:
+			this->numBombs = BOMBS_NORMAL;
+			break;
+		case 2:
+			this->numBombs = BOMBS_HARD;
+			break;
+		default:
+			std::cout << "ERROR: INVALID DIFFICULTY IN	SWITCH setBombs()." << std::endl;
+			break;
 	}
 	setFlags(numBombs);
 }
