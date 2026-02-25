@@ -1,9 +1,10 @@
 ﻿  Main.cpp
   PlayGrid.cpp
   Generating code
-  Previous IPDB not found, fall back to full compilation.
-C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\Main.cpp(103): warning C4715: 'clickInput': not all control paths return a value
-C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\Main.cpp(93): warning C4715: 'getCoordinates': not all control paths return a value
-  All 2610 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+C:\Users\Eric\Desktop\Code Gen\Minesweeper\Minesweeper\Main.cpp(109): warning C4715: 'clickInput': not all control paths return a value
+C:\Users\Eric\Desktop\Code Gen\Minesweeper\Minesweeper\Main.cpp(99): warning C4715: 'getCoordinates': not all control paths return a value
+  2573 of 2610 functions (98.6%) were compiled, the rest were copied from previous compilation.
+    5 functions were new in current compilation
+    2 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
-  Minesweeper.vcxproj -> C:\Users\Eric\Desktop\Code Gen\GithubRepos\Minesweeper\Minesweeper\x64\Release\Minesweeper.exe
+  Minesweeper.vcxproj -> C:\Users\Eric\Desktop\Code Gen\Minesweeper\Minesweeper\x64\Release\Minesweeper.exe

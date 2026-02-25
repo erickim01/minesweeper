@@ -13,7 +13,13 @@
 
 //	ANSI Clear Screen		-	\x1b[2J 
 //	ANSI Cursor to Top Left	-	\x1b[1;1H
-void clearConsole() { std::cout << "\x1b[2J\x1b[1;1H"; }
+void clearConsole() { 
+#ifdef _DEBUG
+	std::cout << "\x1b[2J\x1b[1;1H";
+#else
+	system("cls");		//WARNING - This shi won't work on non-Windows, upgrade application to GUI console clears are unecessary.
+#endif
+}
 
 enum class GameState {
 	Menu = 1,
